@@ -1,0 +1,1759 @@
+@charset "utf-8";
+
+/* ----------------------------------------
+	Page Style Seet
+
+	A_Common
+		A_0.Feed
+		A_1.Message
+		A_2.Profile
+		A_3.Login/Regist
+		A_4.Setting
+		
+	B_Client
+		B_1.Requestflow
+		B_2.Jobstatus
+	
+---------------------------------------- */
+
+/* --------------------------------------------------------------------------------
+A_Common
+-------------------------------------------------------------------------------- */
+
+A_CommonContents{margin:0;}
+
+/* ----------------------------------------
+A_0.Feed
+---------------------------------------- */
+
+/*wpContents*/
+
+.wpContents {
+	margin:0;
+}
+
+.wpContents .wp {
+	background:#fffbf2;
+	padding: 9px;
+}
+
+.wpContents .wp .panel {
+	width: 100%;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	background-color: #fff;
+	-webkit-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+	-moz-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+	box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+}
+
+	.wpContents .wp .panel a {
+		text-decoration:none;
+		color:#333333;
+	}
+
+	.wpContents .wp .panel ul {
+		border-bottom:#dcdcdc solid 1px;
+	}
+	
+	.wpContents .wp .panel li {
+		float:left;
+		width:33.33333333333%;
+		height:105px;
+		border-right:#dcdcdc solid 1px;
+	}
+
+		.wpContents .wp .panel li.homeservice{
+			background-image: url(../svg/homeservice.svg);
+			background-size: 60px 60px;
+			background-position: center 15px;
+			background-repeat: no-repeat;
+		}
+		
+		.wpContents .wp .panel li.cleaning{
+			background-image: url(../svg/cleaning.svg);
+			background-size: 60px 60px;
+			background-position: center 15px;
+			background-repeat: no-repeat;
+		}
+		
+		.wpContents .wp .panel li.doghuggy{
+			background-image: url(../svg/doghuggy.svg);
+			background-size: 60px 60px;
+			background-position: center 15px;
+			background-repeat: no-repeat;
+		}
+		
+		.wpContents .wp .panel li.diy{
+			background-image: url(../svg/bedroom.svg);
+			background-size: 60px 60px;
+			background-position: center 15px;
+			background-repeat: no-repeat;
+		}
+		
+		.wpContents .wp .panel li.moving{
+			background-image: url(../svg/moving.svg);
+			background-size: 60px 60px;
+			background-position: center 15px;
+			background-repeat: no-repeat;
+		}
+		
+		.wpContents .wp .panel li.garden{
+			background-image: url(../svg/garden.svg);
+			background-size: 60px 60px;
+			background-position: center 15px;
+			background-repeat: no-repeat;
+		}
+		
+		.wpContents .wp .panel li.pcspsupport{
+			background-image: url(../svg/pcspsupport.svg);
+			background-size: 60px 60px;
+			background-position: center 15px;
+			background-repeat: no-repeat;
+		}
+		
+		.wpContents .wp .panel li.volunteer{
+			background-image: url(../svg/heart2.svg);
+			background-size: 60px 60px;
+			background-position: center 15px;
+			background-repeat: no-repeat;
+		}
+		
+		.wpContents .wp .panel li.anything{
+			background-image: url(../svg/anything.svg);
+			background-size: 60px 60px;
+			background-position: center 15px;
+			background-repeat: no-repeat;
+		}
+
+.wpContents .wp .panel li p {
+	margin-top:80px;
+	
+	/*font*/
+	font-size:80%;
+	text-align:center;
+}
+
+.wpContents .howto {
+	margin-top:20px;
+}
+
+.wpContents .howto a {
+	text-decoration:none;
+	color:#333333;
+}
+
+.wpContents .howto ul {
+	margin-top:20px;
+}
+
+.wpContents .howto li {
+	margin-bottom:20px;
+	background-repeat: no-repeat;
+	
+	-webkit-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+	-moz-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+	box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+}
+
+.wpContents .howto li h4:after {
+	clear:both;
+}
+
+.wpContents .howto li.flow1{
+	background-image: url(../img/wp/img01.jpg);
+	background-size: 184px 131px;
+	background-position:right 0px;
+}
+
+.wpContents .howto li.flow2{
+	background-image: url(../img/wp/img02.jpg);
+	background-size: 184px 131px;
+	background-position:left 0px;
+}
+
+.wpContents .howto li.flow3{
+	background-image: url(../img/wp/img03.jpg);
+	background-size: 184px 131px;
+	background-position:right 0px;
+}
+
+.wpContents .howto li.flow1 h4,.wpContents .howto li.flow3 h4{
+	width:55%;
+	float:left;
+	padding:10px;
+}
+
+.wpContents .howto li.flow2 h4{
+	width:55%;
+	float: right;
+	padding:10px;
+}
+
+.wpContents .howto li.flow1 h4 span,.wpContents .howto li.flow2 h4 span,.wpContents .howto li.flow3 h4 span{
+	display:block;
+	margin-top:5px;
+	
+	/*font*/
+	font-size:80%;
+}
+
+/* ----------------------------------------
+A_1.Message
+---------------------------------------- */
+
+/*messageContents*/
+
+.messageContents {
+	margin:0;
+	padding-bottom:100px;
+}
+
+/*messageContents>list(A_1_1.List)*/
+
+.messageContents .list {
+	background:#fffbf2;
+	padding: 9px;
+}
+
+.messageContents .list ul {
+	margin:0;
+}
+
+.messageContents .list ul li {
+	width: 100%;
+	padding:10px;
+	margin-bottom:10px;
+	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #fff;
+	-webkit-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+	-moz-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+	box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+}
+
+.messageContents .list ul li .user {
+	float:left;
+	width:80px;
+	height:80px;
+	border:#eeeeee solid 1px;
+	
+	/*background-image: url(../img/common/sample_user01.jpg);*/
+	background-size: cover;
+	background-position:center;
+}
+
+.messageContents .list ul li article {
+	float:left;
+	width:180px;
+	margin-left:15px;
+	position:relative;
+}
+
+	.messageContents .list ul li article h3 {
+		/*font*/
+		text-align:left;
+		font-size:125%;
+		color:#333333;
+	}
+	
+		.messageContents .list ul li article h3 span {
+			display:block;
+			margin: 5px 0;
+			border-bottom:#dcdcdc solid 1px;
+			
+			/*font*/
+			white-space: nowrap;
+			font-size:80%;
+			color:#adadad;
+			
+			overflow: hidden;
+			-o-text-overflow: ellipsis;
+			text-overflow: ellipsis;
+		}
+
+	.messageContents .list ul li article .data {
+			/*font*/
+			text-align:right;
+			color:#adadad;
+	}
+	
+	.messageContents .list ul li article .status {
+			position:absolute;
+			right:0;
+			top:0;
+			
+			/*font*/
+			text-align:right;
+	}
+	
+	.messageContents .list ul li article .status:before {
+		content:"●"
+	}
+	
+		.messageContents .list ul li article /*.status*/ .unread {
+				/*font*/
+				color:#ff0000;
+		}
+		
+		.messageContents .list ul li article /*.status*/ .read {
+				/*font*/
+				color:#e1dccf;
+		}
+
+/*messageContents>list(A_1_2.Detail)*/
+
+.messageContents .detail {
+	width:95%;
+	margin:0 auto;
+	padding-top:15px;
+}
+
+.messageContents .detail:after {
+	margin-bottom:200px;
+}
+
+.messageContents .detail h3 {
+	margin:10px 0;
+	/*font*/
+	font-size:100%;
+	color:#929292;
+}
+
+.messageContents .detail h3 img {
+	text-align:center;
+}
+
+.messageContents .detail ul {
+	width:90%;
+	margin:0;
+}
+
+.messageContents .detail ul#friend {
+	float:left;
+}
+
+.messageContents .detail ul#me {
+	float: right;
+}
+
+	.messageContents .detail ul#me > li {
+		background-color:#037fff;
+		/*font*/
+		color:#fff;
+	}
+	
+	.messageContents .detail ul#me dl .txtBox h3,.messageContents .detail ul#me dl .txtBox p {
+		/*font*/
+		color:#fff;
+	}
+
+.messageContents .detail ul li {
+	border:#ececec solid 1px;
+	padding:10px;
+	margin-bottom:15px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+	
+.messageContents .detail dl{
+	width:100%;
+	overflow:hidden;
+}
+
+	.messageContents .detail dl .imgBox {
+		position:relative;
+	}
+	
+	.messageContents .detail dl .imgBox .friend {
+		width:100%;
+	}
+	
+	.messageContents .detail dl .imgBox .friend img {
+		width:100%;
+		height: auto;
+		border-radius:50%;
+		border:2px solid white;
+		object-fit:cover;
+	}
+	
+	.messageContents .detail dl .txtBox {
+		margin:0;
+	}
+	
+	.messageContents .detail dl .txtBox h3 {
+		/*font*/
+		text-align:left;
+		color:#666;
+		font-size:150%;
+		margin:0;
+	}
+	
+	.messageContents .detail dl .txtBox p {
+		margin:0;
+		padding:0;
+		overflow: hidden;
+		/*font*/
+		font-size:100%;
+		color:#666;
+	}
+	
+	.messageContents .detail ul li p.date {
+		padding-top:10px;
+		border-top:#ececec solid 1px;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		/*font*/
+		font-size:80%;
+		text-align:right;
+		color:#ccc;
+	}
+
+.messageContents .detail dt{
+	width:30%;
+	float:left;
+	padding:5px;
+}
+
+.messageContents .detail dd{
+	width:70%;
+	float:left;
+	padding:5px;
+	padding-right:0;
+}
+
+.messageContents .detail dd:after{
+	clear:both;
+}
+
+/* ----------------------------------------
+A_2.Profile
+---------------------------------------- */
+
+/*profileContents*/
+
+.profileContents {
+	margin:0;
+}
+
+/*profileContents>index(A_2_1.Index)*/
+
+.profileContents .profile {
+	background-color:#fffbf2;
+}
+
+.profileContents .profile dl{
+	padding:9px;
+	width:100%;
+	overflow:hidden;
+}
+
+.profileContents .profile dt{
+	width:30%;
+	float:left;
+	padding:5px;
+}
+
+.profileContents .profile dd{
+	width:70%;
+	float:left;
+	padding:5px;
+	padding-right:0;
+}
+
+.profileContents .profile dd:after{
+	clear:both;
+}
+
+	.profileContents .profile dl .imgBox {
+		margin:0;
+	}
+	
+	.profileContents .profile dl .imgBox img.kadomaru {
+		width:100%;
+		height: auto;
+		border-radius:5%;
+		border:#eeeeee solid 1px;
+		object-fit:cover;
+		border:#eeeeee solid 1px;
+	}
+	
+	.profileContents .profile dl .imgBox img.maru {
+		width:100%;
+		height: auto;
+		border-radius:50%;
+		border:#eeeeee solid 1px;
+		object-fit:cover;
+		border:#eeeeee solid 1px;
+	}
+	
+	.profileContents .profile dl .txtBox {
+		*
+	}
+	
+	.profileContents .profile dl .txtBox h3 {
+		/*font*/
+		text-align:left;
+		color:#333333;
+		font-size:150%;
+		margin:0;
+	}
+	
+	.profileContents .profile dl .txtBox h3 span {
+		/*font*/
+		color:#adadad;
+		font-size:80%;
+		margin:0;
+	}
+	
+	/*.profileContents .profile dl .txtBox p > * {
+		margin:0;
+		padding:0;
+		overflow: hidden;
+	}*/
+	
+	.profileContents .profile dl .txtBox p.since {
+		border-bottom:#dcdcdc solid 1px;
+		padding-bottom:5px;
+		/*font*/
+		color:#adadad;
+	}
+	
+	.profileContents .profile dl .txtBox p.review_min {
+		padding:5px 0;
+		/*font*/
+		color:#6d9abb;
+	}
+	
+	.profileContents .profile dl .txtBox p.review_min span {
+		/*font*/
+		letter-spacing:5px;
+	}
+	
+	.profileContents .profile dl .txtBox p.setting_min {
+		width:60%;
+	}
+
+.profileContents .profile article {
+		margin:0;
+		padding:10px;
+		background-color: #fff;
+		-webkit-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+		-moz-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+		box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+		
+		/*font*/
+		font-size:110%;
+		line-height:180%;
+}
+
+.profileContents .profile .count {
+		padding:10px;
+}
+
+.profileContents .profile .count a {
+	text-decoration:none;
+}
+
+.profileContents .profile .count ul {
+	margin:0;
+}
+
+	.profileContents .profile .count ul li {
+		width:50%;
+		float:left;
+		border-right:#dcdcdc solid 1px;
+		
+		/*font*/
+		text-align:center;
+	}
+	
+	.profileContents .profile .count ul li p {		
+		/*font*/
+		color:#6d9abb;
+		font-size:300%;
+	}
+	
+	.profileContents .profile .count ul li p span {
+		display:block;
+		
+		/*font*/
+		color:#666666;
+		font-size:40%;
+	}
+
+.profileContents .profile .confidence {
+		padding:10px 20px;
+}
+
+.profileContents .profile .confidence ul {
+	margin:0;
+}
+
+	.profileContents .profile .confidence ul li {
+		width:100%;
+		padding:10px 0;
+		padding-left:40px;
+		position:relative;
+		border-bottom:#dcdcdc solid 1px;
+		
+		background-size: 30px 30px;
+		background-position: left 11px;
+		background-repeat: no-repeat;
+		
+		/*font*/
+		font-size:150%;
+	}
+	
+	.profileContents .profile .confidence ul li:last-child {
+		border:none;
+	}
+	
+		.profileContents .profile .confidence ul li.fb {background-image: url(../svg/fb.svg);}
+		.profileContents .profile .confidence ul li.tel {background-image: url(../svg/tel.svg);}
+		.profileContents .profile .confidence ul li.self {background-image: url(../svg/self.svg);}
+	
+		.profileContents .profile .confidence ul li .btnarea {
+			position:absolute;
+			right:0px;
+			top:10px;
+		}
+
+	.profileContents .profile .review {
+			padding:20px;
+	}
+	
+		.profileContents .profile .review p.total {
+			padding-bottom:20px;
+			border-bottom:#dcdcdc solid 1px;	
+		}
+		
+		.profileContents .profile .review p.total em {
+			display:block;
+			
+			/*font*/
+			color:#6d9abb;
+			font-size:250%;
+			text-align:center;
+		}
+		
+		.profileContents .profile .review p.total em:after {
+			content:"件のレビュー";
+			display:block;
+			
+			/*font*/
+			color:#666;
+			font-size:40%;
+			text-align:center;
+		}
+
+
+/* ----------------------------------------
+A_3.Login/Regist
+---------------------------------------- */
+
+/*loginregistContents*/
+
+.loginregistContents {
+	margin:0;
+}
+
+	/*profileContents>index(A_2_1.Index)*/
+	
+	.loginregistContents .login,.loginregistContents .regist {
+		background:#fffbf2;
+		height:100%;
+	}
+
+		.loginregistContents .login img,.loginregistContents .regist img {
+			margin:0;
+			padding:0;
+			text-align:center;
+		}
+
+		.loginregistContents .login article,.loginregistContents .regist article {
+			padding:20px;
+			background-color: #fff;
+			-webkit-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+			-moz-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+			box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+		}
+
+			.loginregistContents .login article ul li,.loginregistContents .regist article ul li {
+				margin-bottom:10px;
+				
+				/*font*/
+				font-size:100%;
+			}
+	
+			.loginregistContents .login p,.loginregistContents .regist p {
+				padding:15px 0;
+				
+				/*font*/
+				text-align:center;
+			}
+	
+				.loginregistContents .login p a,.loginregistContents .regist p a {
+					
+					/*font*/
+					color:#cdb477;
+				}
+
+/* ----------------------------------------
+A_4.Setting
+---------------------------------------- */
+
+/*settingContents*/
+
+.settingContents {
+	margin:0;
+}
+
+	/*list*/
+	.settingContents .list ul {
+		margin:0;
+		padding:10px 20px;
+	}
+			
+	.settingContents .list ul li {
+		width:100%;
+		padding:10px 0;
+		border-bottom:#dcdcdc solid 1px;
+					
+		background-image: url(../svg/arrow01.svg);
+		background-size: 20px 20px;
+		background-position: 98% 50%, 0 0;
+		background-repeat: no-repeat;
+		
+		/*font*/
+		color:#666666;
+		font-size:150%;
+	}
+
+	/*detail*/
+	.settingContents .detail {
+		background:#fffbf2;
+	}
+
+		.settingContents .detail a {
+			text-decoration:none;
+			color:#333333;
+		}
+	
+		/*cover*/
+		.settingContents .detail .cover {
+			background: url(../img/feed/img01.jpg) no-repeat;
+			background-size: 184px 131px;
+			background-position:right 0px;
+		}
+	
+			.settingContents .detail .cover h3 {
+			width: 55%;
+			float:left;
+			padding:10px;
+			
+			/*font*/
+			text-align:left;
+			font-size:120%;
+			}
+
+				.settingContents .detail .cover h3 span {
+					display:block;
+					margin-top:5px;
+					
+					/*font*/
+					text-align:left;
+					font-size:80%;
+				}
+
+		/*formarea*/
+		.settingContents .detail .formarea {
+			padding:20px;
+			background-color:#fff;
+		}
+		
+		.settingContents .detail .formarea ul.profile {
+			padding-top:30px;
+			background-color:#fff;
+		}
+		
+			.settingContents .detail .formarea ul.profile h4/*icon box layout*/ {
+				padding-bottom:20px;
+				background-size: 60px 60px;
+				background-position: center 15px;
+				background-repeat: no-repeat;
+				border-bottom:#dcdcdc solid 3px;
+			}
+			
+			.settingContents .detail .formarea ul.profile h4.profile {
+				background-image: url(../svg/profile.svg);
+			}
+			
+			.settingContents .detail .formarea ul.profile h4.reliance {
+				background-image: url(../svg/reliance.svg);
+			}
+			
+				.settingContents .detail .formarea ul.profile h4 span {
+					display:block;
+					padding-top:80px;
+					
+					/*font*/
+					font-size:100%;
+					text-align:center;
+				}
+				
+			.settingContents .detail .formarea ul.profile li {
+				padding:10px;
+				border-bottom:#dcdcdc solid 1px;
+			}
+			
+			.settingContents .detail .formarea ul.profile li:nth-child(even) {
+				background-color:#f9f9f9;
+			}
+			
+			.settingContents .detail .formarea ul.profile li dl{
+				width:100%;
+				overflow:hidden;
+			}
+			
+			.settingContents .detail .formarea ul.profile li dt{
+				width:30%;
+				float:left;
+				padding-right:10px;
+			}
+			
+				.settingContents .detail .formarea ul.profile li dt .user{
+					width:100%;
+					height:65px;
+					
+					/*background-image: url(../img/common/sample_user01.jpg);*/
+					background-size: cover;
+					background-position:center;
+				}
+			
+			.settingContents .detail .formarea ul.profile li dd{
+				width:70%;
+				float:left;
+				padding-right:0;
+			}
+				
+/*settingContents>index(A_4_1.Index)*/
+
+/* --------------------------------------------------------------------------------
+B_Client
+-------------------------------------------------------------------------------- */
+
+.B_CommonContents{margin:0;}
+
+/* ----------------------------------------
+B_1.Requestflow
+---------------------------------------- */
+
+/*newrequestContents*/
+
+.newrequestContents {
+	margin:0;
+}
+
+	.newrequestContents .offer {
+		background:#fffbf2;
+	}
+
+		.newrequestContents .offer a {
+			text-decoration:none;
+			color:#333333;
+		}
+	
+		/*cover*/
+		.newrequestContents .offer .cover {
+			background: url(../img/feed/img01.jpg) no-repeat;
+			background-size: 184px 131px;
+			background-position:right 0px;
+		}
+	
+			.newrequestContents .offer .cover h3 {
+			width: 55%;
+			float:left;
+			padding:10px;
+			
+			/*font*/
+			text-align:left;
+			font-size:120%;
+			}
+
+				.newrequestContents .offer .cover h3 span {
+					display:block;
+					margin-top:5px;
+					
+					/*font*/
+					text-align:left;
+					font-size:80%;
+				}
+	
+	/*formarea*/
+	.newrequestContents .offer ul.formarea {
+		padding:20px;
+		
+		-webkit-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+		-moz-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+		box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+	}
+	
+		.newrequestContents .offer ul.formarea h4/*icon box layout*/ {
+			padding-bottom:20px;
+			background-size: 60px 60px;
+			background-position: center 15px;
+			background-repeat: no-repeat;
+			border-bottom:#dcdcdc solid 1px;
+		}
+		
+		.newrequestContents .offer ul.formarea h4.homeservice {background-image: url(../svg/homeservice.svg);}
+		.newrequestContents .offer ul.formarea h4.cleaning {background-image: url(../svg/cleaning.svg);}
+		.newrequestContents .offer ul.formarea h4.doghuggy {background-image: url(../svg/doghuggy.svg);}
+		.newrequestContents .offer ul.formarea h4.diy {background-image: url(../svg/diy.svg);}
+		.newrequestContents .offer ul.formarea h4.moving {background-image: url(../svg/moving.svg);}
+		.newrequestContents .offer ul.formarea h4.garden {background-image: url(../svg/garden.svg);}
+		.newrequestContents .offer ul.formarea h4.pcspsupport {background-image: url(../svg/pcspsupport.svg);}
+		.newrequestContents .offer ul.formarea h4.volunteer {background-image: url(../svg/heart2.svg);}
+		.newrequestContents .offer ul.formarea h4.anything {background-image: url(../svg/anything.svg);}
+		
+			.newrequestContents .offer ul.formarea h4 span {
+				display:block;
+				padding-top:80px;
+				
+				/*font*/
+				text-align:center;
+			}
+			
+		.newrequestContents .offer ul.formarea li {
+			margin-top:20px;
+		}
+		
+	/*confirmation*/
+	.newrequestContents .offer ul.confirmation {
+		padding:20px;
+		background-color:#fff;
+	}
+	
+		.newrequestContents .offer ul.confirmation h4/*icon box layout*/ {
+			padding-bottom:20px;
+			background-size: 60px 60px;
+			background-position: center 15px;
+			background-repeat: no-repeat;
+			border-bottom:#dcdcdc solid 3px;
+		}
+		
+		.newrequestContents .offer ul.confirmation h4.mytask {
+			background-image: url(../svg/mytask.svg);
+		}
+		
+			.newrequestContents .offer ul.confirmation h4 span {
+				display:block;
+				padding-top:90px;
+				
+				/*font*/
+				font-size:100%;
+				text-align:center;
+			}
+			
+		.newrequestContents .offer ul.confirmation li {
+			padding:10px;
+			border-bottom:#dcdcdc solid 1px;
+		}
+		
+		.newrequestContents .offer ul.confirmation li:nth-child(even) {
+			background-color:#f9f9f9;
+		}
+		
+		.newrequestContents .offer ul.confirmation li dl{
+			width:100%;
+			overflow:hidden;
+		}
+		
+		.newrequestContents .offer ul.confirmation li dt{
+			width:30%;
+			float:left;
+		}
+		
+		.newrequestContents .offer ul.confirmation li dd{
+			width:70%;
+			float:left;
+			padding-right:0;
+		}
+	
+/*mytaskContents*/
+
+.mytaskContents {
+	margin:0;
+}
+
+	/*list*/
+	.mytaskContents .list {
+		background:#fffbf2;
+		padding: 9px;
+	}
+	
+	.mytaskContents .list ul {
+		margin:0;
+	}
+	
+	.mytaskContents .list ul li {
+		width: 100%;
+		padding:10px;
+		margin-top:30px;
+		position:relative;
+		
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		background-color: #fff;
+		-webkit-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+		-moz-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+		box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+		
+		background-image: url(../svg/arrow01.svg);
+		background-size: 20px 20px;
+		background-position: 98% 50%, 0 0;
+		background-repeat: no-repeat;
+	}
+	
+	.mytaskContents .list ul li.accept {
+		*
+	}
+	
+		.mytaskContents .list ul li .status {
+			width:200px;
+			position:absolute;
+			right:0;
+			top:-22px/*status height*/;
+					
+			/*font*/
+			text-align:right;
+		}
+		
+			.mytaskContents .list ul li .status p {
+				width:50%;
+				padding:7px;
+				float:left;
+				
+				border-radius:5px 5px 0 0;
+				-webkit-border-radius:5px 5px 0 0;
+				-moz-border-radius:5px 5px 0 0;
+				
+				/*font*/
+				font-size:80%;
+			}
+			
+			.mytaskContents .list ul li .status p.reward {
+				background-color:#6d9abb;
+				padding:3px;
+				
+				/*font*/
+				text-align:center;
+				color:#ffffff;
+			}
+			
+				.mytaskContents .list ul li .status p.reward:before {
+					content:"報酬 ¥"
+				}
+			
+			.mytaskContents .list ul li .status p.application {	
+				background-color:#b4d0d5;
+				padding:3px;
+				
+				/*font*/
+				text-align:center;
+				color:#fff;
+			}
+			
+				.mytaskContents .list ul li .status p.application:before {
+					content:"応募件数 "
+				}
+	
+	.mytaskContents .list ul li .user {
+		float:left;
+		width:40px;
+		height:40px;
+		
+		/*background-image: url(../img/common/sample_user01.jpg);*/
+		background-size: cover;
+		background-position:center;
+	}
+	
+		.mytaskContents .list ul li .user img.maru {
+			width:100%;
+			height: auto;
+			border-radius:50%;
+			border:#fff solid 10px;
+			object-fit:cover;
+		}
+	
+	.mytaskContents .list ul li article {
+		float:left;
+		width: 210px;
+		margin-left:15px;
+	}
+	
+		.mytaskContents .list ul li article h3 {
+			/*font*/
+			text-align:left;
+			font-size:125%;
+			color:#333333;
+		}
+		
+			.mytaskContents .list ul li article h3 span {
+				display:block;
+				margin: 5px 0;
+				border-bottom:#dcdcdc solid 1px;
+				
+				/*font*/
+				white-space: nowrap;
+				font-size:80%;
+				color:#adadad;
+				
+				overflow: hidden;
+				-o-text-overflow: ellipsis;
+				text-overflow: ellipsis;
+			}
+	
+		.mytaskContents .list ul li article .data {
+				/*font*/
+				color:#adadad;
+		}
+		
+		.mytaskContents .list ul li article .data2/*jobfeed taskercontent*/ {
+				/*font*/
+				color:#b2d234;
+		}
+		
+		.mytaskContents .list ul li article .data3/*mytask_tasker*/ {
+				/*font*/
+				color:#FF0004;
+		}
+
+/* ----------------------------------------
+B_2.Jobstatus
+---------------------------------------- */
+
+/*jobContents(job_offer,job_apply)*/
+
+.jobContents {
+	margin:0;
+	background-color:#fffbf2;
+	position:relative/*apply*/;
+	padding-bottom:50px/*job*/;
+}
+
+.jobContents.failure {
+	filter:alpha(opacity=20);
+	-moz-opacity: 0.2;
+	opacity: 0.2;
+}
+
+	/*status(common)*/
+	.jobContents .status {
+		margin:9px;
+		margin-bottom:30px/*innner ul li p*/;
+		
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		background-color: #fff;
+		-webkit-box-shadow: 0 0 3px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+		-moz-box-shadow: 0 0 3px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+		box-shadow: 0 0 3px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+	}
+	
+		.jobContents .status .innner {
+			padding:1px;
+		}
+		
+			.jobContents .status .innner ul {
+				height:15px;}
+		
+				.jobContents .status .innner ul li {
+					height:15px;
+					width:25%;
+					margin:0;
+					float:left;
+					position:relative;
+					background-color:#f5f5f5;
+					border-right:#fff solid 1px;
+				}
+				
+				.jobContents .status .innner ul li:last-child {
+					border:none;
+				}
+				
+				.jobContents .status .innner ul li.current {
+					ackground-image: -webkit-linear-gradient(bottom, #59d36c, #7cde6c);
+					background-image: -moz-linear-gradient(bottom, #59d36c, #7cde6c);
+					background-image: -o-linear-gradient(bottom, #59d36c, #7cde6c);
+					background-image: -ms-linear-gradient(bottom, #59d36c, #7cde6c);
+					background-image: linear-gradient(to top, #59d36c, #7cde6c);
+				}
+				
+					.jobContents .status .innner ul li p {
+						position:absolute;
+						width:100%;
+						margin:0 auto;
+						top:20px;
+						display:block;
+						
+						/*font*/
+						text-align:center;
+					}
+					
+	/*status(common)*/
+	.jobContents .review {
+		padding:20px;
+		margin-bottom:100px;
+		border-bottom:#dcdcdc solid 1px;
+	}
+	
+		.jobContents .review .user {
+			margin:0;
+			padding:0 30px;
+		}
+		
+				.jobContents .review .user .arrow_box {
+					position: relative;
+					background: #fff;
+					border: 1px solid #ccc;
+					padding:5px;
+					
+					-webkit-border-radius: 5px;
+					-moz-border-radius: 5px;
+					border-radius: 5px;
+				}
+					
+				.jobContents .review .user .arrow_box:after, .jobContents .review .user .arrow_box:before {
+					top: 100%;
+					left: 50%;
+					border: solid transparent;
+					content: " ";
+					height: 0;
+					width: 0;
+					position: absolute;
+					pointer-events: none;
+				}
+					
+				.jobContents .review .user .arrow_box:after {
+					border-color: rgba(242, 242, 242, 0);
+					border-top-color: #fff;
+					border-width: 8px;
+					margin-left: -8px;
+				}
+					
+				.jobContents .review .user .arrow_box:before {
+					border-color: rgba(102, 102, 102, 0);
+					border-top-color: #ccc;
+					border-width: 9px;
+					margin-left: -9px;
+				}
+					
+					.jobContents .review .user .arrow_box span {
+						display:block;
+							
+						/*font*/
+						text-align:center;
+						font-size:120%;
+						color:#b2d234;
+					}
+					
+					/*.jobContents .review .user .arrow_box span:before {
+						content:"¥"
+					}*/
+					
+					.jobContents .review .user .arrow_box span:after {
+						content:"このタスカーにお礼を伝えよう！";
+						display:block;
+						
+						/*font*/
+						font-size:80%;
+						color:#e1dccf;
+					}
+				
+					.jobContents .review .user img.kadomaru {
+						width:100%;
+						height: auto;
+						border-radius:5%;
+						border:#eeeeee solid 1px;
+						object-fit:cover;
+						border:#eeeeee solid 1px;
+					}
+					
+					.jobContents .review .user img.maru {
+						width:70%;
+						height: auto;
+						margin-left:17%/*negative margin*/;
+						
+						border-radius:50%;
+						border:#eeeeee solid 1px;
+						object-fit:cover;
+						border:#eeeeee solid 1px;
+					}
+					
+					.jobContents .review .user .data {
+						margin-top:5px;
+						/*font*/
+						font-size:200%;
+						text-align:center;
+					}
+					
+						.jobContents .review .user .data span {
+							margin-left:10px;
+							/*font*/
+							font-size:80%;
+							color:#adadad;
+						}
+	
+		.jobContents .review ul {
+			margin-top:20px;
+		}
+		
+		.jobContents .review ul li {
+			margin-bottom:10px;
+		}
+	
+	/*status2(common)*/
+	.jobContents .status2 {
+		width:100%;
+	}
+		
+			.jobContents .status2 ul {
+				margin:0 auto;
+				margin-left:9%;
+			}
+			
+			.jobContents .status2 ul li {
+				width:45%;
+				padding:10px;
+				float:left;
+				margin-right:1px;
+				
+				border-radius:5px 5px 0 0;
+				-webkit-border-radius:5px 5px 0 0;
+				-moz-border-radius:5px 5px 0 0;
+				
+				/*font*/
+				font-size:120%;
+			}
+			
+				.jobContents .status2 ul li:last-child {
+					margin:0;
+				}
+			
+			.jobContents .status2 ul li.reward {
+				background-color:#6d9abb;
+				padding:3px;
+				
+				/*font*/
+				text-align:center;
+				color:#ffffff;
+			}
+			
+				.jobContents .status2 ul li.reward:before {
+					content:"報酬 ¥"
+				}
+			
+			.jobContents .status2 ul li.application {	
+				background-color:#b4d0d5;
+				padding:3px;
+				
+				/*font*/
+				text-align:center;
+				color:#fff;
+			}
+			
+				.jobContents .status2 ul li.application:before {
+					content:"応募件数 "
+				}
+	
+	/*detail*/
+	.jobContents .detail {
+		margin:9px;
+		margin-top:0;
+		
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		background-color: #fff;
+		-webkit-box-shadow: 0 0 3px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+		-moz-box-shadow: 0 0 3px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+		box-shadow: 0 0 3px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+	}
+	
+		.jobContents .detail .mytask {
+			padding:10px;
+			border-bottom:#dcdcdc solid 1px;
+		}
+	
+			.jobContents .detail .mytask .user {
+				float:left;
+				width:40px;
+				height:40px;
+				
+				/*background-image: url(../img/common/sample_user01.jpg);*/
+				background-size: cover;
+				background-position:center;
+			}
+	
+			.jobContents .detail .mytask article {
+				float:left;
+				width:80%;
+				margin-left:15px;
+			}
+			
+				.jobContents .detail .mytask article h3 {
+					/*font*/
+					text-align:left;
+					font-size:125%;
+					color:#333333;
+				}
+				
+					.jobContents .detail .mytask article h3 span {
+						display:block;
+						margin: 5px 0;
+						border-bottom:#dcdcdc solid 1px;
+						
+						/*font*/
+						white-space: nowrap;
+						font-size:80%;
+						color:#adadad;
+						
+						overflow: hidden;
+						-o-text-overflow: ellipsis;
+						text-overflow: ellipsis;
+					}
+			
+					.jobContents .detail .mytask article .data {
+							/*font*/
+							color:#adadad;
+					}
+					
+					.jobContents .detail .mytask article .data:before {
+						content:"依頼者："
+					}
+		
+		/*confirmation*/
+		.jobContents .confirmation {
+			padding:20px;
+		}
+	
+			.jobContents .confirmation h4/*icon box layout*/ {
+				padding-bottom:20px;
+				background-size: 60px 60px;
+				background-position: center 15px;
+				background-repeat: no-repeat;
+			}
+		
+			.jobContents .confirmation h4.mytask {
+				background-image: url(../svg/mytask.svg);
+			}
+		
+				.jobContents .confirmation h4 span {
+					display:block;
+					padding-top:80px;
+					
+					/*font*/
+					font-size:100%;
+					text-align:center;
+				}
+			
+			.jobContents .confirmation ul {
+				border-top:#dcdcdc solid 3px;
+			}
+			
+				.jobContents .confirmation li {
+					padding:10px;
+					border-bottom:#dcdcdc solid 1px;
+				}
+			
+				.jobContents .confirmation li:nth-child(odd) {
+					background-color:#f9f9f9;
+				}
+				
+				.jobContents .confirmation li:last-child {
+					border:none;
+				}
+				
+					.jobContents .confirmation li dl{
+						width:100%;
+						overflow:hidden;
+					}
+					
+					.jobContents .confirmation li dt{
+						width:30%;
+						float:left;
+					}
+					
+					.jobContents .confirmation li dd{
+						width:70%;
+						float:left;
+						padding-right:0;
+					}
+
+	/*application*/
+	.jobContents .application {
+			padding:20px;
+	}
+		
+			.jobContents .application p.total {
+				padding-bottom:20px;
+				border-bottom:#dcdcdc solid 1px;	
+			}
+			
+				.jobContents .application p.total em {
+					display:block;
+					
+					/*font*/
+					color:#6d9abb;
+					font-size:250%;
+					text-align:center;
+				}
+				
+				.jobContents .application p.total em:after {
+					content:"件の応募";
+					display:block;
+					
+					/*font*/
+					color:#666;
+					font-size:40%;
+					text-align:center;
+				}
+				
+			.jobContents .application p.noapplication {
+				padding:10px 0;
+				
+				/*font*/
+				font-size:120%;
+			}
+			
+				.jobContents .application p.noapplication ul {
+					*
+				}
+				
+					.jobContents .application p.noapplication ul li {
+						margin-bottom:1 5px;
+					}
+					
+						.jobContents .application p.noapplication ul li > i {
+							/*font*/
+							color:#b2d235;
+						}
+	
+			.jobContents .application dl{
+				padding:9px;
+				width:100%;
+				overflow:hidden;
+			}
+			
+			.jobContents .application dl.failure{
+				filter:alpha(opacity=20);
+				-moz-opacity: 0.2;
+				opacity: 0.2;
+			}
+			
+			.jobContents .application dt{
+				width:30%;
+				float:left;
+			}
+			
+			.jobContents .application dd{
+				width:70%;
+				float:left;
+				padding-left:10px;
+				padding-right:0;
+			}
+			
+			.jobContents .application dd:after{
+				clear:both;
+			}
+			
+				.jobContents .application dl .imgBox {
+					margin:0;
+					margin-top:6px;
+				}
+				
+					.jobContents .application dl .imgBox .arrow_box {
+						position: relative;
+						background: #fff;
+						border: 1px solid #ccc;
+						padding:5px;
+						
+						-webkit-border-radius: 3px;
+						-moz-border-radius: 3px;
+						border-radius: 3px;
+					}
+					
+					.jobContents .application dl .imgBox .arrow_box:after, .jobContents .application dl .imgBox .arrow_box:before {
+						top: 100%;
+						left: 50%;
+						border: solid transparent;
+						content: " ";
+						height: 0;
+						width: 0;
+						position: absolute;
+						pointer-events: none;
+					}
+					
+					.jobContents .application dl .imgBox .arrow_box:after {
+						border-color: rgba(242, 242, 242, 0);
+						border-top-color: #fff;
+						border-width: 8px;
+						margin-left: -8px;
+					}
+					
+					.jobContents .application dl .imgBox .arrow_box:before {
+						border-color: rgba(102, 102, 102, 0);
+						border-top-color: #ccc;
+						border-width: 9px;
+						margin-left: -9px;
+					}
+					
+					.jobContents .application dl .imgBox .arrow_box span {
+						display:block;
+						
+						/*font*/
+						text-align:center;
+						font-size:120%;
+						color:#b2d234;
+					}
+					
+					.jobContents .application dl .imgBox .arrow_box span:before {
+						content:"¥"
+					}
+					
+					.jobContents .application dl .imgBox .arrow_box span:after {
+						content:"でやります！";
+						display:block;
+						
+						/*font*/
+						font-size:60%;
+						color:#666;
+					}
+				
+					.jobContents .application dl .imgBox img.kadomaru {
+						width:100%;
+						height: auto;
+						border-radius:5%;
+						border:#eeeeee solid 1px;
+						object-fit:cover;
+					}
+					
+					.jobContents .application dl .imgBox img.maru {
+						width:100%;
+						height: auto;
+						border-radius:50%;
+						border:#fff solid 1px;
+						object-fit:cover;
+					}
+				
+					.jobContents .application dl .txtBox {
+						position:relative;
+					}
+					
+						.jobContents .application dl .txtBox .offer {
+							position: absolute;
+							top:6px;
+							right:0px;
+						}
+				
+						.jobContents .application dl .txtBox h3 {
+							/*font*/
+							text-align:left;
+							color:#333333;
+							font-size:150%;
+							margin:0;
+						}
+				
+							.jobContents .application dl .txtBox h3 span {
+								/*font*/
+								color:#adadad;
+								font-size:80%;
+								margin:0;
+							}
+				
+							/*.applicationContents .application dl .txtBox p > * {
+								margin:0;
+								padding:0;
+								overflow: hidden;
+							}*/
+				
+							.jobContents .application dl .txtBox p.since {
+								border-bottom:#dcdcdc solid 1px;
+								padding-bottom:5px;
+								/*font*/
+								color:#adadad;
+							}
+				
+							.jobContents .application dl .txtBox p.review_min {
+								padding:5px 0;
+								/*font*/
+								font-size:90%;
+								color:#6d9abb;
+							}
+				
+							.jobContents .application dl .txtBox p.review_min:before {
+								content:"タスカルSCORE："
+							}
+							
+								.jobContents .application dl .txtBox p.review_min span {
+									/*font*/
+									letter-spacing:2px;
+								}
+								
+	/*status(common)*/
+	.jobContents .apply {
+		position:absolute;
+		top:-10px;
+		left:0px;
+		width:100%;
+		height:100%;
+		padding:20px;
+		background-color:rgba(109,154,187,0.95);
+		
+		/*font*/
+		color:#fff;
+	}
+	
+		.jobContents .apply h4/*icon box layout*/ {
+			padding-bottom:20px;
+			background-size: 60px 60px;
+			background-position: center 15px;
+			background-repeat: no-repeat;
+		}
+		
+			.jobContents .apply h4 span/*icon box layout*/ {
+				/*font*/
+				color:#fff;
+			}
+			
+			.jobContents .apply h4.mytask {
+				background-image: url(../svg/mytask02.svg);
+			}
+		
+		.jobContents .apply li:nth-child(odd) {
+			background:none;
+		}
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
