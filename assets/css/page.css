@@ -3,1757 +3,1580 @@
 /* ----------------------------------------
 	Page Style Seet
 
-	A_Common
-		A_0.Feed
-		A_1.Message
-		A_2.Profile
-		A_3.Login/Regist
-		A_4.Setting
-		
-	B_Client
-		B_1.Requestflow
-		B_2.Jobstatus
-	
----------------------------------------- */
+	0. common
+	1. job_feed(top)
+		1-1. 
+	2. job_detail
+	3. apply_list
+	4. profile
+	5. message
+	6. setting
+	7. popup
+	---------------------------------------- */
 
-/* --------------------------------------------------------------------------------
-A_Common
--------------------------------------------------------------------------------- */
 
-A_CommonContents{margin:0;}
 
 /* ----------------------------------------
-A_0.Feed
+0.common
 ---------------------------------------- */
 
-/*wpContents*/
-
-.wpContents {
-	margin:0;
-}
-
-.wpContents .wp {
-	background:#fffbf2;
-	padding: 9px;
-}
-
-.wpContents .wp .panel {
-	width: 100%;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	background-color: #fff;
-	-webkit-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-	-moz-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-	box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-}
-
-	.wpContents .wp .panel a {
-		text-decoration:none;
-		color:#333333;
-	}
-
-	.wpContents .wp .panel ul {
-		border-bottom:#dcdcdc solid 1px;
-	}
-	
-	.wpContents .wp .panel li {
-		float:left;
-		width:33.33333333333%;
-		height:105px;
-		border-right:#dcdcdc solid 1px;
-	}
-
-		.wpContents .wp .panel li.homeservice{
-			background-image: url(../svg/homeservice.svg);
-			background-size: 60px 60px;
-			background-position: center 15px;
-			background-repeat: no-repeat;
-		}
-		
-		.wpContents .wp .panel li.cleaning{
-			background-image: url(../svg/cleaning.svg);
-			background-size: 60px 60px;
-			background-position: center 15px;
-			background-repeat: no-repeat;
-		}
-		
-		.wpContents .wp .panel li.doghuggy{
-			background-image: url(../svg/doghuggy.svg);
-			background-size: 60px 60px;
-			background-position: center 15px;
-			background-repeat: no-repeat;
-		}
-		
-		.wpContents .wp .panel li.diy{
-			background-image: url(../svg/bedroom.svg);
-			background-size: 60px 60px;
-			background-position: center 15px;
-			background-repeat: no-repeat;
-		}
-		
-		.wpContents .wp .panel li.moving{
-			background-image: url(../svg/moving.svg);
-			background-size: 60px 60px;
-			background-position: center 15px;
-			background-repeat: no-repeat;
-		}
-		
-		.wpContents .wp .panel li.garden{
-			background-image: url(../svg/garden.svg);
-			background-size: 60px 60px;
-			background-position: center 15px;
-			background-repeat: no-repeat;
-		}
-		
-		.wpContents .wp .panel li.pcspsupport{
-			background-image: url(../svg/pcspsupport.svg);
-			background-size: 60px 60px;
-			background-position: center 15px;
-			background-repeat: no-repeat;
-		}
-		
-		.wpContents .wp .panel li.volunteer{
-			background-image: url(../svg/heart2.svg);
-			background-size: 60px 60px;
-			background-position: center 15px;
-			background-repeat: no-repeat;
-		}
-		
-		.wpContents .wp .panel li.anything{
-			background-image: url(../svg/anything.svg);
-			background-size: 60px 60px;
-			background-position: center 15px;
-			background-repeat: no-repeat;
-		}
-
-.wpContents .wp .panel li p {
-	margin-top:80px;
-	
-	/*font*/
-	font-size:80%;
-	text-align:center;
-}
-
-.wpContents .howto {
-	margin-top:20px;
-}
-
-.wpContents .howto a {
-	text-decoration:none;
-	color:#333333;
-}
-
-.wpContents .howto ul {
-	margin-top:20px;
-}
-
-.wpContents .howto li {
-	margin-bottom:20px;
-	background-repeat: no-repeat;
-	
-	-webkit-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-	-moz-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-	box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-}
-
-.wpContents .howto li h4:after {
-	clear:both;
-}
-
-.wpContents .howto li.flow1{
-	background-image: url(../img/wp/img01.jpg);
-	background-size: 184px 131px;
-	background-position:right 0px;
-}
-
-.wpContents .howto li.flow2{
-	background-image: url(../img/wp/img02.jpg);
-	background-size: 184px 131px;
-	background-position:left 0px;
-}
-
-.wpContents .howto li.flow3{
-	background-image: url(../img/wp/img03.jpg);
-	background-size: 184px 131px;
-	background-position:right 0px;
-}
-
-.wpContents .howto li.flow1 h4,.wpContents .howto li.flow3 h4{
-	width:55%;
-	float:left;
-	padding:10px;
-}
-
-.wpContents .howto li.flow2 h4{
-	width:55%;
-	float: right;
-	padding:10px;
-}
-
-.wpContents .howto li.flow1 h4 span,.wpContents .howto li.flow2 h4 span,.wpContents .howto li.flow3 h4 span{
-	display:block;
-	margin-top:5px;
-	
-	/*font*/
-	font-size:80%;
-}
-
-/* ----------------------------------------
-A_1.Message
----------------------------------------- */
-
-/*messageContents*/
-
-.messageContents {
-	margin:0;
-	padding-bottom:100px;
-}
-
-/*messageContents>list(A_1_1.List)*/
-
-.messageContents .list {
-	background:#fffbf2;
-	padding: 9px;
-}
-
-.messageContents .list ul {
-	margin:0;
-}
-
-.messageContents .list ul li {
-	width: 100%;
-	padding:10px;
-	margin-bottom:10px;
-	
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	background-color: #fff;
-	-webkit-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-	-moz-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-	box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-}
-
-.messageContents .list ul li .user {
-	float:left;
-	width:80px;
-	height:80px;
-	border:#eeeeee solid 1px;
-	
-	/*background-image: url(../img/common/sample_user01.jpg);*/
-	background-size: cover;
-	background-position:center;
-}
-
-.messageContents .list ul li article {
-	float:left;
-	width:180px;
-	margin-left:15px;
-	position:relative;
-}
-
-	.messageContents .list ul li article h3 {
-		/*font*/
-		text-align:left;
-		font-size:125%;
-		color:#333333;
-	}
-	
-		.messageContents .list ul li article h3 span {
-			display:block;
-			margin: 5px 0;
-			border-bottom:#dcdcdc solid 1px;
-			
-			/*font*/
-			white-space: nowrap;
-			font-size:80%;
-			color:#adadad;
-			
-			overflow: hidden;
-			-o-text-overflow: ellipsis;
-			text-overflow: ellipsis;
-		}
-
-	.messageContents .list ul li article .data {
-			/*font*/
-			text-align:right;
-			color:#adadad;
-	}
-	
-	.messageContents .list ul li article .status {
-			position:absolute;
-			right:0;
-			top:0;
-			
-			/*font*/
-			text-align:right;
-	}
-	
-	.messageContents .list ul li article .status:before {
-		content:"●"
-	}
-	
-		.messageContents .list ul li article /*.status*/ .unread {
-				/*font*/
-				color:#ff0000;
-		}
-		
-		.messageContents .list ul li article /*.status*/ .read {
-				/*font*/
-				color:#e1dccf;
-		}
-
-/*messageContents>list(A_1_2.Detail)*/
-
-.messageContents .detail {
-	width:95%;
+.common {
+	width:98%;
 	margin:0 auto;
-	padding-top:15px;
+	margin-top:65px;
+	background:#11171b;
+	border-radius: 5px; 
+  -webkit-border-radius: 5px; 
+  -moz-border-radius: 5px;
+	position:relative;/*=>L_menu,Status_menu*/
 }
 
-.messageContents .detail:after {
-	margin-bottom:200px;
-}
-
-.messageContents .detail h3 {
-	margin:10px 0;
-	/*font*/
-	font-size:100%;
-	color:#929292;
-}
-
-.messageContents .detail h3 img {
-	text-align:center;
-}
-
-.messageContents .detail ul {
-	width:90%;
-	margin:0;
-}
-
-.messageContents .detail ul#friend {
-	float:left;
-}
-
-.messageContents .detail ul#me {
-	float: right;
-}
-
-	.messageContents .detail ul#me > li {
-		background-color:#037fff;
-		/*font*/
-		color:#fff;
-	}
-	
-	.messageContents .detail ul#me dl .txtBox h3,.messageContents .detail ul#me dl .txtBox p {
-		/*font*/
-		color:#fff;
-	}
-
-.messageContents .detail ul li {
-	border:#ececec solid 1px;
-	padding:10px;
-	margin-bottom:15px;
-	border-radius: 5px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-}
-	
-.messageContents .detail dl{
+@media (max-width: 900px) {
+.common {
 	width:100%;
-	overflow:hidden;
+	margin-top:55px;
+	border-radius: 0px; 
+  -webkit-border-radius: 0px; 
+  -moz-border-radius: 0px;
+	position:relative;/*=>L_menu,Status_menu*/
+}
 }
 
-	.messageContents .detail dl .imgBox {
-		position:relative;
-	}
-	
-	.messageContents .detail dl .imgBox .friend {
-		width:100%;
-	}
-	
-	.messageContents .detail dl .imgBox .friend img {
-		width:100%;
-		height: auto;
-		border-radius:50%;
-		border:2px solid white;
-		object-fit:cover;
-	}
-	
-	.messageContents .detail dl .txtBox {
-		margin:0;
-	}
-	
-	.messageContents .detail dl .txtBox h3 {
-		/*font*/
-		text-align:left;
-		color:#666;
-		font-size:150%;
-		margin:0;
-	}
-	
-	.messageContents .detail dl .txtBox p {
-		margin:0;
-		padding:0;
-		overflow: hidden;
-		/*font*/
-		font-size:100%;
-		color:#666;
-	}
-	
-	.messageContents .detail ul li p.date {
-		padding-top:10px;
-		border-top:#ececec solid 1px;
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		/*font*/
-		font-size:80%;
-		text-align:right;
-		color:#ccc;
-	}
-
-.messageContents .detail dt{
-	width:30%;
-	float:left;
-	padding:5px;
+.L_menu {
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:100;
+	width:100px;
 }
 
-.messageContents .detail dd{
-	width:70%;
-	float:left;
-	padding:5px;
-	padding-right:0;
+@media (max-width: 900px) {
+.L_menu {
+	display:none;
+}
 }
 
-.messageContents .detail dd:after{
-	clear:both;
-}
-
-/* ----------------------------------------
-A_2.Profile
----------------------------------------- */
-
-/*profileContents*/
-
-.profileContents {
-	margin:0;
-}
-
-/*profileContents>index(A_2_1.Index)*/
-
-.profileContents .profile {
-	background-color:#fffbf2;
-}
-
-.profileContents .profile dl{
-	padding:9px;
-	width:100%;
-	overflow:hidden;
-}
-
-.profileContents .profile dt{
-	width:30%;
-	float:left;
-	padding:5px;
-}
-
-.profileContents .profile dd{
-	width:70%;
-	float:left;
-	padding:5px;
-	padding-right:0;
-}
-
-.profileContents .profile dd:after{
-	clear:both;
-}
-
-	.profileContents .profile dl .imgBox {
-		margin:0;
-	}
-	
-	.profileContents .profile dl .imgBox img.kadomaru {
-		width:100%;
-		height: auto;
-		border-radius:5%;
-		border:#eeeeee solid 1px;
-		object-fit:cover;
-		border:#eeeeee solid 1px;
-	}
-	
-	.profileContents .profile dl .imgBox img.maru {
-		width:100%;
-		height: auto;
-		border-radius:50%;
-		border:#eeeeee solid 1px;
-		object-fit:cover;
-		border:#eeeeee solid 1px;
-	}
-	
-	.profileContents .profile dl .txtBox {
+	.L_menu ul {
 		*
 	}
-	
-	.profileContents .profile dl .txtBox h3 {
-		/*font*/
-		text-align:left;
-		color:#333333;
-		font-size:150%;
-		margin:0;
-	}
-	
-	.profileContents .profile dl .txtBox h3 span {
-		/*font*/
-		color:#adadad;
-		font-size:80%;
-		margin:0;
-	}
-	
-	/*.profileContents .profile dl .txtBox p > * {
-		margin:0;
-		padding:0;
-		overflow: hidden;
-	}*/
-	
-	.profileContents .profile dl .txtBox p.since {
-		border-bottom:#dcdcdc solid 1px;
-		padding-bottom:5px;
-		/*font*/
-		color:#adadad;
-	}
-	
-	.profileContents .profile dl .txtBox p.review_min {
-		padding:5px 0;
-		/*font*/
-		color:#6d9abb;
-	}
-	
-	.profileContents .profile dl .txtBox p.review_min span {
-		/*font*/
-		letter-spacing:5px;
-	}
-	
-	.profileContents .profile dl .txtBox p.setting_min {
-		width:60%;
-	}
-
-.profileContents .profile article {
-		margin:0;
-		padding:10px;
-		background-color: #fff;
-		-webkit-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-		-moz-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-		box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
 		
-		/*font*/
-		font-size:110%;
-		line-height:180%;
-}
-
-.profileContents .profile .count {
-		padding:10px;
-}
-
-.profileContents .profile .count a {
-	text-decoration:none;
-}
-
-.profileContents .profile .count ul {
-	margin:0;
-}
-
-	.profileContents .profile .count ul li {
-		width:50%;
-		float:left;
-		border-right:#dcdcdc solid 1px;
+		.L_menu ul li {
+			margin:0;
+			height:80px;
+			border-right:#2d3338 solid 4px;
+			border-bottom:#2c343a solid 1px;
+		}
 		
+		.L_menu ul li.glass {
+			background-image: url(../svg/glass.svg);
+			background-size: 30px 30px;
+			background-position: center 50%;
+			background-repeat: no-repeat;
+		}
+		
+		.L_menu ul li.glass:hover, .L_menu ul li.glass.current {
+			background-image: url(../svg/glass_h.svg);
+			/*background-color:#0c1013;*/
+			border-right:#666 solid 4px;
+		}
+		
+		.L_menu ul li.job_feed {
+			background-image: url(../svg/job_feed.svg);
+			background-size: 30px 30px;
+			background-position: center 50%;
+			background-repeat: no-repeat;
+		}
+		
+		.L_menu ul li.job_feed:hover, .L_menu ul li.job_feed.current {
+			background-image: url(../svg/job_feed_h.svg);
+			background-color:#0c1013;
+			border-right:#74c048 solid 4px;
+		}
+		
+		.L_menu ul li.user {
+			background-image: url(../svg/user.svg);
+			background-size: 30px 30px;
+			background-position: center 50%;
+			background-repeat: no-repeat;
+		}
+		
+		.L_menu ul li.user:hover, .L_menu ul li.user.current {
+			background-image: url(../svg/user_h.svg);
+			background-color:#0c1013;
+			border-right:#faa61a solid 4px;
+		}
+		
+		.L_menu ul li.chat {
+			background-image: url(../svg/chat.svg);
+			background-size: 30px 30px;
+			background-position: center 50%;
+			background-repeat: no-repeat;
+		}
+		
+		.L_menu ul li.chat:hover, .L_menu ul li.chat.current {
+			background-image: url(../svg/chat_h.svg);
+			background-color:#0c1013;
+			border-right:#2584c5 solid 4px;
+		}
+		
+		.L_menu ul li.setting {
+			background-image: url(../svg/setting.svg);
+			background-size: 30px 30px;
+			background-position: center 50%;
+			background-repeat: no-repeat;
+		}
+		
+		.L_menu ul li.setting:hover, .L_menu ul li.setting.current {
+			background-image: url(../svg/setting_h.svg);
+			background-color:#0c1013;
+			border-right:#ed1763 solid 4px;
+		}
+
+.Status_menu {
+	position:absolute;
+	top:0;
+	left:100px;
+	z-index:100;
+	padding:20px;
+	width:300px;
+	height:100%;
+}
+
+@media (max-width: 900px) {
+.Status_menu {
+	display:none;
+}
+}
+
+	.Status_menu h2 {
+		padding:20px 0;
 		/*font*/
 		text-align:center;
+		font-size:120%;
+		font-family: 'nevis';
+		font-weight:lighter;
+		line-height:120%;
 	}
 	
-	.profileContents .profile .count ul li p {		
-		/*font*/
-		color:#6d9abb;
-		font-size:300%;
+	.Status_menu .user {
+		text-align:center;
+		cursor:pointer;
 	}
 	
-	.profileContents .profile .count ul li p span {
-		display:block;
-		
-		/*font*/
-		color:#666666;
-		font-size:40%;
-	}
-
-.profileContents .profile .confidence {
-		padding:10px 20px;
-}
-
-.profileContents .profile .confidence ul {
-	margin:0;
-}
-
-	.profileContents .profile .confidence ul li {
-		width:100%;
-		padding:10px 0;
-		padding-left:40px;
-		position:relative;
-		border-bottom:#dcdcdc solid 1px;
-		
-		background-size: 30px 30px;
-		background-position: left 11px;
-		background-repeat: no-repeat;
-		
-		/*font*/
-		font-size:150%;
-	}
-	
-	.profileContents .profile .confidence ul li:last-child {
-		border:none;
-	}
-	
-		.profileContents .profile .confidence ul li.fb {background-image: url(../svg/fb.svg);}
-		.profileContents .profile .confidence ul li.tel {background-image: url(../svg/tel.svg);}
-		.profileContents .profile .confidence ul li.self {background-image: url(../svg/self.svg);}
-	
-		.profileContents .profile .confidence ul li .btnarea {
-			position:absolute;
-			right:0px;
-			top:10px;
-		}
-
-	.profileContents .profile .review {
-			padding:20px;
-	}
-	
-		.profileContents .profile .review p.total {
-			padding-bottom:20px;
-			border-bottom:#dcdcdc solid 1px;	
-		}
-		
-		.profileContents .profile .review p.total em {
-			display:block;
-			
-			/*font*/
-			color:#6d9abb;
-			font-size:250%;
-			text-align:center;
-		}
-		
-		.profileContents .profile .review p.total em:after {
-			content:"件のレビュー";
-			display:block;
-			
-			/*font*/
-			color:#666;
-			font-size:40%;
-			text-align:center;
-		}
-
-
-/* ----------------------------------------
-A_3.Login/Regist
----------------------------------------- */
-
-/*loginregistContents*/
-
-.loginregistContents {
-	margin:0;
-}
-
-	/*profileContents>index(A_2_1.Index)*/
-	
-	.loginregistContents .login,.loginregistContents .regist {
-		background:#fffbf2;
-		height:100%;
-	}
-
-		.loginregistContents .login img,.loginregistContents .regist img {
-			margin:0;
-			padding:0;
-			text-align:center;
-		}
-
-		.loginregistContents .login article,.loginregistContents .regist article {
-			padding:20px;
-			background-color: #fff;
-			-webkit-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-			-moz-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-			box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-		}
-
-			.loginregistContents .login article ul li,.loginregistContents .regist article ul li {
-				margin-bottom:10px;
-				
-				/*font*/
-				font-size:100%;
-			}
-	
-			.loginregistContents .login p,.loginregistContents .regist p {
-				padding:15px 0;
-				
-				/*font*/
-				text-align:center;
-			}
-	
-				.loginregistContents .login p a,.loginregistContents .regist p a {
-					
-					/*font*/
-					color:#cdb477;
-				}
-
-/* ----------------------------------------
-A_4.Setting
----------------------------------------- */
-
-/*settingContents*/
-
-.settingContents {
-	margin:0;
-}
-
-	/*list*/
-	.settingContents .list ul {
-		margin:0;
-		padding:10px 20px;
-	}
-			
-	.settingContents .list ul li {
-		width:100%;
-		padding:10px 0;
-		border-bottom:#dcdcdc solid 1px;
-					
-		background-image: url(../svg/arrow01.svg);
-		background-size: 20px 20px;
-		background-position: 98% 50%, 0 0;
-		background-repeat: no-repeat;
-		
-		/*font*/
-		color:#666666;
-		font-size:150%;
-	}
-
-	/*detail*/
-	.settingContents .detail {
-		background:#fffbf2;
-	}
-
-		.settingContents .detail a {
-			text-decoration:none;
-			color:#333333;
-		}
-	
-		/*cover*/
-		.settingContents .detail .cover {
-			background: url(../img/feed/img01.jpg) no-repeat;
-			background-size: 184px 131px;
-			background-position:right 0px;
-		}
-	
-			.settingContents .detail .cover h3 {
-			width: 55%;
-			float:left;
-			padding:10px;
-			
-			/*font*/
-			text-align:left;
-			font-size:120%;
-			}
-
-				.settingContents .detail .cover h3 span {
-					display:block;
-					margin-top:5px;
-					
-					/*font*/
-					text-align:left;
-					font-size:80%;
-				}
-
-		/*formarea*/
-		.settingContents .detail .formarea {
-			padding:20px;
-			background-color:#fff;
-		}
-		
-		.settingContents .detail .formarea ul.profile {
-			padding-top:30px;
-			background-color:#fff;
-		}
-		
-			.settingContents .detail .formarea ul.profile h4/*icon box layout*/ {
-				padding-bottom:20px;
-				background-size: 60px 60px;
-				background-position: center 15px;
-				background-repeat: no-repeat;
-				border-bottom:#dcdcdc solid 3px;
-			}
-			
-			.settingContents .detail .formarea ul.profile h4.profile {
-				background-image: url(../svg/profile.svg);
-			}
-			
-			.settingContents .detail .formarea ul.profile h4.reliance {
-				background-image: url(../svg/reliance.svg);
-			}
-			
-				.settingContents .detail .formarea ul.profile h4 span {
-					display:block;
-					padding-top:80px;
-					
-					/*font*/
-					font-size:100%;
-					text-align:center;
-				}
-				
-			.settingContents .detail .formarea ul.profile li {
-				padding:10px;
-				border-bottom:#dcdcdc solid 1px;
-			}
-			
-			.settingContents .detail .formarea ul.profile li:nth-child(even) {
-				background-color:#f9f9f9;
-			}
-			
-			.settingContents .detail .formarea ul.profile li dl{
-				width:100%;
-				overflow:hidden;
-			}
-			
-			.settingContents .detail .formarea ul.profile li dt{
-				width:30%;
-				float:left;
-				padding-right:10px;
-			}
-			
-				.settingContents .detail .formarea ul.profile li dt .user{
-					width:100%;
-					height:65px;
-					
-					/*background-image: url(../img/common/sample_user01.jpg);*/
-					background-size: cover;
-					background-position:center;
-				}
-			
-			.settingContents .detail .formarea ul.profile li dd{
-				width:70%;
-				float:left;
-				padding-right:0;
-			}
-				
-/*settingContents>index(A_4_1.Index)*/
-
-/* --------------------------------------------------------------------------------
-B_Client
--------------------------------------------------------------------------------- */
-
-.B_CommonContents{margin:0;}
-
-/* ----------------------------------------
-B_1.Requestflow
----------------------------------------- */
-
-/*newrequestContents*/
-
-.newrequestContents {
-	margin:0;
-}
-
-	.newrequestContents .offer {
-		background:#fffbf2;
-	}
-
-		.newrequestContents .offer a {
-			text-decoration:none;
-			color:#333333;
-		}
-	
-		/*cover*/
-		.newrequestContents .offer .cover {
-			background: url(../img/feed/img01.jpg) no-repeat;
-			background-size: 184px 131px;
-			background-position:right 0px;
-		}
-	
-			.newrequestContents .offer .cover h3 {
-			width: 55%;
-			float:left;
-			padding:10px;
-			
-			/*font*/
-			text-align:left;
-			font-size:120%;
-			}
-
-				.newrequestContents .offer .cover h3 span {
-					display:block;
-					margin-top:5px;
-					
-					/*font*/
-					text-align:left;
-					font-size:80%;
-				}
-	
-	/*formarea*/
-	.newrequestContents .offer ul.formarea {
-		padding:20px;
-		
-		-webkit-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-		-moz-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-		box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-	}
-	
-		.newrequestContents .offer ul.formarea h4/*icon box layout*/ {
-			padding-bottom:20px;
-			background-size: 60px 60px;
-			background-position: center 15px;
-			background-repeat: no-repeat;
-			border-bottom:#dcdcdc solid 1px;
-		}
-		
-		.newrequestContents .offer ul.formarea h4.homeservice {background-image: url(../svg/homeservice.svg);}
-		.newrequestContents .offer ul.formarea h4.cleaning {background-image: url(../svg/cleaning.svg);}
-		.newrequestContents .offer ul.formarea h4.doghuggy {background-image: url(../svg/doghuggy.svg);}
-		.newrequestContents .offer ul.formarea h4.diy {background-image: url(../svg/diy.svg);}
-		.newrequestContents .offer ul.formarea h4.moving {background-image: url(../svg/moving.svg);}
-		.newrequestContents .offer ul.formarea h4.garden {background-image: url(../svg/garden.svg);}
-		.newrequestContents .offer ul.formarea h4.pcspsupport {background-image: url(../svg/pcspsupport.svg);}
-		.newrequestContents .offer ul.formarea h4.volunteer {background-image: url(../svg/heart2.svg);}
-		.newrequestContents .offer ul.formarea h4.anything {background-image: url(../svg/anything.svg);}
-		
-			.newrequestContents .offer ul.formarea h4 span {
-				display:block;
-				padding-top:80px;
-				
-				/*font*/
-				text-align:center;
-			}
-			
-		.newrequestContents .offer ul.formarea li {
-			margin-top:20px;
-		}
-		
-	/*confirmation*/
-	.newrequestContents .offer ul.confirmation {
-		padding:20px;
-		background-color:#fff;
-	}
-	
-		.newrequestContents .offer ul.confirmation h4/*icon box layout*/ {
-			padding-bottom:20px;
-			background-size: 60px 60px;
-			background-position: center 15px;
-			background-repeat: no-repeat;
-			border-bottom:#dcdcdc solid 3px;
-		}
-		
-		.newrequestContents .offer ul.confirmation h4.mytask {
-			background-image: url(../svg/mytask.svg);
-		}
-		
-			.newrequestContents .offer ul.confirmation h4 span {
-				display:block;
-				padding-top:90px;
-				
-				/*font*/
-				font-size:100%;
-				text-align:center;
-			}
-			
-		.newrequestContents .offer ul.confirmation li {
-			padding:10px;
-			border-bottom:#dcdcdc solid 1px;
-		}
-		
-		.newrequestContents .offer ul.confirmation li:nth-child(even) {
-			background-color:#f9f9f9;
-		}
-		
-		.newrequestContents .offer ul.confirmation li dl{
+		.Status_menu .user img {
+			position:relative;
 			width:100%;
-			overflow:hidden;
+			height:auto;
 		}
 		
-		.newrequestContents .offer ul.confirmation li dt{
-			width:30%;
-			float:left;
-		}
-		
-		.newrequestContents .offer ul.confirmation li dd{
-			width:70%;
-			float:left;
-			padding-right:0;
+		.Status_menu .user img:hover {
+			/* box-shadow */
+			box-shadow:rgba(219, 154, 40, 0.65098) 0px 0px 6px 3px;
+			-webkit-box-shadow:rgba(219, 154, 40, 0.65098) 0px 0px 6px 3px;
+			-moz-box-shadow:rgba(219, 154, 40, 0.65098) 0px 0px 6px 3px;
 		}
 	
-/*mytaskContents*/
-
-.mytaskContents {
-	margin:0;
-}
-
-	/*list*/
-	.mytaskContents .list {
-		background:#fffbf2;
-		padding: 9px;
-	}
-	
-	.mytaskContents .list ul {
-		margin:0;
-	}
-	
-	.mytaskContents .list ul li {
-		width: 100%;
-		padding:10px;
-		margin-top:30px;
-		position:relative;
-		
-		-webkit-border-radius: 3px;
-		-moz-border-radius: 3px;
-		border-radius: 3px;
-		background-color: #fff;
-		-webkit-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-		-moz-box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-		box-shadow: 0 0 9px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-		
-		background-image: url(../svg/arrow01.svg);
-		background-size: 20px 20px;
-		background-position: 98% 50%, 0 0;
-		background-repeat: no-repeat;
-	}
-	
-	.mytaskContents .list ul li.accept {
-		*
-	}
-	
-		.mytaskContents .list ul li .status {
-			width:200px;
+		.Status_menu .user span {
+			display:block;
 			position:absolute;
-			right:0;
-			top:-22px/*status height*/;
-					
+			top:85px;
+			right:35px;
 			/*font*/
-			text-align:right;
+			font-size:250%;
+			color:#fff;
+		}
+	
+	/*job menu*/
+	.Status_menu ul.job_menu {
+		padding:20px;
+	}
+	
+		.Status_menu ul.job_menu li {
+			margin-bottom: 15px;
+			/*font*/
+			color:#192128;
 		}
 		
-			.mytaskContents .list ul li .status p {
-				width:50%;
-				padding:7px;
-				float:left;
-				
-				border-radius:5px 5px 0 0;
-				-webkit-border-radius:5px 5px 0 0;
-				-moz-border-radius:5px 5px 0 0;
-				
+		.Status_menu ul.job_menu li.configuration:before {
+			content: url("../svg/configuration.svg");
+			height:20px;
+			width:20px;
+			display:block;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.Status_menu ul.job_menu li.logout:before {
+			content: url("../svg/logout.svg");
+			height:20px;
+			width:20px;
+			display:block;
+			float:left;
+			margin-right:10px;
+		}
+		
+			.Status_menu ul.job_menu li a, .Status_menu ul.job_menu li a:link {
 				/*font*/
-				font-size:80%;
+				color:#192128;
 			}
 			
-			.mytaskContents .list ul li .status p.reward {
-				background-color:#6d9abb;
-				padding:3px;
-				
+			.Status_menu ul.job_menu li a:hover {
 				/*font*/
-				text-align:center;
-				color:#ffffff;
-			}
-			
-				.mytaskContents .list ul li .status p.reward:before {
-					content:"報酬 ¥"
-				}
-			
-			.mytaskContents .list ul li .status p.application {	
-				background-color:#b4d0d5;
-				padding:3px;
-				
-				/*font*/
-				text-align:center;
 				color:#fff;
 			}
 			
-				.mytaskContents .list ul li .status p.application:before {
-					content:"応募件数 "
-				}
-	
-	.mytaskContents .list ul li .user {
-		float:left;
-		width:40px;
-		height:40px;
-		
-		/*background-image: url(../img/common/sample_user01.jpg);*/
-		background-size: cover;
-		background-position:center;
-	}
-	
-		.mytaskContents .list ul li .user img.maru {
-			width:100%;
-			height: auto;
-			border-radius:50%;
-			border:#fff solid 10px;
-			object-fit:cover;
-		}
-	
-	.mytaskContents .list ul li article {
-		float:left;
-		width: 210px;
-		margin-left:15px;
-	}
-	
-		.mytaskContents .list ul li article h3 {
-			/*font*/
-			text-align:left;
-			font-size:125%;
-			color:#333333;
-		}
-		
-			.mytaskContents .list ul li article h3 span {
-				display:block;
-				margin: 5px 0;
-				border-bottom:#dcdcdc solid 1px;
-				
-				/*font*/
-				white-space: nowrap;
-				font-size:80%;
-				color:#adadad;
-				
-				overflow: hidden;
-				-o-text-overflow: ellipsis;
-				text-overflow: ellipsis;
+			.Status_menu ul.job_menu li.current {
+				filter:alpha(opacity=40);
+				-moz-opacity: 0.4;
+				opacity: 0.4;
 			}
+
+	/*job menu*/
+	.Status_menu ul.message {
+		padding:20px;
+	}
 	
-		.mytaskContents .list ul li article .data {
-				/*font*/
-				color:#adadad;
+		.Status_menu ul.message li {
+			margin-bottom:20px;
+			/*font*/
+			font-size:120%;
+			color:#192128;
 		}
 		
-		.mytaskContents .list ul li article .data2/*jobfeed taskercontent*/ {
-				/*font*/
-				color:#b2d234;
+			.Status_menu ul.message li:hover {
+					/*font*/
+					color:#fff;
+			}
+			
+			.Status_menu ul.message li.current {
+					filter:alpha(opacity=40);
+					-moz-opacity: 0.4;
+					opacity: 0.4;
+					/*font*/
+					color:#fff;
+			}
+		
+			.Status_menu ul.message li img {
+				margin-right:20px;
+				height:30px;
+				width:auto;
+				vertical-align: middle;
+			}
+
+/*sp*/
+
+.Status_menu-sp {
+	display:none;
+}
+
+@media (max-width: 900px) {
+.Status_menu-sp {
+	display:block;
+	position: fixed;
+	top:50px;
+	left:0;
+	z-index:100;
+	padding:10px;
+	width:100%;
+}
+}
+
+	.Status_menu-sp h2 {
+		padding:10px 0;
+		/*font*/
+		text-align:center;
+		font-size:120%;
+		font-family: 'nevis';
+		font-weight:lighter;
+		line-height:120%;
+	}
+	
+	.Status_menu-sp .user {
+		background-color:'*';
+		height:80px;
+		margin:0 auto;
+		margin-top:8px;
 		}
 		
-		.mytaskContents .list ul li article .data3/*mytask_tasker*/ {
-				/*font*/
-				color:#FF0004;
+	.Status_menu-sp .user .thmb {
+		float: left;
+		height:80px;
+		width:80px;
+		background-size: cover;
+	}
+	
+	.Status_menu-sp .user .name {
+		float:left;
+		padding:32px 0 0 20px;
+		/*font*/
+		font-family: 'nevis';
+		color:#ccc;
+	}
+	
+	.Status_menu-sp select.select01 {
+		padding:10px;
+		border: none;
+		width:100%;
+		background-position: 95%  center;
+	}
+
+	/*job menu*/
+	.Status_menu-sp ul.job_menu {
+		padding:10px;
+	}
+	
+		.Status_menu-sp ul.job_menu li {
+			float:left;
+			margin-right:10px;
+			/*font*/
+			color:#192128;
 		}
+		
+		.Status_menu-sp ul.job_menu li.approve:before {
+			content: url("../svg/approve.svg");
+			height:20px;
+			width:20px;
+			display:block;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.Status_menu-sp ul.job_menu li.favourite:before {
+			content: url("../svg/favourite.svg");
+			height:20px;
+			width:20px;
+			display:block;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.Status_menu-sp ul.job_menu li.mode:before {
+			content: url("../svg/mode.svg");
+			height:20px;
+			width:20px;
+			display:block;
+			float:left;
+			margin-right:10px;
+		}
+		
+			.Status_menu-sp ul.job_menu li a, .Status_menu ul.job_menu li a:link {
+				/*font*/
+				color:#192128;
+			}
+			
+			.Status_menu-sp ul.job_menu li a:hover {
+				/*font*/
+				color:#fff;
+			}
+			
+			.Status_menu-sp ul.job_menu li.current {
+				filter:alpha(opacity=40);
+				-moz-opacity: 0.4;
+				opacity: 0.4;
+			}
+
+.Status_menu-sp2 {
+	display:none;
+}
+
+@media (max-width: 900px) {
+.Status_menu-sp2 {
+	display:block;
+	position: fixed;
+	top:50px;
+	left:0;
+	z-index:100;
+	padding:0;
+	height:100%;
+}
+
+	/*job menu*/
+	.Status_menu-sp2 ul.message {
+		padding:10px;
+		margin-top:5px;
+	}
+	
+		.Status_menu-sp2 ul.message li {
+			margin-bottom:10px;
+			/*font*/
+			font-size:120%;
+			color:#192128;
+		}
+		
+		.Status_menu-sp2 ul.message li.current {
+				filter:alpha(opacity=40);
+				-moz-opacity: 0.4;
+				opacity: 0.4;
+				/*font*/
+				color:#fff;
+		}
+		
+		.Status_menu-sp2 ul.message li img {
+			height:30px;
+			width:auto;
+		}
+}
 
 /* ----------------------------------------
-B_2.Jobstatus
+1. job_feed(top)
 ---------------------------------------- */
 
-/*jobContents(job_offer,job_apply)*/
+.job_feedContents {
+	/*position:absolute;<=common
+	top:0;
+	right:0;
+	display:block;*/
+	margin-left:400px;
+	padding-right:400px;/*negadive padding*/
+	display:block;
+	width:100%;
+	padding-bottom: 0;
+}
 
-.jobContents {
+@media (max-width: 900px) {
+.job_feedContents {
+	/*position:absolute;<=common
+	top:0;
+	right:0;
+	display:block;*/
 	margin:0;
-	background-color:#fffbf2;
-	position:relative/*apply*/;
-	padding-bottom:50px/*job*/;
+	padding:0;
+	padding-top:85px;
+	display:block;
+	width:100%;
+	padding-bottom: 0;
 }
 
-.jobContents.failure {
-	filter:alpha(opacity=20);
-	-moz-opacity: 0.2;
-	opacity: 0.2;
 }
 
-	/*status(common)*/
-	.jobContents .status {
-		margin:9px;
-		margin-bottom:30px/*innner ul li p*/;
-		
-		-webkit-border-radius: 3px;
-		-moz-border-radius: 3px;
-		border-radius: 3px;
-		background-color: #fff;
-		-webkit-box-shadow: 0 0 3px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-		-moz-box-shadow: 0 0 3px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-		box-shadow: 0 0 3px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
+	/*company*/
+	
+	.job_feedContents .companyArea {
+		overflow:hidden;
 	}
 	
-		.jobContents .status .innner {
-			padding:1px;
-		}
-		
-			.jobContents .status .innner ul {
-				height:15px;}
-		
-				.jobContents .status .innner ul li {
-					height:15px;
-					width:25%;
-					margin:0;
-					float:left;
-					position:relative;
-					background-color:#f5f5f5;
-					border-right:#fff solid 1px;
-				}
-				
-				.jobContents .status .innner ul li:last-child {
-					border:none;
-				}
-				
-				.jobContents .status .innner ul li.current {
-					ackground-image: -webkit-linear-gradient(bottom, #59d36c, #7cde6c);
-					background-image: -moz-linear-gradient(bottom, #59d36c, #7cde6c);
-					background-image: -o-linear-gradient(bottom, #59d36c, #7cde6c);
-					background-image: -ms-linear-gradient(bottom, #59d36c, #7cde6c);
-					background-image: linear-gradient(to top, #59d36c, #7cde6c);
-				}
-				
-					.jobContents .status .innner ul li p {
-						position:absolute;
-						width:100%;
-						margin:0 auto;
-						top:20px;
-						display:block;
-						
-						/*font*/
-						text-align:center;
-					}
-					
-	/*status(common)*/
-	.jobContents .review {
-		padding:20px;
-		margin-bottom:100px;
-		border-bottom:#dcdcdc solid 1px;
-	}
+		/*card*/
 	
-		.jobContents .review .user {
+		.job_feedContents .companyArea ul.card {
 			margin:0;
-			padding:0 30px;
+			padding:20px;
 		}
 		
-				.jobContents .review .user .arrow_box {
-					position: relative;
-					background: #fff;
-					border: 1px solid #ccc;
-					padding:5px;
-					
-					-webkit-border-radius: 5px;
-					-moz-border-radius: 5px;
-					border-radius: 5px;
-				}
-					
-				.jobContents .review .user .arrow_box:after, .jobContents .review .user .arrow_box:before {
-					top: 100%;
-					left: 50%;
-					border: solid transparent;
-					content: " ";
-					height: 0;
-					width: 0;
-					position: absolute;
-					pointer-events: none;
-				}
-					
-				.jobContents .review .user .arrow_box:after {
-					border-color: rgba(242, 242, 242, 0);
-					border-top-color: #fff;
-					border-width: 8px;
-					margin-left: -8px;
-				}
-					
-				.jobContents .review .user .arrow_box:before {
-					border-color: rgba(102, 102, 102, 0);
-					border-top-color: #ccc;
-					border-width: 9px;
-					margin-left: -9px;
-				}
-					
-					.jobContents .review .user .arrow_box span {
-						display:block;
-							
-						/*font*/
-						text-align:center;
-						font-size:120%;
-						color:#b2d234;
-					}
-					
-					/*.jobContents .review .user .arrow_box span:before {
-						content:"¥"
-					}*/
-					
-					.jobContents .review .user .arrow_box span:after {
-						content:"このタスカーにお礼を伝えよう！";
-						display:block;
-						
-						/*font*/
-						font-size:80%;
-						color:#e1dccf;
-					}
+			.job_feedContents .companyArea ul.card a {
+				margin:0;
+				/*font*/
+				color:#fff;
+			}
+			
+			.job_feedContents .companyArea ul.card a:hover {
+				/*font*/
+				color:#74c048;
+			}
+
+			.job_feedContents .companyArea ul.card li {
+				float:left;
+				border:#2f3941 solid 1px;
+				margin-right:20px;
+				margin-bottom:20px;
 				
-					.jobContents .review .user img.kadomaru {
-						width:100%;
-						height: auto;
-						border-radius:5%;
-						border:#eeeeee solid 1px;
-						object-fit:cover;
-						border:#eeeeee solid 1px;
+				position:relative;
+				height:400px;
+				width:30%;
+				
+				background:no-repeat center 30%;
+				background-size:cover;
+				
+				-webkit-border-radius: 5px;
+				-moz-border-radius:5px;
+				border-radius: 5px;
+				
+			}
+			
+			@media (max-width: 1300px) {
+			.job_feedContents .companyArea ul.card li {
+				width:45%;		
+			}
+			
+			.job_feedContents .companyArea ul.card li:nth-child(3) {
+				margin-right:0;
+			}
+			}
+			
+			@media (max-width: 900px) {
+			.job_feedContents .companyArea ul.card li {
+				width:50%;
+				margin:0;	
+			}
+			
+			.job_feedContents .companyArea ul.card li:nth-child(2) {
+				margin-right:0;
+			}
+			}
+			
+			@media (max-width: 480px) {
+			.job_feedContents .companyArea ul.card li {
+				height:200px;
+				width:100%;
+				margin-bottom:20px;
+			}
+			
+			.job_feedContents .companyArea ul.card li .txtarea {
+				height:200px;
+				padding:0em;
+				/*font*/
+				font-size:80%;
+			}
+			
+			.job_feedContents .companyArea ul.card li .txtarea .caption {
+				padding-bottom:0;
+			}
+			}
+	
+				.job_feedContents .companyArea ul.card li .txtarea {
+					width:100%;
+					overflow:hidden;
+					padding:1em;
+					position:absolute;
+					background-color:rgba(0,0,0,0.7);
+					bottom:0px;
+					-webkit-border-radius: 0px 0px 5px 5px / 0px 0px 5px 5px;
+					-moz-border-radius: 0px 0px 5px 5px / 0px 0px 5px 5px;
+					border-radius: 0px 0px 5px 5px / 0px 0px 5px 5px;
+				}
+				
+				@media (max-width: 480px) {
+				.job_feedContents .companyArea ul.card li .txtarea {
+					height:50%;
+				}
+				}
+	
+					.job_feedContents .companyArea ul.card li .txtarea p {
+						padding:0;
+						margin:0;
 					}
-					
-					.jobContents .review .user img.maru {
-						width:70%;
-						height: auto;
-						margin-left:17%/*negative margin*/;
+	
+					/*
+					.job_feedContents .companyArea ul.card li .txtarea .info {
+						float:left;
+						margin-top:2px;
+						margin-right:10px;
 						
-						border-radius:50%;
-						border:#eeeeee solid 1px;
-						object-fit:cover;
-						border:#eeeeee solid 1px;
-					}
-					
-					.jobContents .review .user .data {
-						margin-top:5px;
-						/*font*/
-						font-size:200%;
 						text-align:center;
+						color:#fff;
+						font-size:80%;
 					}
-					
-						.jobContents .review .user .data span {
-							margin-left:10px;
-							/*font*/
-							font-size:80%;
-							color:#adadad;
+					*/
+	
+						.job_feedContents .companyArea ul.card li .txtarea .info span {
+							display:block;
 						}
 	
-		.jobContents .review ul {
-			margin-top:20px;
-		}
-		
-		.jobContents .review ul li {
-			margin-bottom:10px;
-		}
+					.job_feedContents .companyArea ul.card li .txtarea .caption {
+						width:100%;
+						padding-bottom:10px;
+						
+						/*font*/
+						font-size:90%;
+						color:#fff;
+					}
+					
+					.job_feedContents .companyArea ul.card li .txtarea .caption h3 {
+						display:block;
+						/*font*/
+						font-family:'nevis';
+						font-size:120%;
+						font-weight:bold;
+					}
 	
-	/*status2(common)*/
-	.jobContents .status2 {
+					/*hover action*/
+					
+					.job_feedContents .companyArea ul.card li:hover {
+						background:no-repeat center 50%;
+						
+						-webkit-transition: all 0.5s ease;
+						-moz-transition: all 0.5s ease;
+					}
+					
+					.job_feedContents .companyArea ul.card li .txtarea .title:hover {
+						/*font*/
+						text-decoration:underline;
+					}
+
+/* ----------------------------------------
+2. job_detail
+---------------------------------------- */
+
+.job_detailContents {
+	margin-left:100px;
+	padding-right:100px;
+	padding-bottom: 0;
+	display:block;
+	width:100%;
+}
+
+@media (max-width: 900px) {
+.job_detailContents {
+	margin:0;
+	padding:0;
+	display:block;
+	width:100%;
+}
+}
+
+	/*fv*/
+	
+	.job_detailContents .fvArea {
 		width:100%;
+		height:650px;
+		overflow:hidden;
+		
+		background:no-repeat center 30%;
+		background-size: cover;
+		
+		-webkit-border-radius: 0px  5px 0px 0px / 0px  5px 0px 0px;
+		-moz-border-radius: 0px  5px 0px 0px / 0px  5px 0px 0px;
+		border-radius: 0px  5px 0px 0px / 0px  5px 0px 0px;
+
+	}
+	
+	@media (max-width: 480px) {
+	.job_detailContents .fvArea {
+		width:100%;
+		height:250px;
+		overflow:hidden;
+		background-color:#fff;
+		background-size:100%;
+		position:relative;
+	}
 	}
 		
-			.jobContents .status2 ul {
-				margin:0 auto;
-				margin-left:9%;
-			}
-			
-			.jobContents .status2 ul li {
-				width:45%;
-				padding:10px;
+		.job_detailContents .fvArea h2 {
+			margin-top:80px;
+			height:80px;
+			padding:10px;
+			background-color:#74c048;
+		}
+
+		@media (max-width: 480px) {
+		.job_detailContents .fvArea h2 {
+					margin-top:200px;
+					height:50px;
+					padding:10px;
+					background-color:#74c048;
+		}
+		}
+		
+			.job_detailContents .fvArea h2 img {
 				float:left;
-				margin-right:1px;
-				
-				border-radius:5px 5px 0 0;
-				-webkit-border-radius:5px 5px 0 0;
-				-moz-border-radius:5px 5px 0 0;
-				
-				/*font*/
-				font-size:120%;
+				width:60px;
+				height:60px;
+				margin-right:20px;
 			}
 			
-				.jobContents .status2 ul li:last-child {
-					margin:0;
-				}
-			
-			.jobContents .status2 ul li.reward {
-				background-color:#6d9abb;
-				padding:3px;
-				
-				/*font*/
-				text-align:center;
-				color:#ffffff;
+			@media (max-width: 480px) {
+			.job_detailContents .fvArea h2 img {
+				width:30px;
+				height:30px;
+				margin-right:20px;
+			}
 			}
 			
-				.jobContents .status2 ul li.reward:before {
-					content:"報酬 ¥"
-				}
-			
-			.jobContents .status2 ul li.application {	
-				background-color:#b4d0d5;
-				padding:3px;
-				
+			.job_detailContents .fvArea h2 span {
+				float:left;
+				display:block;
+				margin-top:9px;
 				/*font*/
-				text-align:center;
+				font-size:150%;
+				font-family: 'nevis';
+				font-weight:lighter;
+			}
+			
+			@media (max-width: 480px) {
+			.job_detailContents .fvArea h2 span {
+				margin-top:0;
+				/*font*/
+				font-size:110%;
+			}
+			}
+			
+			.job_detailContents .fvArea h2 input[type="submit"] {
+				float:left;
+				margin:17px 0 0 25px;
+				background-color:#192128;
+				padding:5px 25px;
+				-webkit-border-radius: 50px;
+				-moz-border-radius:50px;
+				border-radius: 50px;
+				cursor:pointer;
+				/*font*/
+				font-size:80%;
+				color:#adadad;
+				/*reset*/
+				border:none;
+			}
+			
+			.job_detailContents .fvArea h2 input[type="submit"]:hover {
+				background-color:#666;
+				/*font*/
 				color:#fff;
 			}
 			
-				.jobContents .status2 ul li.application:before {
-					content:"応募件数 "
-				}
-	
-	/*detail*/
-	.jobContents .detail {
-		margin:9px;
-		margin-top:0;
-		
-		-webkit-border-radius: 3px;
-		-moz-border-radius: 3px;
-		border-radius: 3px;
-		background-color: #fff;
-		-webkit-box-shadow: 0 0 3px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-		-moz-box-shadow: 0 0 3px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-		box-shadow: 0 0 3px rgba(0,0,0,.2), inset 0 0 3px rgba(255,255,255,.35);
-	}
-	
-		.jobContents .detail .mytask {
-			padding:10px;
-			border-bottom:#dcdcdc solid 1px;
-		}
-	
-			.jobContents .detail .mytask .user {
-				float:left;
-				width:40px;
-				height:40px;
-				
-				/*background-image: url(../img/common/sample_user01.jpg);*/
-				background-size: cover;
-				background-position:center;
-			}
-	
-			.jobContents .detail .mytask article {
-				float:left;
-				width:80%;
-				margin-left:15px;
+			.job_detailContents .fvArea h2 .sns_share01 {
+				/*custom*/
+				float:right;
+				margin-top:6px;
 			}
 			
-				.jobContents .detail .mytask article h3 {
+			@media (max-width: 480px) {
+			.job_detailContents .fvArea h2 .sns_share01 {
+				/*custom*/
+				position:absolute;
+				top:10px;
+				right:0px;
+				float:right;
+			}
+			}
+			
+			.job_detailContents .fvArea h2 .sns_share01 ul li {
+				background-color:#192128;
+			}
+
+		/*detail*/
+		
+		.job_detailContents .detailArea {
+			width:100%;
+			padding-bottom:50px;
+			background-color:#060809;	
+		}
+		
+			.job_detailContents .detailArea h3 {
+				padding-top:50px;
+				/*font*/
+				font-size:400%;
+				text-align:center;
+				font-family: 'LondrinaSolid-Regular';
+				color:#ffffff;
+			}
+			
+			@media (max-width: 480px) {
+			.job_detailContents .detailArea h3 {
+				/*font*/
+				font-size:280%;
+			}
+			}
+			
+				.job_detailContents .detailArea h3 span {
+					display:block;
+					margin-top:20px;
+					/*font*/
+					color:#fff;
+					font-size: 40%;
+					text-align:center;
+					color:#696969;
+				}
+				
+				@media (max-width: 480px) {
+				.job_detailContents .detailArea h3 span {
+					margin-top:0px;
+					/*font*/
+					font-size:60%;
+				}
+				}
+				
+				.job_detailContents .detailArea h3 span a {
+					/*font*/
+					color:#696969;
+				}
+				
+				.job_detailContents .detailArea h3 span a:hover {
+					/*font*/
+					color:#fff;
+				}
+				
+					.job_detailContents .detailArea h3 span i {
+						margin-right: 10px;
+					}
+					
+				.job_detailContents .detailArea p.glass {
+					padding-top:50px;
+					width: 250px;
+					margin:0 auto;
+					/*font*/
+					text-align:center;
+				}
+				
+				@media (max-width: 480px) {
+				.job_detailContents .detailArea p.glass {
+					width:100px;
+				}
+				}
+
+			.job_detailContents .detailArea div.value {
+				width:90%;
+				margin:30px auto;
+				-webkit-border-radius:5px;
+				-moz-border-radius:5px;
+				border-radius:5px;
+				border:#e1e1e1 solid 1px;
+				background-color:#fff;
+			}
+			
+			@media (max-width: 480px) {
+			.job_detailContents .detailArea div.value {
+				width:100%;
+				margin:0;
+				-webkit-border-radius:0px;
+				-moz-border-radius:0px;
+				border-radius:0px;
+				border:none;
+			}
+			}
+			
+				.job_detailContents .detailArea div.value ul {
+					margin:0;
+				}
+				
+					.job_detailContents .detailArea div.value ul li {
+						padding:45px;
+						border-bottom:#e1e1e1 solid 1px;
+					}
+					
+					@media (max-width: 480px) {
+					.job_detailContents .detailArea div.value ul li {
+						padding:20px;
+						position:relative;
+					}
+					}
+					
+						.job_detailContents .detailArea div.value ul li h4  {
+							margin-bottom:20px;
+							/*font*/
+							font-size:250%;
+							font-weight:lighter;
+						}
+						
+						.job_detailContents .detailArea div.value ul li h4:first-letter  {
+							/*font*/
+							font-family: 'LondrinaSolid-Regular';
+						}
+						
+						.job_detailContents .detailArea div.value ul li p {
+							float: left;
+							padding-left:20px;
+							width:75%;
+							/*font*/
+							line-height:180%;
+							font-size:120%;
+							color:#696969;
+						}
+						
+						@media (max-width: 480px) {
+						.job_detailContents .detailArea div.value ul li p {
+							float: none;
+							padding:0;
+							width:100%;
+						}
+						}
+					
+						.job_detailContents .detailArea div.value ul li img {
+							float: left;
+							width: 25%;
+							object-fit:cover;
+						}
+						
+						@media (max-width: 480px) {
+						.job_detailContents .detailArea div.value ul li img {
+							float:none;
+							margin-bottom:20px;
+							width:100%;
+						}
+						}
+
+			.job_detailContents .detailArea div.info {
+				width:40%;
+				padding-bottom:50px;
+				margin:0 auto;
+			}
+			
+			@media (max-width: 480px) {
+			.job_detailContents .detailArea div.info {
+				width:90%;
+				margin:0 auto;
+			}
+			}
+			
+				.job_detailContents .detailArea div.info h3 {
+					border-top:#666 solid 1px;
+					padding-top:0;
 					/*font*/
 					text-align:left;
-					font-size:125%;
-					color:#333333;
+					font-size:120%;
+					font-family: 'nevis';
+					color:#fff;
 				}
 				
-					.jobContents .detail .mytask article h3 span {
-						display:block;
-						margin: 5px 0;
-						border-bottom:#dcdcdc solid 1px;
-						
-						/*font*/
-						white-space: nowrap;
-						font-size:80%;
-						color:#adadad;
-						
-						overflow: hidden;
-						-o-text-overflow: ellipsis;
-						text-overflow: ellipsis;
-					}
-			
-					.jobContents .detail .mytask article .data {
-							/*font*/
-							color:#adadad;
-					}
-					
-					.jobContents .detail .mytask article .data:before {
-						content:"依頼者："
-					}
-		
-		/*confirmation*/
-		.jobContents .confirmation {
-			padding:20px;
-		}
-	
-			.jobContents .confirmation h4/*icon box layout*/ {
-				padding-bottom:20px;
-				background-size: 60px 60px;
-				background-position: center 15px;
-				background-repeat: no-repeat;
-			}
-		
-			.jobContents .confirmation h4.mytask {
-				background-image: url(../svg/mytask.svg);
-			}
-		
-				.jobContents .confirmation h4 span {
-					display:block;
-					padding-top:80px;
-					
-					/*font*/
-					font-size:100%;
-					text-align:center;
-				}
-			
-			.jobContents .confirmation ul {
-				border-top:#dcdcdc solid 3px;
-			}
-			
-				.jobContents .confirmation li {
-					padding:10px;
-					border-bottom:#dcdcdc solid 1px;
-				}
-			
-				.jobContents .confirmation li:nth-child(odd) {
-					background-color:#f9f9f9;
-				}
-				
-				.jobContents .confirmation li:last-child {
-					border:none;
-				}
-				
-					.jobContents .confirmation li dl{
-						width:100%;
-						overflow:hidden;
-					}
-					
-					.jobContents .confirmation li dt{
-						width:30%;
-						float:left;
-					}
-					
-					.jobContents .confirmation li dd{
-						width:70%;
-						float:left;
-						padding-right:0;
-					}
-
-	/*application*/
-	.jobContents .application {
-			padding:20px;
-	}
-		
-			.jobContents .application p.total {
-				padding-bottom:20px;
-				border-bottom:#dcdcdc solid 1px;	
-			}
-			
-				.jobContents .application p.total em {
-					display:block;
-					
-					/*font*/
-					color:#6d9abb;
-					font-size:250%;
-					text-align:center;
-				}
-				
-				.jobContents .application p.total em:after {
-					content:"件の応募";
-					display:block;
-					
+				.job_detailContents .detailArea div.info li {
+					padding-bottom:20px;
 					/*font*/
 					color:#666;
-					font-size:40%;
-					text-align:center;
 				}
 				
-			.jobContents .application p.noapplication {
-				padding:10px 0;
-				
-				/*font*/
-				font-size:120%;
+					.job_detailContents .detailArea div.info li img {
+						width:40%;
+						height:auto;
+					}
+
+			.job_detailContents .detailArea div.cv {
+				width:60%;
+				margin:0 auto;
 			}
 			
-				.jobContents .application p.noapplication ul {
-					*
+			@media (max-width: 480px) {
+			.job_detailContents .detailArea div.cv {
+				width:95%;
+				margin:0 auto;
+			}
+			}
+
+				.job_detailContents .detailArea div.cv input[type="submit"] {
+					width:100%;
+					background-color:#fff;
+					padding:15px;
+					-webkit-border-radius: 50px;
+					-moz-border-radius:50px;
+					border-radius: 50px;
+					cursor:pointer;
+					/*font*/
+					font-family: 'LondrinaSolid-Regular';
+					font-size:400%;
+					color:#060809;
+					/*reset*/
+					border:none;
 				}
 				
-					.jobContents .application p.noapplication ul li {
-						margin-bottom:1 5px;
-					}
-					
-						.jobContents .application p.noapplication ul li > i {
-							/*font*/
-							color:#b2d235;
-						}
+				@media (max-width: 480px) {
+				.job_detailContents .detailArea div.cv input[type="submit"] {
+					width:100%;
+					background-color:#fff;
+					padding:15px;
+					-webkit-border-radius: 50px;
+					-moz-border-radius:50px;
+					border-radius: 50px;
+					font-size:250%;
+				}
+				}
+				
+				.job_detailContents .detailArea div.cv input[type="submit"]:hover {
+					background-color:#9ace21;
+					box-shadow: 0 0 0 4px #fff inset;
+					/*font*/
+					color:#fff;
+				}
+
+/* ----------------------------------------
+3. apply_list
+---------------------------------------- */
+
+.apply_listContents {
+	margin-left:100px;
+	padding-right:100px;
+	padding-bottom: 0;
+	display:block;
+	width:100%;
+}
+
+@media (max-width: 900px) {
+.apply_listContents {
+	margin:0;
+	padding:0;
+	display:block;
+	width:100%;
+}
+}
 	
-			.jobContents .application dl{
-				padding:9px;
+	.apply_listContents h2 {
+		height:80px;
+		padding:30px 0 0 30px;
+		/*font*/
+		font-family: 'nevis';
+		font-size:120%;
+		color:#faaa23;
+	}
+	
+	.apply_listContents .applyArea {
+		width:100%;
+	}
+		
+		.apply_listContents .applyArea ul {
+			margin:0;
+			background-color:#101416;
+			border-top:#464d53 solid 1px;
+		}
+		
+			.apply_listContents .applyArea ul li {
+				height:160px;
+				padding:16px 0 10px 16px;
+				border-bottom:#464d53 solid 1px;
+			}
+			
+			@media (max-width: 480px) {
+			.apply_listContents .applyArea ul li {
 				width:100%;
-				overflow:hidden;
+				height:80px;
+				padding:0;
+			}
 			}
 			
-			.jobContents .application dl.failure{
-				filter:alpha(opacity=20);
-				-moz-opacity: 0.2;
-				opacity: 0.2;
+			.apply_listContents .applyArea ul li:hover {
+				background-color:#282f35;
 			}
 			
-			.jobContents .application dt{
-				width:30%;
-				float:left;
-			}
-			
-			.jobContents .application dd{
-				width:70%;
-				float:left;
-				padding-left:10px;
-				padding-right:0;
-			}
-			
-			.jobContents .application dd:after{
-				clear:both;
-			}
-			
-				.jobContents .application dl .imgBox {
-					margin:0;
-					margin-top:6px;
+				.apply_listContents .applyArea ul li dl {
+					display:block;
+					width:100%;
+					background-image:url(../svg/chat_h.svg);
+					background:no-repeat center 30%;
+					background-size:10px 10px;
 				}
 				
-					.jobContents .application dl .imgBox .arrow_box {
-						position: relative;
-						background: #fff;
-						border: 1px solid #ccc;
-						padding:5px;
-						
-						-webkit-border-radius: 3px;
-						-moz-border-radius: 3px;
-						border-radius: 3px;
+				@media (max-width: 480px) {
+				.apply_listContents .applyArea ul li dl {
+					/*font*/
+					font-size:90%;
+				}
+				}
+				
+				.apply_listContents .applyArea ul li dt {
+					float:left;
+				}
+				
+					.apply_listContents .applyArea ul li dt img {
+						width:120px;
+						height:auto;
 					}
 					
-					.jobContents .application dl .imgBox .arrow_box:after, .jobContents .application dl .imgBox .arrow_box:before {
-						top: 100%;
-						left: 50%;
-						border: solid transparent;
-						content: " ";
-						height: 0;
-						width: 0;
-						position: absolute;
-						pointer-events: none;
+					@media (max-width: 480px) {
+					.apply_listContents .applyArea ul li dt img {
+						width:60px;
+						margin:9px 0 0 5px;
+						height:auto;
 					}
-					
-					.jobContents .application dl .imgBox .arrow_box:after {
-						border-color: rgba(242, 242, 242, 0);
-						border-top-color: #fff;
-						border-width: 8px;
-						margin-left: -8px;
 					}
-					
-					.jobContents .application dl .imgBox .arrow_box:before {
-						border-color: rgba(102, 102, 102, 0);
-						border-top-color: #ccc;
-						border-width: 9px;
-						margin-left: -9px;
-					}
-					
-					.jobContents .application dl .imgBox .arrow_box span {
-						display:block;
-						
+				
+				.apply_listContents .applyArea ul li dd {
+					float:left;
+					width:80%;
+					padding-left:20px;
+				}
+				
+				.apply_listContents .applyArea ul li dd:after {
+					clear:both;
+				}
+				
+					.apply_listContents .applyArea ul li dd h3 {
+						margin-top:10px;
 						/*font*/
-						text-align:center;
+						font-family: 'nevis';
+						font-size:200%;
+						color:#fff;
+					}
+					
+					@media (max-width: 480px) {
+					.apply_listContents .applyArea ul li dd h3 {
+						margin-top:10px;
+						/*font*/
+						font-family: 'nevis';
 						font-size:120%;
-						color:#b2d234;
+						color:#fff;
+					}
 					}
 					
-					.jobContents .application dl .imgBox .arrow_box span:before {
-						content:"¥"
-					}
-					
-					.jobContents .application dl .imgBox .arrow_box span:after {
-						content:"でやります！";
-						display:block;
-						
-						/*font*/
-						font-size:60%;
-						color:#666;
-					}
-				
-					.jobContents .application dl .imgBox img.kadomaru {
-						width:100%;
-						height: auto;
-						border-radius:5%;
-						border:#eeeeee solid 1px;
-						object-fit:cover;
-					}
-					
-					.jobContents .application dl .imgBox img.maru {
-						width:100%;
-						height: auto;
-						border-radius:50%;
-						border:#fff solid 1px;
-						object-fit:cover;
-					}
-				
-					.jobContents .application dl .txtBox {
+					.apply_listContents .applyArea ul li dd .meter {
+						margin-top:15px;
 						position:relative;
 					}
 					
-						.jobContents .application dl .txtBox .offer {
-							position: absolute;
-							top:6px;
-							right:0px;
+					@media (max-width: 480px) {
+					.apply_listContents .applyArea ul li dd .meter {
+						margin-top:27px;
+						position:relative;
+					}
+					}
+					
+						.apply_listContents .applyArea ul li dd .meter .meter01 {
+							float:left;
+							width:100%;
 						}
-				
-						.jobContents .application dl .txtBox h3 {
+						
+						@media (max-width: 480px) {
+						.apply_listContents .applyArea ul li dd .meter .meter01 .inner {
+							padding:2px;
+						}
+						
+							.apply_listContents .applyArea ul li dd .meter .meter01 .inner span {
+								display:none;
+							}
+						}
+					
+						.apply_listContents .applyArea ul li dd .meter .notification {
+							float:right;
+							margin-top:5px;
 							/*font*/
 							text-align:left;
-							color:#333333;
-							font-size:150%;
-							margin:0;
+							font-size:100%;
+							color:#fff;
 						}
-				
-							.jobContents .application dl .txtBox h3 span {
+						
+						@media (max-width: 480px) {
+						.apply_listContents .applyArea ul li dd .meter .notification {
+							position:absolute;
+							top:-27px;
+							right:0px;
+							/*font*/
+							text-align: right;
+							font-size:100%;
+							color:#fff;
+						}
+						}
+						
+							.apply_listContents .applyArea ul li dd .meter .notification span {
 								/*font*/
-								color:#adadad;
-								font-size:80%;
-								margin:0;
+								color:#9ace21;
 							}
-				
-							/*.applicationContents .application dl .txtBox p > * {
-								margin:0;
-								padding:0;
-								overflow: hidden;
-							}*/
-				
-							.jobContents .application dl .txtBox p.since {
-								border-bottom:#dcdcdc solid 1px;
-								padding-bottom:5px;
-								/*font*/
-								color:#adadad;
-							}
-				
-							.jobContents .application dl .txtBox p.review_min {
-								padding:5px 0;
-								/*font*/
-								font-size:90%;
-								color:#6d9abb;
-							}
-				
-							.jobContents .application dl .txtBox p.review_min:before {
-								content:"タスカルSCORE："
-							}
-							
-								.jobContents .application dl .txtBox p.review_min span {
-									/*font*/
-									letter-spacing:2px;
-								}
-								
-	/*status(common)*/
-	.jobContents .apply {
-		position:absolute;
-		top:-10px;
-		left:0px;
+
+/* ----------------------------------------
+4. profile
+---------------------------------------- */
+
+.profileContents {
+	margin-left:400px;
+	padding-right:400px;/*negadive padding*/
+	display:block;
+	width:100%;
+}
+
+@media (max-width: 900px) {
+.profileContents {
+	margin:0;
+	padding:0;
+	padding-top:120px;
+	display:block;
+	width:100%;
+}
+}
+	
+	.profileContents .formArea {
 		width:100%;
-		height:100%;
-		padding:20px;
-		background-color:rgba(109,154,187,0.95);
-		
-		/*font*/
-		color:#fff;
+		padding:45px;
 	}
 	
-		.jobContents .apply h4/*icon box layout*/ {
-			padding-bottom:20px;
-			background-size: 60px 60px;
-			background-position: center 15px;
-			background-repeat: no-repeat;
+		.profileContents .formArea h3 {
+			margin-bottom:10px;
+			/*font*/
+			font-family: 'nevis';
+			color:#fff;
 		}
 		
-			.jobContents .apply h4 span/*icon box layout*/ {
+		.profileContents .formArea .form02 ul li {
+			margin-bottom:40px;
+		}
+	
+/* ----------------------------------------
+5. message
+---------------------------------------- */
+
+.messageContents {
+	margin-left:400px;
+	padding-right:400px;/*negadive padding*/
+	padding-bottom: 0;
+	display:block;
+	width:100%;
+}
+
+@media (max-width: 900px) {
+.messageContents {
+	margin:0;
+	padding:0;
+	padding-left:50px;/*negadive padding*/
+	padding-bottom: 0;
+	display:block;
+	width:100%;
+}
+}
+
+	/*h2*/
+	
+	.messageContents h2 {
+		height:80px;
+		padding:10px;
+		background-color:#fff;
+	}
+	
+	@media (max-width: 900px) {
+	.messageContents h2 {
+		height:50px;
+		padding:5px;
+		background-color:#fff;
+		/*font*/
+		font-size:80%;
+	}
+	}
+	
+		.messageContents h2 img {
+			float:left;
+			width:60px;
+			height:60px;
+			margin-right:20px;
+		}
+		
+		@media (max-width: 900px) {
+		.messageContents h2 img {
+			float:left;
+			width:40px;
+			height:40px;
+			margin-right:10px;
+		}
+		}
+		
+		.messageContents h2 span {
+			float:left;
+			display:block;
+			width:60%;
+			margin-top:5px;
+			/*font*/
+			font-size:120%;
+			font-family: 'nevis';
+			font-weight:lighter;
+		}
+		
+		@media (max-width: 900px) {
+		.messageContents h2 span {
+			width:80%;
+			/*font*/
+			font-size:120%;
+		}
+		}
+		
+			.messageContents h2 .meter {
+				margin-top:15px;
+			}
+			
+			@media (max-width: 900px) {
+}
+					
+				.messageContents h2 .meter .meter01 {
+					float:left;
+					width:60%;
+				}
+				
+				@media (max-width: 900px) {
+				.messageContents h2 .meter .meter01 {
+					float:left;
+					width:80%;
+				}
+				}
+		
+			.messageContents h2 input[type="submit"] {
+				float:left;
+				margin:17px 0 0 25px;
+				background-color:#192128;
+				padding:5px 25px;
+				-webkit-border-radius: 50px;
+				-moz-border-radius:50px;
+				border-radius: 50px;
+				cursor:pointer;
+				/*font*/
+				font-size:80%;
+				color:#adadad;
+				/*reset*/
+				border:none;
+			}
+			
+			.messageContents h2 input[type="submit"]:hover {
+				background-color:#666;
 				/*font*/
 				color:#fff;
 			}
-			
-			.jobContents .apply h4.mytask {
-				background-image: url(../svg/mytask02.svg);
+		
+			.messageContents h2 .sns_share01 {
+				/*custom*/
+				float:right;
+				margin-top:6px;
 			}
 		
-		.jobContents .apply li:nth-child(odd) {
-			background:none;
+				.messageContents h2 .sns_share01 ul li {
+					background-color:#ccc;
+				}
+
+	/*chat*/
+	
+	.messageContents .chatArea {
+		width:100%;
+		position:relative;
+		padding-bottom:130px;
+	}
+	
+	@media (max-width: 900px) {
+	.messageContents .chatArea {
+		width:100%;
+		position:relative;
+	}
+	}
+	
+		.messageContents .chatArea ul {
+			width:100%;
+			margin:0;
+			background-color:#101416;
 		}
+		
+			.messageContents .chatArea ul li {
+				padding:16px;
+			}
+			
+				.messageContents .chatArea ul li dl {
+					display:block;
+					width:100%;
+				}
+				
+				.messageContents .chatArea ul li dt {
+					float:left;
+					padding:5px;
+				}
+				
+					.messageContents .chatArea ul li dt img {
+						width:80px;
+						height:auto;
+					}
+					
+					@media (max-width: 900px) {
+					.messageContents .chatArea ul li dt img {
+						width:40px;
+						height:auto;
+					}
+					}
+				
+				.messageContents .chatArea ul li dd {
+					float:left;
+					width:80%;
+					margin-left:20px;
+				}
+				
+				@media (max-width: 900px) {
+				.messageContents .chatArea ul li dd {
+					float:left;
+					width:70%;
+					margin-left:20px;
+				}
+				}
+				
+				.messageContents .chatArea ul li dd:after {
+					clear:both;
+				}
+				
+					.messageContents .chatArea ul li dd h3 {
+						margin-top:10px;
+					}
+					
+					.messageContents .chatArea ul li dd h3 a {
+						margin-top:10px;
+						/*font*/
+						font-family: 'nevis';
+						font-size:120%;
+						color:#348cc9;
+					}
+					
+					.messageContents .chatArea ul li dd h3 span {
+						margin-left:10px;
+						/*font*/
+						font-size:80%;
+						color:#666;
+					}
+					
+					.messageContents .chatArea ul li dd .txt {
+						margin-top:15px;
+						/*font*/
+						color:#fff;
+					}
+					
+				.messageContents .chatArea ul li.notification {
+					background-color:#090b0c;
+					border-top:#333 solid 1px;
+					border-bottom:#333 solid 1px;
+				}
+				
+					.messageContents .chatArea ul li.notification dd h3 a {
+						margin-top:10px;
+						padding:5px;
+						/*font*/
+						font-family: 'nevis';
+						font-size:100%;
+						color:#ccc;
+						border:#ccc solid 1px;
+						-webkit-border-radius:3px;
+						-moz-border-radius:3px;
+						border-radius:3px;
+					}
+					
+					.messageContents .chatArea ul li.notification dd h3 a {
+						margin-top:10px;
+						padding:5px;
+						/*font*/
+						font-family: 'nevis';
+						font-size:100%;
+						color:#ccc;
+						border:#ccc solid 1px;
+						-webkit-border-radius:3px;
+						-moz-border-radius:3px;
+						border-radius:3px;
+					}
+					
+					.messageContents .chatArea ul li.notification dd .txt {
+						/*font*/
+						color:#666;
+						font-style:italic;
+					}
+
+		.messageContents .chatArea .input {
+			position: fixed;
+			left:0;
+			bottom:0px;
+			width:100%;
+			box-shadow:0 8px 12px -8px #222;
+			z-index:999;
+		}
+		
+			.messageContents .chatArea .input .inner {
+				width:98%;
+				margin:0 auto;
+				padding-left:400px;
+				color:#fff
+			}
+			
+			@media (max-width: 900px) {
+			.messageContents .chatArea .input .inner {
+				width:100%;
+				padding-left:50px;
+				color:#fff
+			}
+			}
+			
+				.messageContents .chatArea .input .inner .formArea {
+					width:100%;
+				}
+		
+/* ----------------------------------------
+5. setting
+---------------------------------------- */
+
+.settingContents {
+	margin-left:400px;
+	padding-right:400px;/*negadive padding*/
+	display:block;
+	width:100%;
+}
+
+@media (max-width: 900px) {
+.settingContents {
+	margin:0;
+	padding:0;
+	padding-top:65px;
+	display:block;
+	width:100%;
+}
+}
+	
+	.settingContents .formArea {
+		width:100%;
+		padding:45px;
+	}
+	
+		.settingContents .formArea h3 {
+			margin-bottom:10px;
+			/*font*/
+			font-family: 'nevis';
+			color:#fff;
+		}
+		
+		.settingContents .formArea .form02 ul li {
+			margin-bottom:40px;
+		}
+
+		
+/* ----------------------------------------
+7. popup
+---------------------------------------- */
+
+	/*login*/
+	.popup01 .loginArea {
+		padding:20px;
+	}
+	
+		.popup01 .loginArea h2 {
+			/*font*/
+			font-size: 300%;
+			text-align:center;
+			font-family: 'LondrinaSolid-Regular';
+			color:#11171b;
+		}
+		
+			.popup01 .loginArea h2 span {
+				display:block;
+				margin-top:20px;
+				/*font*/
+				font-size:40%;
+				color:#696969;
+			}
+			
+			@media (max-width: 480px) {
+			.popup01 .loginArea h2 span br {
+				display:none;
+			}
+			}
+	
+			.popup01 .loginArea input[type="submit"] {
+				/*reset*/
+				-webkit-appearance:none;!important
+				-moz-appearance:none;!important
+				appearance:none;!important
+				outline-style:none;
+				border:0;
+				
+				width:100%;
+				margin-top:50px;
+				background-color:#3B5998;
+				padding:15px;
+				-webkit-border-radius: 50px;
+				-moz-border-radius:50px;
+				border-radius: 50px;
+				cursor:pointer;
+				/*font*/
+				font-family: 'nevis';
+				font-size: 140%;
+				color:#fff;
+			}
+	
+	/*about*/
+	.popup01 .aboutArea {
+		padding:20px;
+	}
+	
+		.popup01 .aboutArea h2 {
+			/*font*/
+			font-size:400%;
+			text-align:center;
+			font-family: 'LondrinaSolid-Regular';
+			color:#11171b;
+		}
+		
+			.popup01 .aboutArea h2 span {
+				display:block;
+				margin-top:20px;
+				/*font*/
+				font-size:30%;
+				color:#696969;
+			}
+		
 	
 	
 	
-
-
-
-
-
-
-
-
-
-
-
 

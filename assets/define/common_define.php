@@ -7,10 +7,19 @@ session_start();
 define("LOG_PATH", ROOT . "assets/log/err.log");
 
 // DB情報
-define("DB_HOST", "localhost");
-define("DB_USERNAME", "mwb_taskall");
-define("DB_PASSWORD", "Tx2W7rBR");
-define("DB_NAME", "mwb_taskall");
+if ("jobglass.net" == $_SERVER['SERVER_NAME']) {
+	// 本番(jobglass.net)
+	define("DB_HOST", "localhost");
+	define("DB_USERNAME", "mwb_jobglass");
+	define("DB_PASSWORD", "M4uWiHqt");
+	define("DB_NAME", "mwb_jobglass");
+} else {
+	// dev環境(jobglass.techfund.jp)
+	define("DB_HOST", "localhost");
+	define("DB_USERNAME", "mwb_jobglass");
+	define("DB_PASSWORD", "M4uWiHqt");
+	define("DB_NAME", "mwb_jobglass");
+}
 
 // DatabaseAccessClass読み込み
 require_once(ROOT . 'extension/DatabaseAccess.php');
@@ -43,11 +52,21 @@ const SECRET_KEY = "";
 require_once(ROOT . 'extension/facebook_login/facebook.php');
 
 // facebookアプリ情報
-$config = array(
-	'appId' => '1437634073201464',
-	'secret' => '8643d1eeb5f6b73fd54178a05cf16c4f',
-    'cookie' => true
-);
+if ("jobglass.net" == $_SERVER['SERVER_NAME']) {
+	// 本番(jobglass.net)
+	$config = array(
+		'appId' => '665067740260213',
+		'secret' => '7c8801c750abb6db9aebafd18bed598e',
+	  'cookie' => true
+	);
+} else {
+	// dev環境(jobglass.techfund.jp)
+	$config = array(
+		'appId' => '1136707276356128',
+		'secret' => '92b27c9aa81e4005dcbd2f9fa61a04dd',
+	  'cookie' => true
+	);
+}
 
 $facebook = new Facebook($config);
 
@@ -56,10 +75,19 @@ if ("" == $facebook_redirect) {
 }
 
 //未ログインならログイン URL を取得してリンクを出力
-$parameters = array(
-	'scope' => 'public_profile,email,user_birthday,user_work_history,user_likes,user_friends', 
-	'redirect_uri' => 'http://task-all.techfund.jp/' . $facebook_redirect
-);
+if ("jobglass.net" == $_SERVER['SERVER_NAME']) {
+	// 本番(jobglass.net)
+	$parameters = array(
+		'scope' => 'public_profile,email,user_birthday,user_work_history,user_likes,user_friends', 
+		'redirect_uri' => 'http://jobglass.net/' . $facebook_redirect
+	);
+} else {
+	// dev環境(jobglass.techfund.jp)
+	$parameters = array(
+		'scope' => 'public_profile,email,user_birthday,user_work_history,user_likes,user_friends', 
+		'redirect_uri' => 'http://jobglass.techfund.jp/' . $facebook_redirect
+	);
+}
 
 // メッセージヘッダーアイコンのための処理
 $badge_flg = false;
