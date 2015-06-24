@@ -365,6 +365,149 @@ class CommonFunctions {
 
 
 	/**
+	 * 複数画像アップロードメソッド
+	 * @param	arr			$file				アップロードファイル
+	 * @param	string		$key				ファイルのキー（<img>に設定しているname）
+	 * @param	bool		$through_flg		ファイル未選択を許すか（true:許す false:許さない）
+	 * @return	array()							成功：true（配列内にファイル名）　失敗：false（配列内にエラー文）
+	 */
+	function imageUploadArray($file, $key, $through_flg = true) {
+
+		$data[0] = array("ret" => $through_flg);
+
+		$cnt = 0;
+		foreach ($file[$key]["name"] as $k => $v) {
+			if ("" != $v) {
+				$cnt++;
+			}
+		}
+
+		if (1 <= $cnt) {
+			foreach ($file[$key]['name'] as $k => $v) {
+				// 初期値設定
+				$maxfileize = UPLOAD_MAX_IMAGE_SIZE;
+				$max_width = UPLOAD_MAX_IMAGE_WIDTH;
+				$max_height = UPLOAD_MAX_IMAGE_HEIGHT;
+
+				if ($file[$key]['error'][$k] == UPLOAD_ERR_NO_FILE) {
+					// ファイル未選択
+					if (false == $through_flg) {
+						// ファイル未選択をスルーしない場合エラー
+						$data[$k] = array('ret' => false, 'err' => "ファイルが選択されていません。");
+					} else {
+						$data[$k] = array('ret' => true, 'img_name' => NULL);
+					}
+				} else {
+					try {
+						$error = $file[$key]['error'][$k];
+
+						// 配列は除外
+						if (is_array($error)) {
+							throw new RuntimeException('複数ファイルの同時アップロードは許可されていません。');
+						}
+
+						// エラーチェック
+						switch ($error) {
+							case UPLOAD_ERR_INI_SIZE:
+								throw new RuntimeException('許可されている最大サイズを超過しました。');
+							case UPLOAD_ERR_FORM_SIZE:
+								throw new RuntimeException('フォームで許可されている最大サイズを超過しました。');
+							case UPLOAD_ERR_PARTIAL:
+								throw new RuntimeException('ファイルが壊れています。');
+							case UPLOAD_ERR_NO_TMP_DIR:
+								throw new RuntimeException('テンポラリディレクトリが見つかりません。');
+							case UPLOAD_ERR_CANT_WRITE:
+								throw new RuntimeException('テンポラリデータの生成に失敗しました。');
+							case UPLOAD_ERR_EXTENSION:
+								throw new RuntimeException('エクステンションでエラーが発生しました。');
+						}
+
+						// 一時ファイル名
+						$tmp_name = $file[$key]['tmp_name'][$k];
+
+						// ファイルサイズ
+						$size = $file[$key]['size'][$k];
+
+						// 不正なファイルでないかチェック
+						if (!is_uploaded_file($tmp_name)) {
+							throw new RuntimeException('不正なファイルです。');
+						}
+
+						// このスクリプトで定義されたサイズ上限のオーバーチェック
+						if ($size > $maxfileize) {
+							throw new RuntimeException("{$maxfileize}バイトを超過するファイルは受理できません。");
+						}
+
+						// 画像ファイル情報取得
+						$info = getimagesize($tmp_name);
+
+						// 取得に失敗したときは画像ファイルではない
+						if ($info === false) {
+							throw new RuntimeException('画像ファイルではありません。');
+						}
+
+						// MimeTypeを調べる
+						switch ($info['mime']) {
+							case 'image/gif':
+								$mime = $ext = 'gif';
+								break;
+							case 'image/png':
+								$mime = $ext = 'png';
+								break;
+							case 'image/jpeg':
+								$mime = 'jpeg';
+								$ext	= 'jpg';
+								break;
+							default:
+								throw new RuntimeException('この種類の画像形式は受理できません。');
+						}
+
+						// もとの画像の幅と高さ
+						$width	= $info[0];
+						$height = $info[1];
+
+						// ユニークなファイル名を拡張子を含めて生成
+						$rand = sha1(mt_rand() . microtime());
+						$name = "{$rand}.{$ext}";
+
+						// 最大幅・高さを超過していないかチェック・縦横比を維持して新しいサイズを定義
+						$resize = false;
+						if ($width > $height && $width > $max_width) {
+							$resize = true;
+						} elseif ($height > $max_height) {
+							$resize = true;
+						}
+
+						// 取得に失敗したときは画像ファイルではない
+						if ($resize === true) {
+							throw new RuntimeException('サイズを超過しています。サイズは縦' . $max_height . 'px, 横' . $max_width . 'pxまでです（アップロードした画像ファイルのサイズ：縦' . $height . 'px, 横' . $width . 'px）。');
+						}
+
+						// エラーが無ければアップロード
+						if (move_uploaded_file($file[$key]["tmp_name"][$k], IMAGE_DIR . $name)) {
+							chmod(IMAGE_DIR . $name, 0644);
+							$data[$k] = array('ret' => true, 'img_name' => $name);
+						} else {
+							throw new RuntimeException('ファイルをアップロードできませんでした。サーバーダウンの可能性がありますので後ほど再送してください。');
+						}
+					} catch (Exception $e) {
+						// エラー
+						$data[$k] = array('ret' => false, 'err' => $e->getMessage());
+					}
+				}
+			}
+		} else {
+			// ファイルが選択されていないとき
+			if (false == $through_flg) {
+				// ファイル未選択をスルーしない場合エラー
+				$data[0] = array('ret' => false, 'err' => "ファイルが選択されていません。");
+			}
+		}
+		return $data;
+	}
+
+
+	/**
 	 * 画像アップロードメソッド
 	 * @param	arr			$file				アップロードファイル
 	 * @param	string		$key				ファイルのキー（<img>に設定しているname）

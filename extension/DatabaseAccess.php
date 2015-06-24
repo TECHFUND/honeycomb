@@ -298,7 +298,7 @@ class DatabaseAccess {
 					$values_str .= ", ";
 				}
 				$insert_str .= $key;
-				if (NULL != $value) {
+				if (NULL !== $value) {
 					$values_str .= "'" . $this->database->real_escape_string($value) . "'";
 				} else {
 					$values_str .= "NULL";
@@ -350,7 +350,7 @@ class DatabaseAccess {
 				} else {
 					$where .= " WHERE ";
 				}
-				if (NULL != $value) {
+				if (NULL !== $value) {
 					$where .= $key . " = '" . $this->database->real_escape_string($value) . "'";
 				} else {
 					$where .= $key . " IS NULL";
@@ -365,7 +365,7 @@ class DatabaseAccess {
 				if ("" != $update_str) {
 					$update_str .= ", ";
 				}
-				if (NULL != $value) {
+				if (NULL !== $value) {
 					$update_str .= $key . " = '" . $this->database->real_escape_string($value) . "'";
 				} else {
 					$update_str .= $key . " = NULL";
