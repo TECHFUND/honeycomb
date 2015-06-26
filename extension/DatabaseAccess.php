@@ -316,7 +316,7 @@ class DatabaseAccess {
 			if (1 != $this->database->affected_rows) {
 				// 影響のあった行が1行でないならばロールバック
 				$this->database->rollback();
-				error_log("[" . date("Y-m-d h:i:s") . "]simpleInsert失敗 sql文:" . $sql . "\n", 3, LOG_PATH);
+				error_log("[" . date("Y-m-d h:i:s") . "]simpleInsert失敗 sql文:" . $sql . "　エラー文: " . mysqli_error($this->database) . "\n", 3, LOG_PATH);
 			} else {
 				// 影響のあった行が1行ならばコミット
 				$this->database->commit();
@@ -394,12 +394,12 @@ class DatabaseAccess {
 					} else {
 						// WHERE区に当てはまる行が無い場合(クエリ失敗)ロールバック
 						$this->database->rollback();
-						error_log("[" . date("Y-m-d h:i:s") . "]simpleUpdate失敗 sql文:" . $sql . "\n", 3, LOG_PATH);
+						error_log("[" . date("Y-m-d h:i:s") . "]simpleUpdate失敗 sql文:" . $sql . "　エラー文: " . mysqli_error($this->database) . "\n", 3, LOG_PATH);
 					}
 				} else {
 					// クエリ失敗の場合ロールバック
 					$this->database->rollback();
-					error_log("[" . date("Y-m-d h:i:s") . "]simpleUpdate失敗 sql文:" . $sql . "\n", 3, LOG_PATH);
+					error_log("[" . date("Y-m-d h:i:s") . "]simpleUpdate失敗 sql文:" . $sql . "　エラー文: " . mysqli_error($this->database) . "\n", 3, LOG_PATH);
 				}
 			} else {
 				// 影響のあった行が1行ならばコミット
@@ -446,12 +446,12 @@ class DatabaseAccess {
 		// 実行
 		$result = mysqli_query($this->database, $sql);
 
-		if (1 != $this->database->affected_rows) {
-			// 影響のあった行が1行でないならばロールバック
+		if (mysqli_error($this->database)) {
+			// エラーならばロールバック
 			$this->database->rollback();
-			error_log("[" . date("Y-m-d h:i:s") . "]simpleDelete失敗 sql文:" . $sql . "\n", 3, LOG_PATH);
+			error_log("[" . date("Y-m-d h:i:s") . "]simpleDelete失敗 sql文:" . $sql . "　エラー文: " . mysqli_error($this->database) . "\n", 3, LOG_PATH);
 		} else {
-			// 影響のあった行が1行ならばコミット
+			// エラーが無ければコミット
 			$this->database->commit();
 			$return_flg = true;
 		}
