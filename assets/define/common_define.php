@@ -6,7 +6,7 @@ session_start();
 // Logパス
 define("LOG_PATH", ROOT . "assets/log/err.log");
 
-// サービスタイトル(メール、ヘッダにも反映)
+// サービスタイトル(メールにも反映)
 define("SERVICE_TITLE", "タスカル");
 
 // URL
