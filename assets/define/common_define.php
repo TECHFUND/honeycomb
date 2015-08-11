@@ -6,15 +6,22 @@ session_start();
 // Logパス
 define("LOG_PATH", ROOT . "assets/log/err.log");
 
+// サービスタイトル(メール、ヘッダにも反映)
+define("SERVICE_TITLE", "タスカル");
+
+// URL
+define("PUBLIC_URL", "jobglass.net");		// 本番
+define("DEVELOP_URL", "jobglass.techfund.jp");		// ステージング
+
 // DB情報
-if ("jobglass.net" == $_SERVER['SERVER_NAME']) {
-	// 本番(jobglass.net)
+if (PUBLIC_URL == $_SERVER['SERVER_NAME']) {
+	// 本番
 	define("DB_HOST", "localhost");
 	define("DB_USERNAME", "mwb_jobglass");
 	define("DB_PASSWORD", "M4uWiHqt");
 	define("DB_NAME", "mwb_jobglass");
 } else {
-	// dev環境(jobglass.techfund.jp)
+	// dev環境
 	define("DB_HOST", "localhost");
 	define("DB_USERNAME", "mwb_jobglass");
 	define("DB_PASSWORD", "M4uWiHqt");
@@ -52,15 +59,15 @@ const SECRET_KEY = "";
 require_once(ROOT . 'extension/facebook_login/facebook.php');
 
 // facebookアプリ情報
-if ("jobglass.net" == $_SERVER['SERVER_NAME']) {
-	// 本番(jobglass.net)
+if (PUBLIC_URL == $_SERVER['SERVER_NAME']) {
+	// 本番
 	$config = array(
 		'appId' => '665067740260213',
 		'secret' => '7c8801c750abb6db9aebafd18bed598e',
 	  'cookie' => true
 	);
 } else {
-	// dev環境(jobglass.techfund.jp)
+	// dev環境
 	$config = array(
 		'appId' => '1136707276356128',
 		'secret' => '92b27c9aa81e4005dcbd2f9fa61a04dd',
@@ -75,21 +82,13 @@ if ("" == $facebook_redirect) {
 }
 
 //未ログインならログイン URL を取得してリンクを出力
-if ("jobglass.net" == $_SERVER['SERVER_NAME']) {
-	// 本番(jobglass.net)
-	$parameters = array(
-		'scope' => 'public_profile,email,user_birthday,user_work_history,user_likes,user_friends', 
-		'redirect_uri' => 'http://jobglass.net/' . $facebook_redirect
-	);
-} else {
-	// dev環境(jobglass.techfund.jp)
-	$parameters = array(
-		'scope' => 'public_profile,email,user_birthday,user_work_history,user_likes,user_friends', 
-		'redirect_uri' => 'http://jobglass.techfund.jp/' . $facebook_redirect
-	);
-}
+$parameters = array(
+	'scope' => 'public_profile,email,user_birthday,user_work_history,user_likes,user_friends', 
+	'redirect_uri' => 'http://' . $_SERVER['SERVER_NAME'] . "/" . $facebook_redirect
+);
 
 // メッセージヘッダーアイコンのための処理
+/*
 $badge_flg = false;
 if ($_SESSION["user_id"]) {
 	// ログインしていれば、未読メッセージを取得
@@ -99,74 +98,11 @@ if ($_SESSION["user_id"]) {
 		$badge_flg = true;
 	}
 }
+*/
 
 /*
  定数（配列）
  */
-
-// workpanel
-$workpanel = array();
-$workpanel[1] = array("title" => "家事手伝い", "class" => "homeservice", "body" => "記入例：
-依頼内容（部屋の掃除、風呂・トイレの掃除、食事の下ごしらえなど）
-部屋数（　　）
-掃除道具は持っている（はい・いいえ）
-
-応募してくれたタスカーとはチャットで打ち合わせができます
-このカテゴリーの目安予算：2,000円/1時間");
-$workpanel[2] = array("title" => "プロの専門清掃", "class" => "cleaning", "body" => "記入例：
-依頼内容（エアコン、風呂、トイレ、換気扇など）
-台数・個数（　　）
-
-応募してくれたタスカーとはチャットで打ち合わせができます
-このカテゴリーの目安予算：4,000円");
-$workpanel[3] = array("title" => "ペットのお世話", "class" => "doghuggy", "body" => "記入例：
-依頼内容（預かり・宿泊・散歩など）
-対象（犬・猫・その他）
-数（　　）匹
-時間/泊数（　　　）
-
-応募してくれたタスカーとはチャットで打ち合わせができます");
-$workpanel[4] = array("title" => "日曜大工", "class" => "diy", "body" => "記入例：
-依頼内容（IKEA組立て、製作、リフォームなど）
-種類（ベッド、家具、棚、壁など）
-大工道具は持っている（はい・いいえ）
-
-応募してくれたタスカーとはチャットで打ち合わせができます
-このカテゴリーの目安予算：2,500円/1時間");
-$workpanel[5] = array("title" => "引越し/荷物運搬", "class" => "moving", "body" => "記入例：
-運搬の種類（引越し、当日配送、指定日配送）
-どのような荷物ですか？（書類、単身者荷物など）
-どこからどこに運びますか？（　　　　　）
-
-応募してくれたタスカーとはチャットで打ち合わせができます
-このカテゴリーの目安予算：2,000円/1時間");
-$workpanel[6] = array("title" => "庭のお手入れ", "class" => "garden", "body" => "記入例：
-依頼内容（庭掃除、草刈り、水やり、庭木剪定など）
-掃除の道具は持っている（はい・いいえ）
-
-応募してくれたタスカーとはチャットで打ち合わせができます
-このカテゴリーの目安予算：3,000円/1時間");
-$workpanel[7] = array("title" => "PC/スマホサポート", "class" => "pcspsupport", "body" => "記入例：
-対象機器（PC/スマートフォン/タブレット/TVなど）
-機種の名前・メーカーの名前（　　　）
-サポート内容・症状（インターネット接続、メール設定、トラブルなど）
-
-応募してくれたタスカーとはチャットで打ち合わせができます
-このカテゴリーの目安予算：3,000円/1時間");
-$workpanel[8] = array("title" => "ボランティア", "class" => "volunteer", "body" => "記入例：
-主催者名（　　　）
-募集・イベント内容（　　　　　）
-応募方法（　　　）
-備考（　　　）
-参加が有償の場合はその旨ご記入ください
-
-応募してくれたタスカーとはチャットで話しができます");
-$workpanel[9] = array("title" => "何でもやります", "class" => "anything", "body" => "記入例：
-依頼内容（カテゴリーに当てはまらない依頼など）
-何でも依頼してみましょう！
-手伝ってくれるタスカーが見つかります
-
-応募してくれたタスカーとはチャットで打ち合わせができます");
 
 // 都道府県
 $location = array();
@@ -218,7 +154,7 @@ $location[45] = "宮崎県";
 $location[46] = "鹿児島県";
 $location[47] = "沖縄県";
 
-// 都道府県
+// 都道府県(郵便番号からの検索用)
 $zip_location = array();
 $zip_location[1] = "(zipcode LIKE '00%' OR zipcode LIKE '04%' OR zipcode LIKE '05%' OR zipcode LIKE '06%' OR zipcode LIKE '07%' OR zipcode LIKE '08%' OR zipcode LIKE '09%')";
 $zip_location[2] = "zipcode LIKE '03%'";
@@ -277,51 +213,5 @@ $weekday_arr[3] = "水";
 $weekday_arr[4] = "木";
 $weekday_arr[5] = "金";
 $weekday_arr[6] = "土";
-
-
-// ユーザータイプ
-$type_flg_array = array();
-$type_flg_array[1] = "依頼者";
-$type_flg_array[2] = "タスカー";
-$type_str_array = array();
-$type_str_array[1] = "client_user_review_flg";
-$type_str_array[2] = "apply_user_review_flg";
-
-
-// 評価星
-$review_star_array = array();
-$review_star_array[5] = "★★★★★";
-$review_star_array[4] = "★★★★☆";
-$review_star_array[3] = "★★★☆☆";
-$review_star_array[2] = "★★☆☆☆";
-$review_star_array[1] = "★☆☆☆☆";
-$review_star_array[0] = "☆☆☆☆☆";
-
-
-// 評価
-$review_array = array();
-$review_array[1][5] = "★★★★★(最高！)";
-$review_array[1][4] = "★★★★☆(よかった！)";
-$review_array[1][3] = "★★★☆☆(助かった！！)";
-$review_array[1][2] = "★★☆☆☆(微妙！)";
-$review_array[1][1] = "★☆☆☆☆(もう頼まないっ！)";
-$review_array[2][5] = "★★★★★(最高！)";
-$review_array[2][4] = "★★★★☆(よかった！)";
-$review_array[2][3] = "★★★☆☆(まあまあ！！)";
-$review_array[2][2] = "★★☆☆☆(微妙！)";
-$review_array[2][1] = "★☆☆☆☆(もう仕事依頼ほしくない！)";
-
-
-// 拡散コメント
-$viral_array = array();
-$viral_array[1] = "助かった！！";
-$viral_array[2] = "ママ友ができた！！";
-$viral_array[3] = "楽しく仕事できた！";
-
-
-// 認証フラグ
-$certificate_flg_array = array();
-$certificate_flg_array[0] = "未登録";
-$certificate_flg_array[1] = "認証済み";
 
 ?>
