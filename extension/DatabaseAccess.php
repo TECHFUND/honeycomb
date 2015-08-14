@@ -328,6 +328,58 @@ class DatabaseAccess {
 
 
 	/**
+	 * シンプルインサートメソッド（返り値がIDになった版：中身はほぼsimpleSelectと同様）
+	 * 汎用的なインサート文
+	 * @param		str		$tblname				テーブル名
+	 * @param		arr		$data					登録するデータ
+	 * @return		int							0：インサート失敗　1~：インサート成功・ID値
+	 */
+	function simpleInsertReturnId($tblname, $data = array()) {
+
+		// 初期化
+		$insert_str = $values_str = "";
+		$sql_param = array();
+		$return = 0;
+
+		// インサート内容があるか
+		if (0 != count($data)) {
+			// データ内容の作成
+			foreach ($data as $key => $value) {
+				if ("" != $insert_str) {
+					$insert_str .= ", ";
+					$values_str .= ", ";
+				}
+				$insert_str .= $key;
+				if (NULL !== $value) {
+					$values_str .= "'" . $this->database->real_escape_string($value) . "'";
+				} else {
+					$values_str .= "NULL";
+				}
+			}
+
+			// 自動コミットをOFF
+			$this->database->autocommit(FALSE);
+
+			// sql文の作成
+			$sql = 'INSERT INTO ' . $tblname . ' (' . $insert_str . ') values (' . $values_str . ');';
+			// 実行
+			$result = mysqli_query($this->database, $sql);
+
+			if (1 != $this->database->affected_rows) {
+				// 影響のあった行が1行でないならばロールバック
+				$this->database->rollback();
+				error_log("[" . date("Y-m-d h:i:s") . "]simpleInsert失敗 sql文:" . $sql . "　エラー文: " . mysqli_error($this->database) . "\n", 3, LOG_PATH);
+			} else {
+				// 影響のあった行が1行ならばコミット
+				$this->database->commit();
+				$return = mysqli_insert_id($this->database);
+			}
+		}
+		return $return;
+	}
+
+
+	/**
 	 * シンプルアップデートメソッド
 	 * 汎用的なアップデート文
 	 * @param		str		$tblname				テーブル名
