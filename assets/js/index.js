@@ -321,20 +321,31 @@ $(function() {
 		$('#reservation-confirm').addClass('hide');
 		$('#reservation').removeClass('hide');
 	});
+	
+	/**
+	 * popup layer
+	 */
+  $(".layer").click(function(){
+    $(".modal").fadeOut();
+    $(".layer").fadeOut();
+  });
+
+	/**
+	 * footer scroll
+	 */
+  $("footer_start").on("click", function(){
+	  $('html,body').animate({scrollTop: $('html').offset().top},'fast');
+  });
+
+  /** 
+   * notification view
+   */
+  if ("" != $(".normal_notification").html) {
+    $(".normal_notification").fadeIn(500);
+    $(".normal_notification").delay(1700).fadeOut(2000);
+  }
+  if ("" != $(".err_notification").html) {
+    $(".err_notification").fadeIn(500);
+    $(".err_notification").delay(1700).fadeOut(2000);
+  }
 });
-
-/**
- * footer scroll
- */
-function footerStart(selector) {
-  // #itemまでスクロール
-  $('html,body').animate({scrollTop: $(selector).offset().top},'fast');
-}
-
-/**
- * thanks_popup
- */
-function thanks() {
-  $("#thanks").fadeIn(500);
-  $("#thanks").delay(1700).fadeOut(2000);
-}
