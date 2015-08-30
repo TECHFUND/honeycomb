@@ -406,16 +406,21 @@ class ErrorCheck {
 				$err_arr['profile'] = "プロフィールは5000文字以内で入力してください。";
 			}
 		}
-		
+
 		// 生年月日　数値　日付
 		if ($post['birthday']) {
-			list($year, $month, $day) = explode("/", $post['birthday']);
-			if (strtotime(date('Y-m-d')) < strtotime($post['birthday'])) {
+			// 今日よりも後の日付になってないか
+			$d = new Datetime($post['birthday']);
+			if (strtotime(date('Y-m-d')) < $d->format('Y-m-d')) {
 				$err_arr['birthday'] = "生年月日を正しく選択してください。";
 			}
+			// 日付チェック用に分解
+			list($year, $month, $day) = explode("/", $post['birthday']);
 			if (!checkdate($month, $day, $year)) {
+				// 存在する年月日か
 				$err_arr['birthday'] = "生年月日は存在する日付を選択してください。";
 			}
+			// 数字チェック
 			if (!preg_match("/^[0-9]+$/", $year)) {
 				$err_arr['birthday'] = "生年月日を正しく選択してください。";
 			}
