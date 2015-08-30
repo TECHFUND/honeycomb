@@ -411,7 +411,7 @@ class ErrorCheck {
 		if ($post['birthday']) {
 			// 今日よりも後の日付になってないか
 			$d = new Datetime($post['birthday']);
-			if (strtotime(date('Y-m-d')) < $d->format('Y-m-d')) {
+			if (date('Ymd') < $d->format('Ymd')) {
 				$err_arr['birthday'] = "生年月日を正しく選択してください。";
 			}
 			// 日付チェック用に分解
