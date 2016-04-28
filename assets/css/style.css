@@ -1,0 +1,233 @@
+.pro_list {
+  padding: 20px 0;
+  color: #666;
+}
+.pro_list section {
+  width: 82%;
+  margin: 0 auto;
+  letter-spacing: -0.4em;
+  margin-bottom: 17px;
+}
+.pro_list section a {
+  width: 100%;
+  display: block;
+}
+.pro_list section .pro_photo {
+  width: 90px;
+  height: 90px;
+  background-size: 100% auto;
+  background-repeat: none;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  display: inline-block;
+  letter-spacing: normal;
+  margin-right: 15px;
+}
+.pro_list section .img_profile {
+  width: 55px;
+  height: 55px;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  display: inline-block;
+  margin-right: 10px;
+}
+.pro_list section ul {
+  vertical-align: top;
+  width: 60%;
+  display: inline-block;
+  letter-spacing: normal;
+  font-size: 12px;
+  font-size: 1.2rem;
+  vertical-align: top;
+  margin-top: 7px;
+}
+.pro_list section ul .pro_visit {
+  margin-bottom: 10px;
+}
+.pro_list section ul .pro_visit span {
+  background: #ff7278;
+  color: #fff;
+  padding: 10px;
+  display: block;
+  width: 90px;
+  font-size: 14px;
+  font-size: 1.4rem;
+  text-align: center;
+}
+.pro_list section ul .pro_name {
+  color: #333;
+  font-size: 18px;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+.pro_list section ul .pro_store_name {
+  color: #333;
+  font-size: 14px;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+.pro_list section ul .pro_price {
+  color: #adadad;
+  margin-bottom: 10px;
+}
+.pro_list section ul .pro_rate {
+  color: #51c4d4;
+  margin-bottom: 10px;
+}
+.pro_list section ul .pro_comment {
+  line-height: 160%;
+}
+.pro_list section ul .pro_badge {
+  color: #333;
+  vertical-align: middle;
+}
+.pro_list section ul .pro_badge img {
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.detail_head {
+  width: 100%;
+  text-align: center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  margin: -50px 0 0 0;
+  position: relative;
+}
+.detail_head .img_profile {
+  width: 100px;
+  height: 100px;
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  z-index: 100;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+}
+.detail_head img {
+  width: 40%;
+  margin: 0 auto;
+}
+.detail_head .profile {
+  width: 80%;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 15px;
+  margin: 0 auto 15px auto;
+}
+.detail_head .profile .profile_name {
+  font-size: 18px;
+  font-size: 1.8rem;
+  padding: 14px 0 12px 0;
+}
+.detail_head .profile .profile_rate {
+  color: #51c4d4;
+  font-size: 12px;
+  font-size: 1.2rem;
+}
+.detail_head dl {
+  width: 80%;
+  color: #51c4d4;
+  letter-spacing: -0.4em;
+  margin: 0 auto 15px auto;
+}
+.detail_head dl dt {
+  display: inline-block;
+  letter-spacing: normal;
+  width: 40%;
+  text-align: left;
+  margin-bottom: 15px;
+  vertical-align: top;
+}
+.detail_head dl dd {
+  display: inline-block;
+  letter-spacing: normal;
+  width: 60%;
+  text-align: right;
+  margin-bottom: 15px;
+}
+.detail_head dl a {
+  color: #51c4d4;
+}
+.detail_head p.profile_detail {
+  width: 80%;
+  margin: 0 auto;
+  line-height: 160%;
+  text-align: left;
+}
+
+.detail_img {
+  letter-spacing: -0.4em;
+  overflow: hidden;
+  margin-left: -5px;
+  white-space: nowrap;
+  padding: 18px 0 0 0;
+  text-align: center;
+}
+.detail_img p {
+  margin-bottom: 15px;
+  width: 25%;
+  min-height: 78px;
+  overflow: hidden;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  display: inline-block;
+  margin-right: 5px;
+  letter-spacing: normal;
+  -moz-box-shadow: #f3f3f3 2px 2px 10px;
+  -webkit-box-shadow: #f3f3f3 2px 2px 10px;
+  box-shadow: #f3f3f3 2px 2px 10px;
+}
+.detail_img p:last-child {
+  margin-right: 0;
+}
+
+.footer_btn {
+  background: #f9f9f9;
+  padding: 10px 0;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+.footer_btn button {
+  width: 96%;
+  margin: 0 auto;
+  background: #6bd909;
+  border: 0;
+  color: #fff;
+  font-size: 18px;
+  font-size: 1.8rem;
+  text-align: center;
+  padding: 15px 0 10px 0;
+  position: relative;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+.footer_btn button i {
+  display: block;
+  position: absolute;
+  left: 6px;
+  width: 40px;
+  height: 40px;
+  top: 6px;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+}
+
+.admin_contact {
+  text-align: center;
+  font-size: 12px;
+  font-size: 1.2rem;
+  color: #666666;
+}
+
+/*# sourceMappingURL=style.css.map */

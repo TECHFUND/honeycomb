@@ -9,9 +9,9 @@
  * Developed on PHP versions 5.2.5
  *
  * @category	extension
- * @package		techfund
+ * @package		TECHFUND
  * @author		松山 雄太 <yuta_matsuyama@techfund.jp>
- * @copyright	techfund
+ * @copyright	TECHFUND
  * @license		別紙契約内容を参照
  * @version		$Id$
  * @link		http://techfund.jp/
@@ -20,7 +20,7 @@
  * @deprecated
  *
  * 修正履歴:
- * 2015/03/10 新規作成
+ * 2016/02/01 新規作成
  */
 
 /**
@@ -37,13 +37,13 @@ class DatabaseAccess {
 
 		if (mysqli_connect_errno()) {
 			error_log("[" . date("Y-m-d h:i:s") . "]ConnectFailed status=" . mysqli_connect_error() . "\n", 3, LOG_PATH);
-			exit;
+			CommonFunctions::redirect(ROOT . "static/err.php");
 		}
 
 		//$database = null;
 		if ($database == null) {
 			error_log("[" . date("Y-m-d h:i:s") . "]DB接続失敗 status=" . mysqli_connect_error() . "\n", 3, LOG_PATH);
-			exit;
+			CommonFunctions::redirect(ROOT . "static/err.php");
 		}
 		$this->database =& $database;
 		$this->database->set_charset('utf8');
@@ -57,53 +57,40 @@ class DatabaseAccess {
 	/**
 	 * シンプルセレクトメソッド
 	 * 汎用的なセレクト文
-	 * @param		str		$sql				SQL文
+	 * @param		str		$sql						SQL文
 	 * @param		arr		$where_arr			WHERE配列
 	 * @param		arr		$order_arr			ORDER BY配列
-	 * @return		array						成功時：取得データ配列　失敗時：空配列
+	 * @return		array								成功時：取得データ配列　失敗時：空配列
 	 */
 	function simpleSQL($sql_str, $where_arr = array(), $order_arr = array()) {
 
 		// 初期化
-		$where = $order = "";
 		$rows = array();
 
-		// where句作成
-		foreach ($where_arr as $key => $value) {
-			if ("" != $where) {
-				$where .= " AND ";
-			} else {
-				$where .= " WHERE ";
-			}
-			if (NULL === $value) {
-				$where .= $key . " IS NULL";
-			} else {
-				$where .= $key . " = '" . $value . "'";
-			}
-		}
-
 		// order句作成
-		foreach ($order_arr as $key => $value) {
-			if ("" != $order) {
-				$order .= ", ";
-			} else {
-				$order .= " ORDER BY ";
-			}
-			$order .= $key . " " . $value;
-		}
+		$order = $this->makeOrder($order_arr);
 
 		// sql文作成
-		$sql = $sql_str . $where . $order . ";";
+		$sql = $sql_str . $order . ";";
+
+		// プリペアドステートメント作成開始
+		$stmt = $this->database->prepare($sql);
+		if (0 != count($where_arr)) {
+			$args = $this->makeBind($where_arr);
+			call_user_func_array(array($stmt, 'bind_param'), $args);
+			//$stmt->bind_param($args);
+		}
 		// 実行
-		$result = mysqli_query($this->database, $sql);
+		$stmt->execute();
+		$hits = $this->fetchAll($stmt);
 
 		// 1件以上データがあるとき
-		if (0 != $result->num_rows) {
+		if (0 != count($hits)) {
 			// データを取り出して配列に格納
-			while ($row = $result->fetch_assoc()) {
-				$rows[] = $row;
-			}
+			$rows = $hits;
 		}
+
+		$stmt->close();
 
 		return $rows;
 	}
@@ -113,53 +100,41 @@ class DatabaseAccess {
 	 * シンプルセレクトメソッド（IDの値がキーになった版：中身はほぼsimpleSQLと同様）
 	 * 汎用的なセレクト文
 	 * @param		str		$sql				SQL文
-	 * @param		str		$keyname			ID名("user_id"や"content_id"等)
+	 * @param		str		$key_name			ID名("user_id"や"content_id"等)
 	 * @param		arr		$where_arr			WHERE配列
 	 * @param		arr		$order_arr			ORDER BY配列
 	 * @return		array						成功時：取得データ配列　失敗時：空配列
 	 */
-	function simpleSQLIdInKey($sql_str, $keyname, $where_arr = array(), $order_arr = array()) {
+	function simpleSQLIdInKey($sql_str, $key_name, $where_arr = array(), $order_arr = array()) {
 		
 		// 初期化
-		$where = $order = "";
 		$rows = array();
-		
-		// where句作成
-		foreach ($where_arr as $key => $value) {
-			if ("" != $where) {
-				$where .= " AND ";
-			} else {
-				$where .= " WHERE ";
-			}
-			if (NULL === $value) {
-				$where .= $key . " IS NULL";
-			} else {
-				$where .= $key . " = '" . $value . "'";
-			}
-		}
-		
+
 		// order句作成
-		foreach ($order_arr as $key => $value) {
-			if ("" != $order) {
-				$order .= ", ";
-			} else {
-				$order .= " ORDER BY ";
-			}
-			$order .= $key . " " . $value;
-		}
-		
+		$order = $this->makeOrder($order_arr);
+
 		// sql文作成
-		$sql = $sql_str . $where . $order . ";";
-		// 実行
-		$result = mysqli_query($this->database, $sql);
-		
-		// 1件以上データがあるとき
-		if (0 != $result->num_rows) {
-			// データを取り出して配列に格納
-			while ($row = $result->fetch_assoc()) {
-				$rows[$row[$keyname]] = $row;
-			}
+		$sql = $sql_str . $order . ";";
+
+		// プリペアドステートメント作成開始
+		$stmt = $this->database->prepare($sql);
+		if (0 != count($where_arr)) {
+			$args = $this->makeBind($where_arr);
+			call_user_func_array(array($stmt, 'bind_param'), $args);
+			//$stmt->bind_param($args);
 		}
+
+		// 実行
+		$stmt->execute();
+		$hits = $this->fetchAllIdInKey($stmt, $key_name);
+
+		// 1件以上データがあるとき
+		if (0 != count($hits)) {
+			// データを取り出して配列に格納
+			$rows = $hits;
+		}
+
+		$stmt->close();
 		
 		return $rows;
 	}
@@ -176,44 +151,36 @@ class DatabaseAccess {
 	function simpleSelect($tblname, $where_arr = array(), $order_arr = array()) {
 
 		// 初期化
-		$where = $order = "";
 		$rows = array();
 
-		foreach ($where_arr as $key => $value) {
-			if ("" != $where) {
-				$where .= " AND ";
-			} else {
-				$where .= "WHERE ";
-			}
-			if (NULL === $value) {
-				$where .= $key . " IS NULL";
-			} else {
-				$where .= $key . " = '" . $value . "'";
-			}
-		}
+		// where句作成
+		$where = $this->makeWhere($where_arr);
 
 		// order句作成
-		foreach ($order_arr as $key => $value) {
-			if ("" != $order) {
-				$order .= ", ";
-			} else {
-				$order .= "ORDER BY ";
-			}
-			$order .= $key . " " . $value;
-		}
+		$order = $this->makeOrder($order_arr);
 
 		// sql文作成
-		$sql = "SELECT * FROM $tblname $where $order";
+		$sql = "SELECT * FROM " . $tblname . $where . $order . ";";
+
+		// プリペアドステートメント作成開始
+		$stmt = $this->database->prepare($sql);
+		if (0 != count($where_arr)) {
+			$args = $this->makeBind($where_arr);
+			call_user_func_array(array($stmt, 'bind_param'), $args);
+			//$stmt->bind_param($args);
+		}
+
 		// 実行
-		$result = mysqli_query($this->database, $sql);
+		$stmt->execute();
+		$hits = $this->fetchAll($stmt);
 
 		// 1件以上データがあるとき
-		if (0 != $result->num_rows) {
+		if (0 != count($hits)) {
 			// データを取り出して配列に格納
-			while ($row = $result->fetch_assoc()) {
-				$rows[] = $row;
-			}
+			$rows = $hits;
 		}
+
+		$stmt->close();
 
 		return $rows;
 	}
@@ -223,53 +190,44 @@ class DatabaseAccess {
 	 * シンプルセレクトメソッド（IDの値がキーになった版：中身はほぼsimpleSelectと同様）
 	 * 汎用的なセレクト文
 	 * @param		str		$tblname			テーブル名
-	 * @param		str		$keyname			ID名("user_id"や"content_id"等)
+	 * @param		str		$key_name			ID名("user_id"や"content_id"等)
 	 * @param		arr		$where_arr			WHERE配列
 	 * @param		arr		$order_arr			ORDER BY配列
 	 * @return		array						成功時：取得データ配列　失敗時：空配列
 	 */
-	function simpleSelectIdInKey($tblname, $keyname, $where_arr = array(), $order_arr = array()) {
+	function simpleSelectIdInKey($tblname, $key_name, $where_arr = array(), $order_arr = array()) {
 
 		// 初期化
-		$where = $order = "";
 		$rows = array();
 
 		// where句作成
-		foreach ($where_arr as $key => $value) {
-			if ("" != $where) {
-				$where .= " AND ";
-			} else {
-				$where .= "WHERE ";
-			}
-			if (NULL === $value) {
-				$where .= $key . " IS NULL";
-			} else {
-				$where .= $key . " = '" . $value . "'";
-			}
-		}
+		$where = $this->makeWhere($where_arr);
 
 		// order句作成
-		foreach ($order_arr as $key => $value) {
-			if ("" != $order) {
-				$order .= ", ";
-			} else {
-				$order .= "ORDER BY ";
-			}
-			$order .= $key . " " . $value;
-		}
+		$order = $this->makeOrder($order_arr);
 
 		// sql文作成
-		$sql = "SELECT * FROM $tblname $where $order";
+		$sql = "SELECT * FROM " . $tblname . $where . $order . ";";
+
+		// プリペアドステートメント作成開始
+		$stmt = $this->database->prepare($sql);
+		if (0 != count($where_arr)) {
+			$args = $this->makeBind($where_arr);
+			call_user_func_array(array($stmt, 'bind_param'), $args);
+			//$stmt->bind_param($args);
+		}
+
 		// 実行
-		$result = $this->database->query($sql);
+		$stmt->execute();
+		$hits = $this->fetchAllIdInKey($stmt, $key_name);
 
 		// 1件以上データがあるとき
-		if (0 != $result->num_rows) {
+		if (0 != count($hits)) {
 			// データを取り出して配列に格納
-			while ($row = $result->fetch_assoc()) {
-				$rows[$row[$keyname]] = $row;
-			}
+			$rows = $hits;
 		}
+
+		$stmt->close();
 
 		return $rows;
 	}
@@ -298,94 +256,50 @@ class DatabaseAccess {
 					$values_str .= ", ";
 				}
 				$insert_str .= $key;
-				if (NULL !== $value) {
-					$values_str .= "'" . $this->database->real_escape_string($value) . "'";
-				} else {
-					$values_str .= "NULL";
-				}
+				$values_str .= "?";
+				$sql_param[] = $data[$key];
 			}
+
+			// sql文の作成
+			$sql = 'INSERT INTO ' . $tblname . ' (' . $insert_str . ') values (' . $values_str . ');';
 
 			// 自動コミットをOFF
 			$this->database->autocommit(FALSE);
 
-			// sql文の作成
-			$sql = 'INSERT INTO ' . $tblname . ' (' . $insert_str . ') values (' . $values_str . ');';
 			// 実行
-			$result = mysqli_query($this->database, $sql);
+			$stmt = $this->database->prepare($sql);
+			if (0 != count($sql_param)) {
+				$args = $this->makeBind($sql_param);
+				call_user_func_array(array($stmt, 'bind_param'), $args);
+			}
+			$stmt->execute();
 
-			if (1 != $this->database->affected_rows) {
+			$err = $stmt->error;
+
+			if (1 != $stmt->affected_rows) {
 				// 影響のあった行が1行でないならばロールバック
 				$this->database->rollback();
-				error_log("[" . date("Y-m-d h:i:s") . "]simpleInsert失敗 sql文:" . $sql . "　エラー文: " . mysqli_error($this->database) . "\n", 3, LOG_PATH);
+				error_log("[" . date("Y-m-d h:i:s") . "]simpleInsert失敗 sql文:" . $sql . "　エラー文: " . $err . "\n", 3, LOG_PATH);
 			} else {
 				// 影響のあった行が1行ならばコミット
 				$this->database->commit();
 				$return_flg = true;
 			}
+
+			$stmt->close();
 		}
+		
 		return $return_flg;
-	}
-
-
-	/**
-	 * シンプルインサートメソッド（返り値がIDになった版：中身はほぼsimpleSelectと同様）
-	 * 汎用的なインサート文
-	 * @param		str		$tblname				テーブル名
-	 * @param		arr		$data					登録するデータ
-	 * @return		int							0：インサート失敗　1~：インサート成功・ID値
-	 */
-	function simpleInsertReturnId($tblname, $data = array()) {
-
-		// 初期化
-		$insert_str = $values_str = "";
-		$sql_param = array();
-		$return = 0;
-
-		// インサート内容があるか
-		if (0 != count($data)) {
-			// データ内容の作成
-			foreach ($data as $key => $value) {
-				if ("" != $insert_str) {
-					$insert_str .= ", ";
-					$values_str .= ", ";
-				}
-				$insert_str .= $key;
-				if (NULL !== $value) {
-					$values_str .= "'" . $this->database->real_escape_string($value) . "'";
-				} else {
-					$values_str .= "NULL";
-				}
-			}
-
-			// 自動コミットをOFF
-			$this->database->autocommit(FALSE);
-
-			// sql文の作成
-			$sql = 'INSERT INTO ' . $tblname . ' (' . $insert_str . ') values (' . $values_str . ');';
-			// 実行
-			$result = mysqli_query($this->database, $sql);
-
-			if (1 != $this->database->affected_rows) {
-				// 影響のあった行が1行でないならばロールバック
-				$this->database->rollback();
-				error_log("[" . date("Y-m-d h:i:s") . "]simpleInsert失敗 sql文:" . $sql . "　エラー文: " . mysqli_error($this->database) . "\n", 3, LOG_PATH);
-			} else {
-				// 影響のあった行が1行ならばコミット
-				$this->database->commit();
-				$return = mysqli_insert_id($this->database);
-			}
-		}
-		return $return;
 	}
 
 
 	/**
 	 * シンプルアップデートメソッド
 	 * 汎用的なアップデート文
-	 * @param		str		$tblname				テーブル名
+	 * @param		str		$tblname			テーブル名
 	 * @param		arr		$data					登録するデータ
-	 * @param		arr		$where_arr				WHERE配列
-	 * @return		bool							true：インサート成功　false：インサート失敗
+	 * @param		arr		$where_arr		WHERE配列
+	 * @return		bool							true：アップデート成功　false：アップデート失敗
 	 */
 	function simpleUpdate($tblname, $data = array(), $where_arr = array()) {
 
@@ -394,22 +308,6 @@ class DatabaseAccess {
 		$update_str = "";
 		$return_flg = false;
 
-		if (0 != count($where_arr)) {
-			// where句作成
-			foreach ($where_arr as $key => $value) {
-				if ("" != $where) {
-					$where .= " AND ";
-				} else {
-					$where .= " WHERE ";
-				}
-				if (NULL !== $value) {
-					$where .= $key . " = '" . $this->database->real_escape_string($value) . "'";
-				} else {
-					$where .= $key . " IS NULL";
-				}
-			}
-		}
-
 		// アップデート内容があるか
 		if (0 != count($data)) {
 			// データ内容の作成
@@ -417,48 +315,52 @@ class DatabaseAccess {
 				if ("" != $update_str) {
 					$update_str .= ", ";
 				}
-				if (NULL !== $value) {
-					$update_str .= $key . " = '" . $this->database->real_escape_string($value) . "'";
-				} else {
-					$update_str .= $key . " = NULL";
-				}
+				$update_str .= $key . " = ?";
+				$sql_param[] = $data[$key];
 			}
 
-			// 自動コミットをOFF
-			$this->database->autocommit(FALSE);
+			if (0 != count($where_arr)) {
+				// where句作成
+				foreach ($where_arr as $key => $value) {
+					if ("" != $where) {
+						$where .= " AND ";
+					} else {
+						$where .= " WHERE ";
+					}
+					$where .= $key . " = ?";
+					$sql_param[] = $where_arr[$key];
+				}
+			}
 
 			// sql文の作成
 			$sql = 'UPDATE ' . $tblname . ' SET ' . $update_str . $where . ';';
 
-			// 実行
-			$result = mysqli_query($this->database, $sql);
+			// 自動コミットをOFF
+			$this->database->autocommit(FALSE);
 
-			if (1 != $this->database->affected_rows) {
-				// 影響のあった行が1行でない場合
-				if (0 == $this->database->affected_rows) {
-					// 0行（更新無しまたはWHERE区に当てはまる行がなかった場合）、WHERE区に当てはまる行があるか確認
-					$sql = "SELECT * FROM " . $tblname . $where;
-					// 実行
-					$result2 = $this->database->query($sql);
-					if (0 != $result2->num_rows) {
-						// 更新なし
-						$return_flg = true;
-					} else {
-						// WHERE区に当てはまる行が無い場合(クエリ失敗)ロールバック
-						$this->database->rollback();
-						error_log("[" . date("Y-m-d h:i:s") . "]simpleUpdate失敗 sql文:" . $sql . "　エラー文: " . mysqli_error($this->database) . "\n", 3, LOG_PATH);
-					}
-				} else {
-					// クエリ失敗の場合ロールバック
-					$this->database->rollback();
-					error_log("[" . date("Y-m-d h:i:s") . "]simpleUpdate失敗 sql文:" . $sql . "　エラー文: " . mysqli_error($this->database) . "\n", 3, LOG_PATH);
-				}
+			// 実行
+			$stmt = $this->database->prepare($sql);
+			if (0 != count($sql_param)) {
+				$args = $this->makeBind($sql_param);
+				call_user_func_array(array($stmt, 'bind_param'), $args);
+			}
+			$stmt->execute();
+
+			$err = $stmt->error;
+
+			if (1 != $stmt->affected_rows) {
+				// クエリ失敗の場合ロールバック
+				$this->database->rollback();
+				error_log("[" . date("Y-m-d h:i:s") . "]simpleUpdate失敗 sql文:" . $sql . "　エラー文: " . $err . "\n", 3, LOG_PATH);
 			} else {
 				// 影響のあった行が1行ならばコミット
 				$this->database->commit();
 				$return_flg = true;
 			}
+
+			$stmt->close();
 		}
+
 		return $return_flg;
 	}
 
@@ -484,31 +386,243 @@ class DatabaseAccess {
 				} else {
 					$where .= " WHERE ";
 				}
-				$where .= $key . " = '" . $this->database->real_escape_string($value) . "'";
+				$where .= $key . " = ?";
+				$sql_param[] = $where_arr[$key];
 			}
 		}
-
-
-		// 自動コミットをOFF
-		$this->database->autocommit(FALSE);
 
 		// sql文の作成
 		$sql = 'DELETE FROM ' . $tblname . $where . ';';
 
-		// 実行
-		$result = mysqli_query($this->database, $sql);
+		// 自動コミットをOFF
+		$this->database->autocommit(FALSE);
 
-		if (mysqli_error($this->database)) {
-			// エラーならばロールバック
+		// 実行
+		$stmt = $this->database->prepare($sql);
+		if (0 != count($sql_param)) {
+			$args = $this->makeBind($sql_param);
+			call_user_func_array(array($stmt, 'bind_param'), $args);
+		}
+		$stmt->execute();
+
+		$err = $stmt->error;
+
+		if (1 != $stmt->affected_rows) {
+			// 影響のあった行が1行でないならばロールバック
 			$this->database->rollback();
-			error_log("[" . date("Y-m-d h:i:s") . "]simpleDelete失敗 sql文:" . $sql . "　エラー文: " . mysqli_error($this->database) . "\n", 3, LOG_PATH);
+			error_log("[" . date("Y-m-d h:i:s") . "]simpleDelete失敗 sql文:" . $sql . "　エラー文: " . $err . "\n", 3, LOG_PATH);
 		} else {
-			// エラーが無ければコミット
+			// 影響のあった行が1行ならばコミット
 			$this->database->commit();
 			$return_flg = true;
 		}
 
+		$stmt->close();
+
 		return $return_flg;
+	}
+
+
+	/**
+	 * シンプルデリートメソッド(複数行削除)
+	 * 汎用的なデリート文
+	 * @param		str		$tblname				テーブル名
+	 * @param		arr		$where_arr				WHERE配列
+	 * @return		bool							true：インサート成功　false：インサート失敗
+	 */
+	function simpleMultiDelete($tblname, $where_arr = array()) {
+
+		// 初期化
+		$where = "";
+		$return_flg = false;
+
+		if (0 != count($where_arr)) {
+			// where句作成
+			foreach ($where_arr as $key => $value) {
+				if ("" != $where) {
+					$where .= " AND ";
+				} else {
+					$where .= " WHERE ";
+				}
+				$where .= $key . " = ?";
+				$sql_param[] = $where_arr[$key];
+			}
+		}
+
+		// sql文の作成
+		$sql = 'DELETE FROM ' . $tblname . $where . ';';
+
+		// 自動コミットをOFF
+		$this->database->autocommit(FALSE);
+
+		// 実行
+		$stmt = $this->database->prepare($sql);
+		if (0 != count($sql_param)) {
+			$args = $this->makeBind($sql_param);
+			call_user_func_array(array($stmt, 'bind_param'), $args);
+		}
+		$stmt->execute();
+
+		$err = $stmt->error;
+
+		if ($err) {
+			// エラーがあればロールバック
+			$this->database->rollback();
+			error_log("[" . date("Y-m-d h:i:s") . "]simpleDelete失敗 sql文:" . $sql . "　エラー文: " . $err . "\n", 3, LOG_PATH);
+		} else {
+			// エラーがなければコミット
+			$this->database->commit();
+			$return_flg = true;
+		}
+
+		$stmt->close();
+
+		return $return_flg;
+	}
+
+
+	/**
+	 * SELECT句作成メソッド
+	 * @param		arr		$select_arr	SELECT配列
+	 * @return	str		$select			SELECT文
+	 */
+	function makeSelect($select_arr = array()) {
+		// 初期化
+		$select = "";
+
+		// SELECT句作成
+		foreach ($select_arr as $key => $value) {
+			if ("" != $select) {
+				$select .= "SELECT ";
+			} else {
+				$select .= ", ";
+			}
+			$select .= $key;
+		}
+
+		return $select;
+	}
+
+
+	/**
+	 * WHERE句作成メソッド
+	 * @param		arr		$where_arr	WHERE配列
+	 * @return	str		$where			WHERE文
+	 */
+	function makeWhere($where_arr = array()) {
+		// 初期化
+		$where = "";
+
+		// WHERE句作成
+		foreach ($where_arr as $key => $value) {
+			if ("" != $where) {
+				$where .= " AND ";
+			} else {
+				$where .= " WHERE ";
+			}
+			$where .= $key . " = ?";
+		}
+
+		return $where;
+	}
+
+
+	/**
+	 * ORDER句作成メソッド
+	 * @param		arr		$order_arr	ORDER配列
+	 * @return	str		$order			ORDER文
+	 */
+	function makeOrder($order_arr = array()) {
+		// 初期化
+		$order = "";
+
+		foreach ($order_arr as $key => $value) {
+			if ("" != $order) {
+				$order .= ", ";
+			} else {
+				$order .= " ORDER BY ";
+			}
+			$order .= $key . " " . $value;
+		}
+
+		return $order;
+	}
+
+
+	/**
+	 * バインド配列作成メソッド
+	 * @param		arr		$param_arr	パラメータ配列
+	 */
+	function makeBind(&$param_arr) {
+
+		$args = array("");
+		
+		foreach($param_arr as $key => $param){
+			if (is_int($param)) {
+				$args[0] .= "i";
+			} elseif (is_double($param)) {
+				$args[0] .= "d";
+			} else {
+				if (strpos($param, "\0") === false) {
+					$args[0] .= "s";
+					$param = (string) $param;
+				} else {
+					$args[0] .= "b";
+				}
+			}
+			$args[] = &$param_arr[$key];
+		}
+
+		return $args;
+	}
+
+
+	/**
+	 * プリペアドステートメント利用時の結果全取得メソッド
+	 * @param		obj		$stmt				プリペアドステートメント
+	 * @return	arr		$hits				結果配列
+	 */
+	function fetchAll(& $stmt) {
+		$hits = array();
+		$params = array();
+		$meta = $stmt->result_metadata();
+		while ($field = $meta->fetch_field()) {
+				$params[] = &$row[$field->name];
+		}
+		call_user_func_array(array($stmt, 'bind_result'), $params);
+		while ($stmt->fetch()) {
+			$c = array();
+			foreach($row as $key => $val) {
+				$c[$key] = $val;
+			}
+			$hits[] = $c;
+		}
+		return $hits;
+	}
+
+
+	/**
+	 * プリペアドステートメント利用時の結果全取得メソッド
+	 * @param		obj		$stmt				プリペアドステートメント
+	 * @param		str		$key_name		ID名("user_id"や"content_id"等)
+	 * @return	arr		$hits				結果配列
+	 */
+	function fetchAllIdInKey(& $stmt, $key_name) {
+		$hits = array();
+		$params = array();
+		$meta = $stmt->result_metadata();
+		while ($field = $meta->fetch_field()) {
+				$params[] = &$row[$field->name];
+		}
+		call_user_func_array(array($stmt, 'bind_result'), $params);
+		while ($stmt->fetch()) {
+			$c = array();
+			foreach($row as $key => $val) {
+				$c[$key] = $val;
+			}
+			$hits[$c[$key_name]] = $c;
+		}
+		return $hits;
 	}
 
 }

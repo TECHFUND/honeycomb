@@ -1,0 +1,1 @@
+ALTER TABLE clients ADD landline varchar(16) AFTER tel;

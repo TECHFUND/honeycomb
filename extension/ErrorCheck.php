@@ -9,9 +9,9 @@
  * Developed on PHP versions 5.2.5
  *
  * @category	extension
- * @package		techfund
+ * @package		TECHFUND
  * @author	 	松山 雄太 <yuta_matsuyama@techfund.jp>
- * @copyright	techfund
+ * @copyright	TECHFUND
  * @license		別紙契約内容を参照
  * @version		$Id$
  * @link		http://techfund.jp/
@@ -20,7 +20,7 @@
  * @deprecated
  *
  * 修正履歴:
- * 2015/03/10 新規作成
+ * 2016/02/01 新規作成
  */
 
 /**
@@ -38,28 +38,64 @@ class ErrorCheck {
 
 		$err_arr = array();
 
-		/* ユーザー登録 */
-		if ("" == $post['mail_address']) {
-			$err_arr['mail_address'] = "メールアドレスを入力してください。";
-		} elseif (!preg_match(MAIL_REGEX, $post['mail_address'])) {
+		// ユーザー名　入力　50文字以内
+		if ("" == $post['user_name']) {
+			$err_arr['user_name'] = "お名前を入力してください。";
+		} elseif (50 < mb_strlen($post['user_name'])) {
+			$err_arr['user_name'] = "お名前は50文字以内で入力してください。";
+		}
+
+		// 性別　入力　性別配列にマッチ
+		if ("" == $post['sex']) {
+			$err_arr['sex'] = "性別を選択してください。";
+		} elseif (array_key_exists($post['sex'], $sex_arr)) {
+			$err_arr['sex'] = "性別を正しく選択してください。";
+		}
+
+		// 住所　入力　50文字チェック
+		if ("" == $post['address']) {
+			$err_arr['address'] = "住所を入力してください。";
+		} elseif (50 < mb_strlen($post['address'])) {
+			$err_arr['address'] = "住所は50文字以内で入力してください。";
+		}
+
+		// 携帯番号　入力　電話番号チェック 8~16文字
+		if ("" == $post['tel']) {
+			$err_arr['tel'] = "携帯番号を入力してください。";
+		} elseif (!preg_match('/^[0-9,\+,-]+$/', $post['tel'])) {
+			$err_arr['tel'] = "携帯番号を正しく入力してください（半角数字もしくはプラス,ハイフン以外の入力はできません）。";
+		} elseif (mb_strlen($post['tel']) < 8 or 16 < mb_strlen($post['tel'])) {
+			$err_arr['tel'] = "携帯番号を正しく入力してください。";
+		}
+
+		// メールアドレス　入力　メールアドレスチェック　！一意　256文字
+		if ("" == $post['email']) {
+			$err_arr['email'] = "メールを入力してください。";
+		} elseif (!preg_match(MAIL_REGEX, $post['email'])) {
 			// PCのアドレスではないと判別されたとき
-			$err_arr['mail_address'] = "メールアドレスを正しく入力してください。";
+			$err_arr['email'] = "メールを正しく入力してください。";
+		} elseif (256 < mb_strlen($post['email'])) {
+			$err_arr['email'] = "メールを正しく入力してください。";
 		} else {
 			// 登録済みかチェック
-			$row = $db->simpleSelect("user_tbl", array("mail_address" => $post['mail_address']));
+			$row = $db->simpleSelect("users", array("email" => $post['email']));
 
 			if (0 != count($row)) {
-				$err_arr['mail_address'] = "このメールアドレスは既に登録されています。";
+				$err_arr['email'] = "メールを正しく入力してください。";
 			}
 		}
 
-		// パスワード　入力　数値　4以上16文字以内
+		// パスワード　入力　数値　8以上16文字以内
 		if (!$post['password']) {
 			$err_arr['password'] = "パスワードを入力してください。";
-		} elseif (!preg_match("/^[0-9a-zA-Z]+$/", $post['password'])) {
+		} elseif (!preg_match("/([0-9].*[a-zA-Z]|[a-zA-Z].*[0-9])/", $post['password'])) {
 			$err_arr['password'] = "パスワードを正しく入力してください。";
-		} elseif (4 > mb_strlen($post['password']) or 16 < mb_strlen($post['password'])) {
-			$err_arr['password'] = "パスワードは4文字以上16文字以内で入力してください。";
+		} elseif (mb_strlen($post['password']) < 8 or 16 < mb_strlen($post['password'])) {
+			$err_arr['password'] = "パスワードは8文字以上16文字以内で入力してください。";
+		}
+
+		if (!$post['terms'] or 1 != $post['terms']) {
+			$err_arr['terms'] = "利用規約への同意が必要です。";
 		}
 
 		return $err_arr;
@@ -67,50 +103,45 @@ class ErrorCheck {
 
 
 	/**
-	 * パスワード変更チェックメソッド
+	 * オーナー登録時エラーチェックメソッド
 	 * @param	arr		$post					登録内容
+	 * @param	ins		$db						DBアクセス
 	 * @return	array							成功：空配列　失敗：エラー配列
 	 */
-	function errCheckPassword($post) {
+	function errCheckRegistClient($post, $db, $account_type_arr) {
 
 		$err_arr = array();
 
-		// パスワード　入力　数値　4以上16文字以内　再入力
-		if (!$post['password']) {
-			$err_arr['password'] = "パスワードを入力してください。";
-		} elseif (!preg_match("/^[0-9a-zA-Z]+$/", $post['password'])) {
-			$err_arr['password'] = "パスワードを正しく入力してください。";
-		} elseif (4 > mb_strlen($post['password']) or 16 < mb_strlen($post['password'])) {
-			$err_arr['password'] = "パスワードは4文字以上16文字以内で入力してください。";
-		} elseif ($post['password'] != $post['re_password']) {
-			$err_arr['password'] = "パスワードが一致しません。";
+		// 店舗名　入力　50文字以内
+		if ("" == $post['client_name']) {
+			$err_arr['client_name'] = "店舗名を入力してください。";
+		} elseif (50 < mb_strlen($post['client_name'])) {
+			$err_arr['client_name'] = "店舗名は50文字以内で入力してください。";
 		}
 
-		return $err_arr;
-	}
-
-
-	/**
-	 * 案件登録時エラーチェックメソッド
-	 * @param	arr		$post					登録内容
-	 * @return	array							成功：空配列　失敗：エラー配列
-	 */
-	function errCheckNewRequest($post) {
-
-		$err_arr = array();
-
-		// タイトル　入力　100文字以内
-		if ("" == $post['title']) {
-			$err_arr['title'] = "タイトルを入力してください。";
-		} elseif (100 < mb_strlen($post['title'])) {
-			$err_arr['title'] = "タイトルは100文字以内で入力してください。";
+		// 説明　入力　800文字以内
+		if ("" == $post['description']) {
+			$err_arr['description'] = "説明を入力してください。";
+		} elseif (800 < mb_strlen($post['description'])) {
+			$err_arr['description'] = "説明は800文字以内で入力してください。";
 		}
 
-		// 仕事内容　入力　800文字以内
-		if ("" == $post['body']) {
-			$err_arr['body'] = "仕事内容を入力してください。";
-		} elseif (800 < mb_strlen($post['body'])) {
-			$err_arr['body'] = "仕事内容は800文字以内で入力してください。";
+		// 携帯電話　入力　電話番号チェック 8~16文字
+		if ("" == $post['tel']) {
+			$err_arr['tel'] = "携帯電話番号を入力してください。";
+		} elseif (!preg_match('/^[0-9,\+,-]+$/', $post['tel'])) {
+			$err_arr['tel'] = "携帯電話番号を正しく入力してください（半角数字もしくはプラス,ハイフン以外の入力はできません）。";
+		} elseif (mb_strlen($post['tel']) < 8 or 16 < mb_strlen($post['tel'])) {
+			$err_arr['tel'] = "携帯電話番号を正しく入力してください。";
+		}
+
+		// 固定電話　入力　電話番号チェック 8~16文字
+		if ("" == $post['landline']) {
+			$err_arr['landline'] = "固定電話番号を入力してください。";
+		} elseif (!preg_match('/^[0-9,\+,-]+$/', $post['landline'])) {
+			$err_arr['landline'] = "固定電話番号を正しく入力してください（半角数字もしくはプラス,ハイフン以外の入力はできません）。";
+		} elseif (mb_strlen($post['landline']) < 8 or 16 < mb_strlen($post['landline'])) {
+			$err_arr['landline'] = "固定電話番号を正しく入力してください。";
 		}
 
 		// 郵便番号　郵便番号チェック
@@ -120,339 +151,695 @@ class ErrorCheck {
 			$err_arr['zipcode'] = "郵便番号を正しく入力してください。";
 		}
 
-		// 日程　数値　日付　今日以降の日付　9時〜24時 00分〜59分
-		if ($post['start_dt']) {
-			list($start_date, $start_time) = explode(" ", $post['start_dt']);
-			list($year, $month, $day)  = explode("-", $start_date);
-			list($hour, $minute, $second)  = explode(":", $start_time);
-			if (strtotime(date('Y-m-d')) >= strtotime($post['start_dt'])) {
-				$err_arr['start_dt'] = "日程は今日以降の日付を選択してください。";
-			}
-			if (!checkdate($month, $day, $year)) {
-				$err_arr['start_dt'] = "日程は存在する日付を選択してください。";
-			}
-			if (!preg_match("/^[0-9]+$/", $year)) {
-				$err_arr['start_dt'] = "日程を正しく選択してください。";
-			}
-			if (!preg_match("/^[0-9]+$/", $month)) {
-				$err_arr['start_dt'] = "日程を正しく選択してください。";
-			}
-			if (!preg_match("/^[0-9]+$/", $day)) {
-				$err_arr['start_dt'] = "日程を正しく選択してください。";
-			}
-			if (!preg_match("/^[0-9]+$/", $hour)) {
-				$err_arr['start_dt'] = "時間帯を正しく入力してください。";
-			}
-			if (9 > intval($hour) and 24 < intval($hour)) {
-				$err_arr['start_dt'] = "時間帯を正しく入力してください。";
-			}
-			if (!preg_match("/^[0-9]+$/", $minute)) {
-				$err_arr['start_dt'] = "時間帯を正しく入力してください。";
-			}
-			if (0 > intval($minute) and 59 < intval($minute)) {
-				$err_arr['start_dt'] = "時間帯を正しく入力してください。";
+		// 住所　入力　50文字チェック
+		if ("" == $post['address']) {
+			$err_arr['address'] = "住所を入力してください。";
+		} elseif (50 < mb_strlen($post['address'])) {
+			$err_arr['address'] = "住所は50文字以内で入力してください。";
+		}
+
+		// メールアドレス　入力　メールアドレスチェック　！一意　256文字
+		if ("" == $post['email']) {
+			$err_arr['email'] = "メールを入力してください。";
+		} elseif (!preg_match(MAIL_REGEX, $post['email'])) {
+			// 正しいメールアドレスではないと判別されたとき
+			$err_arr['email'] = "メールを正しく入力してください。";
+		} elseif (256 < mb_strlen($post['email'])) {
+			$err_arr['email'] = "メールを正しく入力してください。";
+		} else {
+			// 登録済みかチェック
+			$row = $db->simpleSelect("clients", array("email" => $post['email']));
+			if (0 != count($row)) {
+				$err_arr['email'] = "メールを正しく入力してください。";
 			}
 		}
 
-		// 予算　入力　数値　6桁以内　0以上
-		if ("" === $post['price']) {
-			$err_arr['price'] = "予算を入力してください。";
+		// パスワード　入力　数値　8以上16文字以内
+		if (!$post['password']) {
+			$err_arr['password'] = "パスワードを入力してください。";
+		} elseif (!preg_match("/([0-9].*[a-zA-Z]|[a-zA-Z].*[0-9])/", $post['password'])) {
+			$err_arr['password'] = "パスワードを正しく入力してください。";
+		} elseif (mb_strlen($post['password']) < 8 or 16 < mb_strlen($post['password'])) {
+			$err_arr['password'] = "パスワードは8文字以上16文字以内で入力してください。";
+		} elseif ($post['password'] != $post['password_re']) {
+			$err_arr['password'] = "パスワードが一致しません。";
+		}
+
+		// 営業時間(開始)　時間
+		if ($post['business_hours_start']) {
+			if (!preg_match(PREG_TIME, $post["business_hours_start"])) {
+				$err_arr['business_hours_start'] = "営業時間を正しく選択してください。";
+			}
+		}
+
+		// 営業時間(終了)　時間
+		if ($post['business_hours_end']) {
+			if (!preg_match(PREG_TIME, $post["business_hours_end"])) {
+				$err_arr['business_hours_end'] = "営業時間を正しく選択してください。";
+			}
+		}
+
+		// 受付可能時間(開始)　時間
+		if ($post['accepted_hours_start']) {
+			if (!preg_match(PREG_TIME, $post["accepted_hours_start"])) {
+				$err_arr['accepted_hours_start'] = "受付可能時間を正しく選択してください。";
+			}
+		}
+
+		// 受付可能時間(終了)　時間
+		if ($post['accepted_hours_end']) {
+			if (!preg_match(PREG_TIME, $post["accepted_hours_end"])) {
+				$err_arr['accepted_hours_end'] = "受付可能時間を正しく選択してください。";
+			}
+		}
+
+		// 対応可能時間 数値 0~120
+		if ($post['limit_time']) {
+			if (!preg_match("/^[0-9]+$/", $post['limit_time'])) {
+				$err_arr['limit_time'] = "対応可能時間を正しく選択してください。";
+			} elseif ($post['limit_time'] < 0 or 120 < $post['limit_time']) {
+				$err_arr['limit_time'] = "対応可能時間を正しく選択してください。";
+			}
+		}
+
+		// 銀行名 50文字チェック
+		if ($post['bank_name']) {
+			if (50 < mb_strlen($post['bank_name'])) {
+				$err_arr['bank_name'] = "銀行名は50文字以内で入力してください。";
+			}
+		}
+
+		// 支店名 50文字チェック
+		if ($post['branch_name']) {
+			if (50 < mb_strlen($post['branch_name'])) {
+				$err_arr['branch_name'] = "支店名は50文字以内で入力してください。";
+			}
+		}
+
+		// 口座種別 数値 口座種別配列マッチ
+		if ($post['account_type']) {
+			if (!preg_match("/^[0-9]+$/", $post['account_type'])) {
+				$err_arr['account_type'] = "口座種別を正しく選択してください。";
+			} elseif (!array_key_exists($post['account_type'], $account_type_arr)) {
+				$err_arr['account_type'] = "口座種別を正しく選択してください。";
+			}
+		}
+
+		// 口座番号 数値 7桁
+		if ($post['account_number']) {
+			if (!preg_match("/^[0-9]+$/", $post['account_number'])) {
+				$err_arr['account_number'] = "口座番号を正しく入力してください。";
+			} elseif (7 != mb_strlen($post['account_number'])) {
+				$err_arr['account_number'] = "口座番号は7桁で入力してください。";
+			}
+		}
+
+		// 名義人名 50文字チェック
+		if ($post['account_name']) {
+			if (50 < mb_strlen($post['account_name'])) {
+				$err_arr['account_name'] = "名義人名は50文字以内で入力してください。";
+			}
+		}
+
+		return $err_arr;
+	}
+
+
+	/**
+	 * 揉み手登録時エラーチェックメソッド
+	 * @param	arr		$post					登録内容
+	 * @param	ins		$db						DBアクセス
+	 * @return	array							成功：空配列　失敗：エラー配列
+	 */
+	function errCheckRegistPro($post, $db) {
+
+		$err_arr = array();
+
+		// 名前　入力　50文字以内
+		if ("" == $post['pro_name']) {
+			$err_arr['pro_name'] = "名前を入力してください。";
+		} elseif (50 < mb_strlen($post['pro_name'])) {
+			$err_arr['pro_name'] = "名前は50文字以内で入力してください。";
+		}
+
+		// 携帯番号　入力　電話番号チェック 8~16文字
+		if ("" == $post['tel']) {
+			$err_arr['tel'] = "携帯番号を入力してください。";
+		} elseif (!preg_match('/^[0-9,\+,-]+$/', $post['tel'])) {
+			$err_arr['tel'] = "携帯番号を正しく入力してください（半角数字もしくはプラス,ハイフン以外の入力はできません）。";
+		} elseif (mb_strlen($post['tel']) < 8 or 16 < mb_strlen($post['tel'])) {
+			$err_arr['tel'] = "携帯番号を正しく入力してください。";
+		}
+
+		// メールアドレス　入力　メールアドレスチェック　！一意　256文字
+		if ("" == $post['email']) {
+			$err_arr['email'] = "メールを入力してください。";
+		} elseif (!preg_match(MAIL_REGEX, $post['email'])) {
+			// 正しいメールアドレスではないと判別されたとき
+			$err_arr['email'] = "メールを正しく入力してください。";
+		} elseif (256 < mb_strlen($post['email'])) {
+			$err_arr['email'] = "メールを正しく入力してください。";
+		} else {
+			// 登録済みかチェック
+			$row = $db->simpleSelect("pros", array("email" => $post['email']));
+			if (0 != count($row)) {
+				$err_arr['email'] = "メールを正しく入力してください。";
+			}
+		}
+
+		// パスワード　入力　数値　8以上16文字以内
+		if (!$post['password']) {
+			$err_arr['password'] = "パスワードを入力してください。";
+		} elseif (!preg_match("/([0-9].*[a-zA-Z]|[a-zA-Z].*[0-9])/", $post['password'])) {
+			$err_arr['password'] = "パスワードを正しく入力してください。";
+		} elseif (mb_strlen($post['password']) < 8 or 16 < mb_strlen($post['password'])) {
+			$err_arr['password'] = "パスワードは8文字以上16文字以内で入力してください。";
+		} elseif ($post['password'] != $post['password_re']) {
+			$err_arr['password'] = "パスワードが一致しません。";
+		}
+
+		// 価格　入力　数値　MAX_PRICE_DIGIT桁以内
+		if (!$post['price']) {
+			$err_arr['price'] = "価格を入力してください。";
 		} elseif (!preg_match("/^[0-9]+$/", $post['price'])) {
-			$err_arr['price'] = "予算を正しく選択してください。";
-		} elseif (6 < mb_strlen($post['price'])) {
-			$err_arr['price'] = "予算は6桁以内で入力してください。";
-		} elseif (0 > $post['price']) {
-			$err_arr['price'] = "予算を正しく入力してください。";
+			$err_arr['price'] = "価格を正しく入力してください。";
+		} elseif (MAX_PRICE_DIGIT < mb_strlen($post['price'])) {
+			$err_arr['price'] = "価格は" . MAX_PRICE_DIGIT . "桁以内で入力してください。";
 		}
 
-		// 工数　入力　数値　3桁以内　1以上
-		if (!$post['workload']) {
-			$err_arr['workload'] = "工数を入力してください。";
-		} elseif (!preg_match("/^[0-9]+$/", $post['workload'])) {
-			$err_arr['workload'] = "工数は整数で入力してください。";
-		} elseif (3 < mb_strlen($post['workload'])) {
-			$err_arr['workload'] = "工数は3桁以内で入力してください。";
-		} elseif (1 > $post['workload']) {
-			$err_arr['workload'] = "工数は1時間以上で入力してください。";
+		// 形態 選択 数値 揉み手種別配列マッチ
+		if ($post['kind']) {
+			foreach ($post['kind'] as $key => $value) {
+				if (!preg_match("/^[0-9]+$/", $value)) {
+					$err_arr['kind'] = "訪問・来店を正しく選択してください。";
+				} else {
+					if (in_array($value, $kind_arr)) {
+						$err_arr['kind'] = "訪問・来店を正しく選択してください。";
+					}
+				}
+			}
+		} else {
+			$err_arr['kind'] = "訪問・来店を選択してください。";
+		}
+
+		// 施術方法　入力　800文字以内
+		if ("" == $post['menu']) {
+			$err_arr['menu'] = "施術方法を入力してください。";
+		} elseif (800 < mb_strlen($post['menu'])) {
+			$err_arr['menu'] = "施術方法は800文字以内で入力してください。";
+		}
+
+		// 自己PR　入力　800文字以内
+		if ("" == $post['description']) {
+			$err_arr['description'] = "自己PRを入力してください。";
+		} elseif (800 < mb_strlen($post['description'])) {
+			$err_arr['description'] = "自己PRは800文字以内で入力してください。";
+		}
+
+		// 資格　0か1(フラグ)
+		foreach ($license_arr as $key => $value) {
+			if ($post['license' . $key . '_holder_flg']) {
+				if (0 != $post['license' . $key . '_holder_flg'] and 1 != $post['license' . $key . '_holder_flg']) {
+					$err_arr['license'] = "資格を正しく選択してください。";
+				}
+			}
 		}
 
 		return $err_arr;
-
 	}
 
 
 	/**
-	 * 応募時エラーチェックメソッド
+	 * 揉み手編集時エラーチェックメソッド
 	 * @param	arr		$post					登録内容
 	 * @param	ins		$db						DBアクセス
-	 * @param	int		$job_id				仕事ID
 	 * @return	array							成功：空配列　失敗：エラー配列
 	 */
-	function errCheckApply($post, $db, $job_id) {
+	function errCheckRegistProEdit($post, $db) {
 
 		$err_arr = array();
 
-		// 応募金額　入力　数値
-		if (!$post['amount']) {
-			$err_arr['amount'] = "応募金額を入力してください。";
-		} elseif (!preg_match("/^[0-9]+$/", $post['amount'])) {
-			$err_arr['amount'] = "応募金額は半角数値で入力してください。";
-		} elseif (6 < mb_strlen($post['amount'])) {
-			$err_arr['amount'] = "応募金額は6桁以内で入力してください。";
+		// 名前　入力　50文字以内
+		if ("" == $post['pro_name']) {
+			$err_arr['pro_name'] = "名前を入力してください。";
+		} elseif (50 < mb_strlen($post['pro_name'])) {
+			$err_arr['pro_name'] = "名前は50文字以内で入力してください。";
 		}
 
-		if (0 == count($err_arr)) {
-			$data = $db->simpleSelect("job_tbl", array("job_id" => $job_id));
-			if (1 == $data[0]["apply_end_flg"]) {
-				$err_arr['apply_end_flg'] = "募集が終了している案件です。";
+		// 携帯番号　入力　電話番号チェック 8~16文字
+		if ("" == $post['tel']) {
+			$err_arr['tel'] = "携帯番号を入力してください。";
+		} elseif (!preg_match('/^[0-9,\+,-]+$/', $post['tel'])) {
+			$err_arr['tel'] = "携帯番号を正しく入力してください（半角数字もしくはプラス,ハイフン以外の入力はできません）。";
+		} elseif (mb_strlen($post['tel']) < 8 or 16 < mb_strlen($post['tel'])) {
+			$err_arr['tel'] = "携帯番号を正しく入力してください。";
+		}
+
+		// メールアドレス　入力　メールアドレスチェック　！一意　256文字
+		if ("" == $post['email']) {
+			$err_arr['email'] = "メールを入力してください。";
+		} elseif (!preg_match(MAIL_REGEX, $post['email'])) {
+			// 正しいメールアドレスではないと判別されたとき
+			$err_arr['email'] = "メールを正しく入力してください。";
+		} elseif (256 < mb_strlen($post['email'])) {
+			$err_arr['email'] = "メールを正しく入力してください。";
+		}
+
+		// パスワード　入力　数値　8以上16文字以内
+		if (!$post['password']) {
+			$err_arr['password'] = "パスワードを入力してください。";
+		} elseif (!preg_match("/([0-9].*[a-zA-Z]|[a-zA-Z].*[0-9])/", $post['password'])) {
+			$err_arr['password'] = "パスワードを正しく入力してください。";
+		} elseif (mb_strlen($post['password']) < 8 or 16 < mb_strlen($post['password'])) {
+			$err_arr['password'] = "パスワードは8文字以上16文字以内で入力してください。";
+		} elseif ($post['password'] != $post['password_re']) {
+			$err_arr['password'] = "パスワードが一致しません。";
+		}
+
+		// 価格　入力　数値　MAX_PRICE_DIGIT桁以内
+		if (!$post['price']) {
+			$err_arr['price'] = "価格を入力してください。";
+		} elseif (!preg_match("/^[0-9]+$/", $post['price'])) {
+			$err_arr['price'] = "価格を正しく入力してください。";
+		} elseif (MAX_PRICE_DIGIT < mb_strlen($post['price'])) {
+			$err_arr['price'] = "価格は" . MAX_PRICE_DIGIT . "桁以内で入力してください。";
+		}
+
+		// 形態 選択 数値 揉み手種別配列マッチ
+		if ($post['kind']) {
+			foreach ($post['kind'] as $key => $value) {
+				if (!preg_match("/^[0-9]+$/", $value)) {
+					$err_arr['kind'] = "訪問・来店を正しく選択してください。";
+				} else {
+					if (in_array($value, $kind_arr)) {
+						$err_arr['kind'] = "訪問・来店を正しく選択してください。";
+					}
+				}
+			}
+		} else {
+			$err_arr['kind'] = "訪問・来店を選択してください。";
+		}
+
+		// 施術方法　入力　800文字以内
+		if ("" == $post['menu']) {
+			$err_arr['menu'] = "施術方法を入力してください。";
+		} elseif (800 < mb_strlen($post['menu'])) {
+			$err_arr['menu'] = "施術方法は800文字以内で入力してください。";
+		}
+
+		// 自己PR　入力　800文字以内
+		if ("" == $post['description']) {
+			$err_arr['description'] = "自己PRを入力してください。";
+		} elseif (800 < mb_strlen($post['description'])) {
+			$err_arr['description'] = "自己PRは800文字以内で入力してください。";
+		}
+
+		// 資格　0か1(フラグ)
+		foreach ($license_arr as $key => $value) {
+			if ($post['license' . $key . '_holder_flg']) {
+				if (0 != $post['license' . $key . '_holder_flg'] and 1 != $post['license' . $key . '_holder_flg']) {
+					$err_arr['license'] = "資格を正しく選択してください。";
+				}
 			}
 		}
 
 		return $err_arr;
-
 	}
 
 
 	/**
-	 * 削除時エラーチェックメソッド
-	 * @param	arr		$post					登録内容
-	 * @return	array							成功：空配列　失敗：エラー配列
-	 */
-	function errCheckJobDelete($post) {
-
-		$err_arr = array();
-
-		// 応募金額　入力　数値
-		if (!$post['job_id']) {
-			$err_arr['job_id'] = "サーバーエラーが発生しました。大変お手数ですが、数分後に再度ご登録お願いします。";
-		} elseif (!preg_match("/^[0-9]+$/", $post['job_id'])) {
-			$err_arr['job_id'] = "サーバーエラーが発生しました。大変お手数ですが、数分後に再度ご登録お願いします。";
-		}
-
-		return $err_arr;
-
-	}
-
-
-	/**
-	 * 依頼時エラーチェックメソッド
+	 * ログイン時エラーチェックメソッド
 	 * @param	arr		$post					登録内容
 	 * @param	ins		$db						DBアクセス
-	 * @param	int		$job_id				仕事ID
 	 * @return	array							成功：空配列　失敗：エラー配列
 	 */
-	function errCheckDecide($post, $db, $job_id) {
+	function errCheckLogin($post, $db) {
 
 		$err_arr = array();
 
-		// ユーザーID　入力　数値
-		if (!$post['apply_user_id']) {
-			$err_arr['apply_user_id'] = "依頼するユーザーを選択してください。";
-		} elseif (!preg_match("/^[0-9]+$/", $post['apply_user_id'])) {
-			$err_arr['apply_user_id'] = "依頼するユーザーを選択してください。";
-		}
-
-		if (0 == count($err_arr)) {
-			$data = $db->simpleSelect("apply_tbl", array("job_id" => $job_id, "apply_user_id" => $post["apply_user_id"]));
-			if (1 == $data[0]["decide_flg"]) {
-				$err_arr['apply_user_id'] = "依頼済みのユーザーです。";
+	 	// 画像認証 (表示されている場合は)入力 captchaチェック
+		if (isset($post['captcha_code'])) {
+			if ($post['captcha_code'] == '') {
+				$err_arr["captcha"] = "画像認証を入力してください。";
+			} elseif ($post['captcha_code'] != $_SESSION["securimage_code_disp"]["default"]) {
+				$err_arr["captcha"] = "入力された画像認証をご確認ください。";
 			}
 		}
 
+		// メールアドレス　入力　メールアドレスチェック　！一意　256文字
+		if ("" == $post['email']) {
+			$err_arr['email'] = "メールを入力してください。";
+		} elseif (!preg_match(MAIL_REGEX, $post['email'])) {
+			// PCのアドレスではないと判別されたとき
+			$err_arr['email'] = "メールを正しく入力してください。";
+		} elseif (256 < mb_strlen($post['email'])) {
+			$err_arr['email'] = "メールを正しく入力してください。";
+		}
+
+		// パスワード　入力　数値　8以上16文字以内
+		if (!$post['password']) {
+			$err_arr['password'] = "パスワードを入力してください。";
+		} elseif (!preg_match("/([0-9].*[a-zA-Z]|[a-zA-Z].*[0-9])/", $post['password'])) {
+			$err_arr['password'] = "パスワードを正しく入力してください。";
+		} elseif (mb_strlen($post['password']) < 8 or 16 < mb_strlen($post['password'])) {
+			$err_arr['password'] = "パスワードを正しく入力してください。";
+		}
+
+		// ログインチェック
 		if (0 == count($err_arr)) {
-			$data = $db->simpleSelect("job_tbl", array("job_id" => $job_id));
-			if (1 == $data[0]["apply_end_flg"]) {
-				$err_arr['apply_end_flg'] = "募集が終了している案件です。";
+			// ユーザー情報取得
+			$user = $db->simpleSelect("users", array("email" => $post["email"]));
+			// ユーザー登録されているか
+			if (1 != count($user)) {
+				// エラー
+				$err_arr["email"] = "メールもしくはパスワードが間違っています。";
+			} else {
+				// パスワード認証
+				if (!password_verify($post["password"], $user[0]["password"])) {
+					$err_arr["password"] = "メールもしくはパスワードが間違っています。";
+				}
 			}
 		}
 
 		return $err_arr;
-
 	}
 
 
 	/**
-	 * 完了時エラーチェックメソッド
+	 * 決済情報の登録時エラーチェックメソッド
 	 * @param	arr		$post					登録内容
 	 * @param	ins		$db						DBアクセス
-	 * @param	int		$job_id				仕事ID
 	 * @return	array							成功：空配列　失敗：エラー配列
 	 */
-	function errCheckDone($post, $db, $job_id) {
+	function errCheckPay($post, $db) {
 
 		$err_arr = array();
 
-		if (0 == count($err_arr)) {
-			$data = $db->simpleSelect("job_tbl", array("job_id" => $job_id));
-			if (1 == $data[0]["done_flg"]) {
-				$err_arr['done_flg'] = "既に完了している案件です。";
+		// カード種別 数値 カード種別配列マッチ
+		if ($post['card_type']) {
+			if (!preg_match("/^[0-9]+$/", $post['card_type'])) {
+				$err_arr['card_type'] = "カード種別を正しく選択してください。";
+			} else {
+				if (in_array($post['card_type'], $card_type_arr)) {
+					$err_arr['card_type'] = "カード種別を正しく選択してください。";
+				}
+			}
+		}
+
+		// カード番号 入力 数値チェック 14~16文字
+		if ("" == $post['card_number']) {
+			$err_arr['card_number'] = "カード番号を入力してください。";
+		} elseif (!preg_match('/^[0-9]+$/', $post['card_number'])) {
+			$err_arr['card_number'] = "カード番号は半角数字で入力してください。";
+		} elseif (mb_strlen($post['card_number']) < 14 or 16 < mb_strlen($post['card_number'])) {
+			$err_arr['card_number'] = "カード番号は14〜16桁で入力してください。";
+		}
+
+		// カード名義 入力 50文字以内
+		if ("" == $post['card_name']) {
+			$err_arr['card_name'] = "カード名義を入力してください。";
+		} elseif (50 < mb_strlen($post['card_name'])) {
+			$err_arr['card_name'] = "カード名義は50文字以内で入力してください。";
+		}
+
+		// カード有効期限(年) 数値 現在〜6年以内
+		if (!preg_match("/^[0-9]+$/", $post['card_expiration_year'])) {
+			$err_arr['card_expiration_year'] = "カード有効期限(年)を正しく選択してください。";
+		} elseif ($post['card_expiration_year'] < intval(date("Y")) or intval(date("Y", strtotime("+6 year"))) < $post['card_expiration_year']) {
+			$err_arr['card_expiration_year'] = "カード有効期限(年)を正しく選択してください。";
+		}
+
+		// カード有効期限(月) 数値 1〜12
+		if (!preg_match("/^[0-9]+$/", $post['card_expiration_month'])) {
+			$err_arr['card_expiration_month'] = "カード有効期限(月)を正しく選択してください。";
+		} elseif ($post['card_expiration_month'] < 1 or 12 < $post['card_expiration_month']) {
+			$err_arr['card_expiration_month'] = "カード有効期限(月)を正しく選択してください。";
+		}
+
+		// カードセキュリティ番号 入力 4文字以内
+		if ("" == $post['card_security_number']) {
+			$err_arr['card_security_number'] = "セキュリティ番号を入力してください。";
+		} elseif (4 < mb_strlen($post['card_security_number'])) {
+			$err_arr['card_security_number'] = "セキュリティ番号を正しく入力してください。";
+		}
+
+		// キャンペーンコード 英数字チェック 8文字以内 存在確認(DB接続)
+		if ("" != $post['pr_code']) {
+			if (!preg_match('/^[0-9a-zA-Z]+$/', $post['pr_code'])) {
+				$err_arr['pr_code'] = "キャンペーンコードは半角英数字で入力してください。";
+			} elseif (8 < mb_strlen($post['pr_code'])) {
+				$err_arr['pr_code'] = "キャンペーンコードを正しく入力してください。";
+			} else {
+				// キャンペーンコード検索
+				$pr_code = $db->simpleSelect("pr_codes", array("pr_code" => $post["pr_code"]));
+				if (1 != count($pr_code)) {
+					$err_arr['pr_code'] = "キャンペーンコードを正しく入力してください。";
+				}
 			}
 		}
 
 		return $err_arr;
+	}
 
+
+	/**
+	 * Stripe決済情報の登録時エラーチェックメソッド
+	 * @param	arr		$post					登録内容
+	 * @param	ins		$db						DBアクセス
+	 * @return	array							成功：空配列　失敗：エラー配列
+	 */
+	function errCheckPayStripe($post, $db) {
+
+		$err_arr = array();
+
+		// カード番号 入力 数値チェック 14~16文字
+		if (false == isset($_SESSION["booking"]["customer_id"])) {
+			if ("" == $post['card_number']) {
+				$err_arr['card_number'] = "カード番号を入力してください。";
+			} elseif (!preg_match('/^[0-9]+$/', $post['card_number'])) {
+				$err_arr['card_number'] = "カード番号は半角数字で入力してください。";
+			} elseif (mb_strlen($post['card_number']) < 14 or 16 < mb_strlen($post['card_number'])) {
+				$err_arr['card_number'] = "カード番号は14〜16桁で入力してください。";
+			}
+		} else {
+			if ("*" != substr($post['card_number'], 0, 1)) {
+				// カード番号に変更がある場合
+				if (!preg_match('/^[0-9]+$/', $post['card_number'])) {
+					$err_arr['card_number'] = "カード番号は半角数字で入力してください。";
+				} elseif (mb_strlen($post['card_number']) < 14 or 16 < mb_strlen($post['card_number'])) {
+					$err_arr['card_number'] = "カード番号は14〜16桁で入力してください。";
+				}
+				if (0 == count($err_arr)) {
+					// 変更がありエラーが無ければセッションを削除
+					unset($_SESSION["booking"]["customer_id"]);
+				}
+			}
+		}
+
+		// カード有効期限(年) 数値 現在〜6年以内
+		if (!preg_match("/^[0-9]+$/", $post['card_expiration_year'])) {
+			$err_arr['card_expiration_year'] = "カード有効期限(年)を正しく選択してください。";
+		} elseif ($post['card_expiration_year'] < intval(date("Y")) or intval(date("Y", strtotime("+6 year"))) < $post['card_expiration_year']) {
+			$err_arr['card_expiration_year'] = "カード有効期限(年)を正しく選択してください。";
+		}
+
+		// カード有効期限(月) 数値 1〜12
+		if (!preg_match("/^[0-9]+$/", $post['card_expiration_month'])) {
+			$err_arr['card_expiration_month'] = "カード有効期限(月)を正しく選択してください。";
+		} elseif ($post['card_expiration_month'] < 1 or 12 < $post['card_expiration_month']) {
+			$err_arr['card_expiration_month'] = "カード有効期限(月)を正しく選択してください。";
+		}
+
+		// カードセキュリティ番号 入力 4文字以内
+		if ("" == $post['card_security_number']) {
+			$err_arr['card_security_number'] = "セキュリティ番号を入力してください。";
+		} elseif (4 < mb_strlen($post['card_security_number'])) {
+			$err_arr['card_security_number'] = "セキュリティ番号を正しく入力してください。";
+		}
+
+		// キャンペーンコード 英数字チェック 8文字以内 存在確認(DB接続)
+		if ("" != $post['pr_code']) {
+			if (!preg_match('/^[0-9a-zA-Z]+$/', $post['pr_code'])) {
+				$err_arr['pr_code'] = "キャンペーンコードは半角英数字で入力してください。";
+			} elseif (8 < mb_strlen($post['pr_code'])) {
+				$err_arr['pr_code'] = "キャンペーンコードを正しく入力してください。";
+			} else {
+				// キャンペーンコード検索
+				$pr_code = $db->simpleSelect("pr_codes", array("pr_code" => $post["pr_code"]));
+				if (1 != count($pr_code)) {
+					$err_arr['pr_code'] = "キャンペーンコードを正しく入力してください。";
+				}
+			}
+		}
+
+		return $err_arr;
+	}
+
+
+
+	/**
+	 * 予約時エラーチェックメソッド
+	 * @param	arr		$post					登録内容
+	 * @return	array							成功：空配列　失敗：エラー配列
+	 */
+	function errCheckReserve($post) {
+
+		$err_arr = array();
+
+		// 料金　数値　MAX_PRICE_DIGIT桁以内
+		if (!preg_match("/^[0-9]+$/", $post['amount'])) {
+			$err_arr['amount'] = "料金が正しく設定されていません。";
+		} elseif (MAX_PRICE_DIGIT < mb_strlen($post['amount'])) {
+			$err_arr['amount'] = "料金が正しく設定されていません。";
+		}
+
+		return $err_arr;
+	}
+
+
+	/**
+	 * お問い合わせ時エラーチェックメソッド
+	 * @param	arr		$post					登録内容
+	 * @return	array							成功：空配列　失敗：エラー配列
+	 */
+	function errCheckContact($post, $contact_arr) {
+
+		$err_arr = array();
+
+
+		// 要件 数値 要件配列マッチ
+		if ($post['requirement']) {
+			if (!preg_match("/^[0-9]+$/", $post['requirement'])) {
+				$err_arr['requirement'] = "要件を正しく選択してください。";
+			} else {
+				if (!array_key_exists($post['requirement'], $contact_arr)) {
+					$err_arr['requirement'] = "要件を正しく選択してください。";
+				}
+			}
+		}
+
+		// 名前　入力　50文字以内
+		if ("" == $post['name']) {
+			$err_arr['name'] = "お名前を入力してください。";
+		} elseif (50 < mb_strlen($post['name'])) {
+			$err_arr['name'] = "お名前は50文字以内で入力してください。";
+		}
+
+		// メールアドレス　入力　メールアドレスチェック
+		if ("" == $post['email']) {
+			$err_arr['email'] = "メールを入力してください。";
+		} elseif (!preg_match(MAIL_REGEX, $post['email'])) {
+			// 正しいメールアドレスではないと判別されたとき
+			$err_arr['email'] = "メールを正しく入力してください。";
+		}
+
+		// 内容　入力　800文字以内
+		if ("" == $post['body']) {
+			$err_arr['body'] = "内容を入力してください。";
+		} elseif (800 < mb_strlen($post['body'])) {
+			$err_arr['body'] = "内容は800文字以内で入力してください。";
+		}
+
+		return $err_arr;
 	}
 
 
 	/**
 	 * レビュー時エラーチェックメソッド
 	 * @param	arr		$post					登録内容
-	 * @param	ins		$db						DBアクセス
-	 * @param	int		$job_id				仕事ID
-	 * @param	str		$type_str			client もしくは tasker
 	 * @return	array							成功：空配列　失敗：エラー配列
 	 */
-	function errCheckReview($post, $db, $job_id, $type_str) {
+	function errCheckReview($post, $review_arr) {
 
 		$err_arr = array();
 
-		// 評価値　入力　数値
-		if (!$post['review_value']) {
-			$err_arr['review_value'] = "スター数を選択してください。";
-		} elseif (!preg_match("/^[0-9]+$/", $post['review_value'])) {
-			$err_arr['review_value'] = "スター数を正しく選択してください。";
-		}
 
-		// メッセージ　入力　800文字以内
-		if (800 < mb_strlen($post['body'])) {
-			$err_arr['body'] = "コメントは800文字以内で入力してください。";
-		}
-
-		if (0 == count($err_arr)) {
-			$data = $db->simpleSelect("job_tbl", array("job_id" => $job_id));
-			if (1 == $data[0][$type_str]) {
-				$err_arr['review_flg'] = "既にレビューが完了しています。";
-			}
-		}
-
-		return $err_arr;
-
-	}
-
-
-	/**
-	 * プロフィール登録時エラーチェックメソッド
-	 * @param	arr		$post					登録内容
-	 * @param	ins		$db						DBアクセス
-	 * @return	array							成功：空配列　失敗：エラー配列
-	 */
-	function errCheckProfile($post, $db) {
-
-		$err_arr = array();
-
-		// メールアドレス　入力　メールアドレスチェック　！一意
-		if ("" == $post['mail_address']) {
-			$err_arr['mail_address'] = "メールアドレスを入力してください。";
-		} elseif (!preg_match(MAIL_REGEX, $post['mail_address'])) {
-			// PCのアドレスではないと判別されたとき
-			$err_arr['mail_address'] = "メールアドレスを正しく入力してください。";
-		} else {
-			// 登録済みかチェック
-			$row = $db->simpleSelect("user_tbl", array("mail_address" => $post['mail_address']));
-			if ($row[0]["mail_address"] != $_POST["mail_address"]) {
-				if (0 != count($row)) {
-					$err_arr['mail_address'] = "このメールアドレスは既に登録されています。";
+		// 評価 数値 評価配列マッチ
+		if ($post['score']) {
+			if (!preg_match("/^[0-9]+$/", $post['score'])) {
+				$err_arr['score'] = "評価を正しく選択してください。";
+			} else {
+				if (!array_key_exists($post['score'], $review_arr)) {
+					$err_arr['score'] = "評価を正しく選択してください。";
 				}
 			}
 		}
 
-		// 氏名　入力　20文字
-		if ("" == $post['name']) {
-			$err_arr['name'] = "お名前を入力してください。";
-		} elseif (20 < mb_strlen($post['name'])) {
-			$err_arr['name'] = "お名前は20文字以内で入力してください。";
-		}
-
-		// 性別　入力　数字
-		if ("" == $post['sex']) {
-			$err_arr['sex'] = "性別を選択してください。";
-		} elseif (!preg_match("/^[0-9]+$/", $post['sex'])) {
-			$err_arr['sex'] = "性別を正しく選択してください。";
-		}
-		
-		// 都道府県　入力　数値
-		if (!$post['location']) {
-			$err_arr['location'] = "都道府県を選択してください。";
-		} elseif (!preg_match("/^[0-9]+$/", $post['location'])) {
-			$err_arr['location'] = "都道府県を正しく選択してください。";
-		}
-
-		// 市区町村　入力　数値
-		if (!$post['area']) {
-			$err_arr['area'] = "市区町村を選択してください。";
-		} elseif (!preg_match("/^[0-9]+$/", $post['area'])) {
-			$err_arr['area'] = "市区町村を正しく選択してください。";
-		}
-
-		// 住所　入力　150文字チェック
-		if ("" == $post['address']) {
-			$err_arr['address'] = "住所を入力してください。";
-		} elseif (500 < mb_strlen($post['address'])) {
-			$err_arr['address'] = "住所は150文字以内で入力してください。";
-		}
-
-		// 電話番号　入力　電話番号チェック（簡易版）
-		if ("" == $post['tel']) {
-			$err_arr['tel'] = "電話番号を入力してください。";
-		} elseif (!preg_match('/^[0-9,-]+$/', $post['tel'])) {
-			$err_arr['tel'] = "電話番号を正しく入力してください（半角数字もしくはハイフン以外の入力はできません）。";
-		} elseif ((8 > mb_strlen($post['tel'])) or (16 < mb_strlen($post['tel']))) {
-			$err_arr['tel'] = "電話番号を正しく入力してください。";
-		}
-
-		// プロフィール　5000文字以内
-		if ("" != $post['profile']) {
-			if (5000 < mb_strlen($post['profile'])) {
-				$err_arr['profile'] = "プロフィールは5000文字以内で入力してください。";
+		// コメント　800文字以内
+		if ("" != $post['body']) {
+			if (800 < mb_strlen($post['body'])) {
+				$err_arr['body'] = "コメントは800文字以内で入力してください。";
 			}
 		}
 
-		// 生年月日　数値　日付
-		if ($post['birthday']) {
-			// 今日よりも後の日付になってないか
-			$d = new Datetime($post['birthday']);
-			if (date('Ymd') < $d->format('Ymd')) {
-				$err_arr['birthday'] = "生年月日を正しく選択してください。";
-			}
-			// 日付チェック用に分解
-			list($year, $month, $day) = explode("/", $post['birthday']);
-			if (!checkdate($month, $day, $year)) {
-				// 存在する年月日か
-				$err_arr['birthday'] = "生年月日は存在する日付を選択してください。";
-			}
-			// 数字チェック
-			if (!preg_match("/^[0-9]+$/", $year)) {
-				$err_arr['birthday'] = "生年月日を正しく選択してください。";
-			}
-			if (!preg_match("/^[0-9]+$/", $month)) {
-				$err_arr['birthday'] = "生年月日を正しく選択してください。";
-			}
-			if (!preg_match("/^[0-9]+$/", $day)) {
-				$err_arr['birthday'] = "生年月日を正しく選択してください。";
+		// 運営へのコメント　800文字以内
+		if ("" != $post['body_inside']) {
+			if (800 < mb_strlen($post['body_inside'])) {
+				$err_arr['body_inside'] = "運営へのコメントは800文字以内で入力してください。";
 			}
 		}
 
 		return $err_arr;
-
 	}
 
 
 	/**
-	 * メッセージ登録時エラーチェックメソッド
+	 * パスワード再発行時エラーチェックメソッド
 	 * @param	arr		$post					登録内容
+	 * @param	ins		$db						DBアクセス
+	 * @param	str		$type_table		アカウントの種類(ユーザーor店舗or揉み手)ごとのテーブル
 	 * @return	array							成功：空配列　失敗：エラー配列
 	 */
-	function errCheckMessage($post) {
+	function errCheckPassword($post, $db, $type_table) {
 
 		$err_arr = array();
 
-		// メッセージ　入力　800文字以内
-		if (800 < mb_strlen($post['body'])) {
-			$err_arr['body'] = "メッセージは800文字以内で入力してください。";
+		// メールアドレス　入力　メールアドレスチェック　！一意　256文字
+		if ("" == $post['email']) {
+			$err_arr['email'] = "メールを入力してください。";
+		} elseif (!preg_match(MAIL_REGEX, $post['email'])) {
+			// PCのアドレスではないと判別されたとき
+			$err_arr['email'] = "メールを正しく入力してください。";
+		} elseif (256 < mb_strlen($post['email'])) {
+			$err_arr['email'] = "メールを正しく入力してください。";
+		}
+
+		// ログインチェック
+		if (0 == count($err_arr)) {
+			// ユーザー情報取得
+			$data = $db->simpleSelect($type_table, array("email" => $post["email"]));
+			// ユーザー登録されているか
+			if (1 != count($data)) {
+				// エラー
+				$err_arr["email"] = "メールを正しく入力してください。";
+			}
 		}
 
 		return $err_arr;
+	}
 
+
+	/**
+	 * パスワード再発行登録時エラーチェックメソッド
+	 * @param	arr		$post					登録内容
+	 * @return	array							成功：空配列　失敗：エラー配列
+	 */
+	function errCheckPasswordReInput($post) {
+
+		$err_arr = array();
+
+		// パスワード　入力　数値　8以上16文字以内
+		if (!$post['password']) {
+			$err_arr['password'] = "パスワードを入力してください。";
+		} elseif (!preg_match("/([0-9].*[a-zA-Z]|[a-zA-Z].*[0-9])/", $post['password'])) {
+			$err_arr['password'] = "パスワードを正しく入力してください。";
+		} elseif (mb_strlen($post['password']) < 8 or 16 < mb_strlen($post['password'])) {
+			$err_arr['password'] = "パスワードは8文字以上16文字以内で入力してください。";
+		} elseif ($post['password'] != $post['password_re']) {
+			$err_arr['password'] = "パスワードが一致しません。";
+		}
+
+		return $err_arr;
 	}
 
 }

@@ -1,0 +1,25 @@
+.linkFB {
+  padding: 25px 0 0 0;
+  text-align: center;
+}
+.linkFB a {
+  color: #3d599d;
+}
+.linkFB a i {
+  margin-right: 10px;
+}
+
+.linkEdit {
+  text-align: center;
+  font-size: 12px;
+  font-size: 1.2rem;
+  margin: -15px 0 15px 0;
+}
+.linkEdit a {
+  color: #ccc;
+}
+.linkEdit a i {
+  margin-right: 2px;
+}
+
+/*# sourceMappingURL=regist.css.map */

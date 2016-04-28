@@ -1,0 +1,65 @@
+@import "compass/css3/border-radius";
+@import "mixin";
+@import "setting";
+.text_view{
+    dd,dt{
+        border-top: 0 !important;
+    }
+}
+.history{
+    width: 90%;
+    margin: 30px auto 0 auto;
+    position: relative;
+
+
+    .img_profile{
+        width: 60px;
+        height: 60px;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        display: block;
+        margin-right: 10px;
+        @include border-radius(50px);
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    section{
+        width: 80%;
+        margin-left: 20%;
+        .name{
+            @include font-size(1.8);
+            margin-bottom: 8px;
+        }
+        .company{
+            color: $mainColor;
+            @include font-size(1.2);
+            margin-bottom: 12px;
+        }
+        .review{
+            color: #666666;
+            @include font-size(1.2);
+            line-height: 140%;
+        }
+        dl{
+            border-top: 1px solid #cdcdcd;
+            color: #666666;
+            margin: 10px 0;
+            @include font-size(1.2);
+            dt{
+                display: inline-block;
+                width: 20%;
+                border-bottom: 1px solid #cdcdcd;
+                padding: 9px 0;
+            }
+            dd{
+                display: inline-block;
+                width: 80%;
+                border-bottom: 1px solid #cdcdcd;
+                padding: 9px 0;
+                text-align: right;
+            }
+        }
+
+    }
+}

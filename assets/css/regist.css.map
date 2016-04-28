@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEA,OAAQ;EACJ,OAAO,EAAE,UAAU;EACnB,UAAU,EAAE,MAAM;;AAClB,SAAE;EACE,KAAK,EAAE,OAAO;;AACd,WAAE;EACE,YAAY,EAAE,IAAI;;;AAK9B,SAAU;EACN,UAAU,EAAE,MAAM;ECblB,SAAS,EAAC,IAAc;EACxB,SAAS,EAAC,MAAQ;EDclB,MAAM,EAAE,cAAc;;AACtB,WAAE;EACE,KAAK,EAAE,IAAI;;AACX,aAAE;EACE,YAAY,EAAE,GAAG",
+"sources": ["../../sass/regist.scss","../../sass/_mixin.scss"],
+"names": [],
+"file": "regist.css"
+}

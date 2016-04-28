@@ -1,0 +1,25 @@
+@import "mixin";
+@import "setting";
+.linkFB {
+    padding: 25px 0 0 0;
+    text-align: center;
+    a {
+        color: #3d599d;
+        i {
+            margin-right: 10px;
+        }
+    }
+}
+
+.linkEdit {
+    text-align: center;
+    @include font-size(1.2);
+    margin: -15px 0 15px 0;
+    a {
+        color: #ccc;
+        i {
+            margin-right: 2px;
+        }
+    }
+}
+

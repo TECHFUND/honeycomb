@@ -7,25 +7,47 @@ session_start();
 define("LOG_PATH", ROOT . "assets/log/err.log");
 
 // サービスタイトル(メールにも反映)
-define("SERVICE_TITLE", "タスカル");
+define("SERVICE_TITLE", "ポチもみ");
 
 // URL
-define("PUBLIC_URL", "jobglass.net");		// 本番
-define("DEVELOP_URL", "jobglass.techfund.jp");		// ステージング
+define("PUBLIC_URL", "pochimomi.com");		// 本番
+define("DEVELOP_URL", "dev.pochimomi.com");		// dev環境
+define("TEST_URL", "test.pochimomi.com");		// dev環境
+
+// サービスURL(メールにも反映)
+if (PUBLIC_URL == $_SERVER['SERVER_NAME']) {
+	// 本番
+	define('ROOT_URL', 'https://' . PUBLIC_URL . '/');
+	define('ROOT_URL_T', 'https://' . PUBLIC_URL);
+} elseif (DEVELOP_URL == $_SERVER['SERVER_NAME']) {
+	// dev環境
+	define('ROOT_URL', 'https://' . DEVELOP_URL . '/');
+	define('ROOT_URL_T', 'https://' . DEVELOP_URL);
+} else {
+	// test環境
+	define('ROOT_URL', 'http://' . TEST_URL . '/');
+	define('ROOT_URL_T', 'http://' . TEST_URL);
+}
 
 // DB情報
 if (PUBLIC_URL == $_SERVER['SERVER_NAME']) {
 	// 本番
-	define("DB_HOST", "localhost");
-	define("DB_USERNAME", "mwb_jobglass");
-	define("DB_PASSWORD", "M4uWiHqt");
-	define("DB_NAME", "mwb_jobglass");
-} else {
+	define("DB_HOST", "pochimomi.cotbhsocsonj.ap-northeast-1.rds.amazonaws.com:3306");
+	define("DB_USERNAME", "");
+	define("DB_PASSWORD", "");
+	define("DB_NAME", "pochimomi");
+} elseif (DEVELOP_URL == $_SERVER['SERVER_NAME']) {
 	// dev環境
-	define("DB_HOST", "localhost");
-	define("DB_USERNAME", "mwb_jobglass");
-	define("DB_PASSWORD", "M4uWiHqt");
-	define("DB_NAME", "mwb_jobglass");
+	define("DB_HOST", "dev.cotbhsocsonj.ap-northeast-1.rds.amazonaws.com:3306");
+	define("DB_USERNAME", "");
+	define("DB_PASSWORD", "");
+	define("DB_NAME", "pochimomi");
+} else {
+	// test環境
+	define("DB_HOST", "db.cotbhsocsonj.ap-northeast-1.rds.amazonaws.com:3306");
+	define("DB_USERNAME", "");
+	define("DB_PASSWORD", "");
+	define("DB_NAME", "pochimomi");
 }
 
 // DatabaseAccessClass読み込み
@@ -33,27 +55,42 @@ require_once(ROOT . 'extension/DatabaseAccess.php');
 
 // 画像関連
 define("IMAGE_DIR", ROOT . "assets/img/user_images/");			// 画像フォルダ
-define("UPLOAD_MAX_IMAGE_SIZE", 104857600);			// アップロード画像の最大サイズ(bite)	// 104857600=100MB
+define("UPLOAD_MAX_IMAGE_SIZE", 1048576000);			// アップロード画像の最大サイズ(bite)	// 1048576000=1000MB
 define("UPLOAD_MAX_IMAGE_WIDTH", 5000);			// アップロード画像の最大横幅(px)
 define("UPLOAD_MAX_IMAGE_HEIGHT", 5000);			// アップロード画像の最大縦幅(px)
 
 // ファイル関連
 define("FILE_DIR", ROOT . "assets/files/user_files/");			// ファイルフォルダ
-define("UPLOAD_MAX_IMAGE_SIZE", 104857600);			// アップロードファイルの最大サイズ(bite)	// 104857600=100MB
 
 // 共通処理Class読み込み
 require_once(ROOT . 'extension/CommonFunctions.php');
 
+define('DURATION', 30);		// 施術時間(フィジビリは30分に固定)
+define('CARFARE', 0);		// 出張費(単位：円)
+define('TAX', 0.08);		// 消費税
+define('MAX_PRICE_DIGIT', 5);		// 価格の上限桁数
+define('CANCEL_ALLOW_TIME', 60);			// キャンセル許可時間(デフォルト60分)
+
+define('PASSWORD_LOCK', 10);		// ミスログイン時、画像認証が表示されるまでのログイン可能回数(デフォルト3回)
+define('PASSWORD_UNLOCK_TIME', time() + 60 * 10);		// ミスログイン判定解除までの待ち時間(デフォルト10分)
+
+define('PREG_DATE', "/^([1-9][0-9]{3})\-(0[1-9]{1}|1[0-2]{1})\-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/");		// 日付の書式：2000-01-01
+define('PREG_TIME', "/^(0[0-9]{1}|1{1}[0-9]{1}|2{1}[0-3]{1}):(0[0-9]{1}|[1-5]{1}[0-9]{1}):(0[0-9]{1}|[1-5]{1}[0-9]{1})$/");		// 時間の書式：00:00:00～23:59:59
+
 define('MAIL_REGEX', '/^[a-zA-Z0-9\._\/\?\+-]+\@[a-zA-Z0-9\._-]+\.+[A-Za-z]{2,4}$/');		// メールアドレス判定用正規表現
-define("SOLT_STR", "Fi8Eg3LV");			// パスワード暗号化用付加文字列
+
+if (PUBLIC_URL == $_SERVER['SERVER_NAME']) {
+	// 本番
+	define('ROOT_ID', 'support@pochimomi.com');		// 運営ログイン用ID
+	define('ROOT_PASSWORD', '');		// 運営ログイン用パスワード
+} else {
+	// dev環境、test環境
+	define('ROOT_ID', 'support@pochimomi.com');		// 運営ログイン用ID
+	define('ROOT_PASSWORD', '');		// 運営ログイン用パスワード
+}
 
 // エラーチェックClass読み込み
 require_once(ROOT . 'extension/ErrorCheck.php');
-
-
-// 決済情報(webpay)
-const PUBLIC_KEY = "";
-const SECRET_KEY = "";
 
 // facebookログイン
 require_once(ROOT . 'extension/facebook_login/facebook.php');
@@ -62,15 +99,24 @@ require_once(ROOT . 'extension/facebook_login/facebook.php');
 if (PUBLIC_URL == $_SERVER['SERVER_NAME']) {
 	// 本番
 	$config = array(
-		'appId' => '665067740260213',
-		'secret' => '7c8801c750abb6db9aebafd18bed598e',
-	  'cookie' => true
+		'appId' => '964157263669180',
+		'secret' => '',
+	  'cookie' => true, 
+    'trustForwarded' =>  true
 	);
-} else {
+} elseif (DEVELOP_URL == $_SERVER['SERVER_NAME']) {
 	// dev環境
 	$config = array(
-		'appId' => '1136707276356128',
-		'secret' => '92b27c9aa81e4005dcbd2f9fa61a04dd',
+		'appId' => '115534255501704',
+		'secret' => '',
+	  'cookie' => true, 
+    'trustForwarded' =>  true
+	);
+} else {
+	// test環境
+	$config = array(
+		'appId' => '1661838154065402',
+		'secret' => '',
 	  'cookie' => true
 	);
 }
@@ -83,26 +129,71 @@ if ("" == $facebook_redirect) {
 
 //未ログインならログイン URL を取得してリンクを出力
 $parameters = array(
-	'scope' => 'public_profile,email,user_birthday,user_work_history,user_likes,user_friends', 
-	'redirect_uri' => 'http://' . $_SERVER['SERVER_NAME'] . "/" . $facebook_redirect
+	'scope' => 'public_profile,email', 
+	'redirect_uri' => ROOT_URL . $facebook_redirect
 );
 
-// メッセージヘッダーアイコンのための処理
-/*
-$badge_flg = false;
-if ($_SESSION["user_id"]) {
-	// ログインしていれば、未読メッセージを取得
-	$db = new DatabaseAccess();
-	$badge = $db->simpleSQL("SELECT * FROM message_tbl WHERE read_flg = 0 AND receiver_user_id = " . $_SESSION["user_id"] . ";");
-	if (0 != count($badge)) {
-		$badge_flg = true;
+// urlをパースして、悪意あるURL(keyもしくはvalueが英数字とアンダースコア,コロン,ハイフン以外)の場合はQueryを削除してリダイレクトをかける
+$url = ROOT_URL_T . $_SERVER["REQUEST_URI"];
+$parse_url_arr = parse_url ($url);
+parse_str($parse_url_arr['query'], $query_arr);
+$new_url = ROOT_URL_T . $_SERVER['SCRIPT_NAME'];
+if (0 != count($query_arr)) {
+	foreach ($query_arr as $key => $value) {
+		if (preg_match('/^[a-zA-Z0-9_:-]+$/', $key) and preg_match('/^[a-zA-Z0-9_:-]+$/', $value)) {
+			if (ROOT_URL_T . $_SERVER['SCRIPT_NAME'] == $new_url) {
+				$new_url .= "?";
+			} else {
+				$new_url .= "&";
+			}
+			$new_url .= $key . "=" . $value;
+		}
 	}
 }
-*/
+if ($url != $new_url) {
+	header("Location: " . $new_url);		// 指定ページに移動
+	exit;
+}
+
 
 /*
  定数（配列）
  */
+
+// ユーザータイプ(ログインしているユーザーの判定に利用)
+$type_arr = array();
+$type_arr["user"] = 1;		// 1:ユーザー
+$type_arr["client"] = 2;	// 2:店舗オーナー
+$type_arr["pro"] = 3;			// 3:揉み手
+$type_arr["root"] = 4;			// 4:運営
+
+// ユーザータイプごとのホームURL
+$type_url_arr = array();
+$type_url_arr[0] = "";		// nologin
+$type_url_arr[1] = "user/";		// 1:ユーザー
+$type_url_arr[2] = "admin/client/";	// 2:店舗オーナー
+$type_url_arr[3] = "admin/pro/";			// 3:揉み手
+$type_url_arr[4] = "root/";			// 4:運営
+
+// ユーザータイプごとのNamespace
+$type_namespace_arr = array();
+$type_namespace_arr[1] = "";		// 1:ユーザー
+$type_namespace_arr[2] = "CLIENT_";	// 2:店舗オーナー
+$type_namespace_arr[3] = "PRO_";			// 3:揉み手
+$type_namespace_arr[4] = "ROOT_";			// 4:運営
+
+// 性別
+$sex_arr = array();
+$sex_arr[1] = "男性";
+$sex_arr[2] = "女性";
+
+// 評価の表記
+$review_arr = array();
+$review_arr[1] = "★☆☆☆☆";
+$review_arr[2] = "★★☆☆☆";
+$review_arr[3] = "★★★☆☆";
+$review_arr[4] = "★★★★☆";
+$review_arr[5] = "★★★★★";
 
 // 都道府県
 $location = array();
@@ -206,12 +297,29 @@ $zip_location[47] = "zipcode LIKE '90%'";
 
 // 曜日
 $weekday_arr = array();
-$weekday_arr[0] = "日";
 $weekday_arr[1] = "月";
 $weekday_arr[2] = "火";
 $weekday_arr[3] = "水";
 $weekday_arr[4] = "木";
 $weekday_arr[5] = "金";
 $weekday_arr[6] = "土";
+$weekday_arr[7] = "日";
+
+// 口座種別
+$account_type_arr = array();
+$account_type_arr[1] = "普通";
+$account_type_arr[2] = "当座";
+
+// カード種別
+$card_type_arr = array();
+$card_type_arr[1] = "visa";
+$card_type_arr[2] = "mastercard";
+$card_type_arr[3] = "jcb";
+
+// 承認
+$exam_flg_arr = array();
+$exam_flg_arr[0] = "非承認";
+$exam_flg_arr[1] = "承認";
+$exam_flg_arr[2] = "非承認";
 
 ?>

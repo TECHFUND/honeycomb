@@ -1,0 +1,108 @@
+.view_map {
+  width: 80%;
+  margin: 0 auto;
+  display: block;
+}
+
+.content {
+  width: 80%;
+  margin: 0 auto;
+}
+.content dt {
+  width: 30% !important;
+}
+.content dd {
+  width: 70% !important;
+}
+.content p {
+  color: #51c4d4;
+  padding: 10px 0;
+  border-top: 1px solid #c2c2c2;
+  border-bottom: 1px solid #c2c2c2;
+}
+
+.btn_area {
+  width: 100%;
+  background: #f3f3f3;
+  padding: 25px 0 30px 0;
+  text-align: center;
+  margin: 30px 0 15px 0;
+}
+.btn_area h3 {
+  width: 80%;
+  margin: 0 auto;
+  font-size: 18px;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+.btn_area form {
+  width: 80%;
+  margin: 0 auto;
+}
+.btn_area form button {
+  width: 100%;
+  color: #fff;
+  font-size: 18px;
+  font-size: 1.8rem;
+  padding: 10px 0;
+  border: 0;
+  background-color: #51c4d4;
+  margin-bottom: 6px;
+}
+.btn_area form button.success {
+  background: #6bd909;
+}
+.btn_area a {
+  color: #51c4d4;
+  text-decoration: underline;
+  font-size: 12px;
+}
+.btn_area .or {
+  width: 80%;
+  margin: 0 auto;
+  border-top: 1px solid #666666;
+  position: relative;
+  margin-top: 15px;
+  padding: 0 0 15px 0;
+}
+.btn_area .or span {
+  position: absolute;
+  display: block;
+  top: -7px;
+  left: 45%;
+  padding: 0 5px;
+  background: #f3f3f3;
+  font-size: 12px;
+  font-size: 1.2rem;
+  color: #666666;
+}
+
+.btn {
+  text-align: center;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+.btn button {
+  width: 80%;
+  font-size: 18px;
+  font-size: 1.8rem;
+  text-align: center;
+  border: 0;
+  padding: 12px 0 8px 0;
+  margin: 0 0 15px 0;
+}
+.btn.cancel button {
+  background: #cccccc;
+  color: #fff;
+}
+.btn.top button {
+  background: #6bd909;
+  color: #fff;
+}
+.btn span {
+  font-size: 12px;
+  font-size: 1.2rem;
+  color: #cccccc;
+}
+
+/*# sourceMappingURL=admin_resevation.css.map */

@@ -1,0 +1,41 @@
+.inputPost input[type="text"] {
+  width: 50% !important;
+  display: inline-block !important;
+  vertical-align: middle;
+}
+.inputPost button {
+  background: #c2c2c2 !important;
+  color: #fff;
+  width: 46%;
+  display: inline-block !important;
+  border: 0;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-size: 1.2rem;
+  padding: 6px 0;
+  vertical-align: middle;
+}
+
+.personal {
+  border-bottom: 1px solid #c2c2c2;
+  padding-bottom: 30px;
+}
+
+.more {
+  -moz-border-radius: 30px;
+  -webkit-border-radius: 30px;
+  border-radius: 30px;
+  border: 1px solid #51c4d4;
+  background: #fff;
+  color: #51c4d4;
+  padding: 10px 25px;
+  margin: 0 auto;
+  width: 50%;
+  margin: -20px auto 0 auto;
+  display: block;
+  text-align: center;
+}
+
+/*# sourceMappingURL=regist-login.css.map */

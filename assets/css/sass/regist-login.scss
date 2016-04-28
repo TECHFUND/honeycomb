@@ -1,0 +1,42 @@
+@import "compass/css3/border-radius";
+@import "mixin";
+@import "setting";
+
+.inputPost{
+    input[type="text"]{
+        width: 50% !important;
+        display: inline-block !important;
+        vertical-align: middle;
+    }
+    button{
+        background: #c2c2c2 !important;
+        color: #fff;
+        width: 46%;
+        display: inline-block !important;
+        border: 0;
+        @include border-radius(3px);
+        @include font-size(1.2);
+        padding: 6px 0;
+
+        vertical-align: middle;
+    }
+}
+
+.personal{
+    border-bottom: 1px solid $formGray;
+    padding-bottom: 30px;
+}
+
+.more{
+    @include border-radius(30px);
+    border: 1px solid $mainColor;
+    background: #fff;
+    color: $mainColor;
+    padding: 10px 25px;
+    margin: 0 auto;
+    width: 50%;
+    margin: -20px auto 0 auto;
+    display: block;
+    text-align: center;
+
+}

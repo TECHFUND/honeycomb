@@ -1,0 +1,66 @@
+.text_view dd, .text_view dt {
+  border-top: 0 !important;
+}
+
+.history {
+  width: 90%;
+  margin: 30px auto 0 auto;
+  position: relative;
+}
+.history .img_profile {
+  width: 60px;
+  height: 60px;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  display: block;
+  margin-right: 10px;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.history section {
+  width: 80%;
+  margin-left: 20%;
+}
+.history section .name {
+  font-size: 18px;
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+.history section .company {
+  color: #51c4d4;
+  font-size: 12px;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+.history section .review {
+  color: #666666;
+  font-size: 12px;
+  font-size: 1.2rem;
+  line-height: 140%;
+}
+.history section dl {
+  border-top: 1px solid #cdcdcd;
+  color: #666666;
+  margin: 10px 0;
+  font-size: 12px;
+  font-size: 1.2rem;
+}
+.history section dl dt {
+  display: inline-block;
+  width: 20%;
+  border-bottom: 1px solid #cdcdcd;
+  padding: 9px 0;
+}
+.history section dl dd {
+  display: inline-block;
+  width: 80%;
+  border-bottom: 1px solid #cdcdcd;
+  padding: 9px 0;
+  text-align: right;
+}
+
+/*# sourceMappingURL=admin_history.css.map */

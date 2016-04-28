@@ -1,0 +1,193 @@
+@import "compass/css3/border-radius";
+@import "mixin";
+@import "setting";
+
+
+//バッチの意味についてのポップアップ
+.guide_badge {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 38px 0 0 0;
+    position: fixed;
+    top: 60px;
+    height: 100%;
+    width: 100%;
+    section {
+        width: 80%;
+        margin: 0 auto;
+        padding-top: 53px;
+        @include border-radius(10px);
+        background: #fff;
+        background-size: 100% auto;
+        position: relative;
+        i {
+            color: #4c4c4c;
+            @include font-size(1.8);
+            position: absolute;
+            top: 22px;
+            right: 18px;
+        }
+        dl {
+            width: 94%;
+            margin: 0 auto;
+            padding: 20px 0 0 0;
+            line-height: 140%;
+            dt {
+                width: 20%;
+                display: inline-block;
+                vertical-align: top;
+                text-align: right;
+            }
+            dd {
+                width: 70%;
+                display: inline-block;
+                margin-bottom: 13px;
+                span {
+                    display: block;
+                    @include font-size(1.8);
+                    &.badge01 {
+                        color: #ab73f1;
+                    }
+                    &.badge02 {
+                        color: #b9e696;
+                    }
+                }
+            }
+        }
+    }
+}
+.home_head{
+    border-bottom: 1px solid #cccccc;
+    padding: 20px 0 10px 0;
+    ul{
+        width: 82%;
+        margin: 0 auto;
+        @include font-size(1.6);
+        li{
+            margin-bottom: 10px;
+            vertical-align: middle;
+            img{
+                margin-right: 12px;
+                vertical-align: bottom;
+            }
+        }
+    }
+}
+.home_content{
+    width: 82%;
+}
+.shop_list{
+    display: none;
+    padding: 20px 0;
+    color: #666;
+    section{
+        width: 82%;
+        margin: 0 auto;
+        letter-spacing: -0.4em;
+        margin-bottom: 17px;
+        position: relative;
+        a{
+            display: inline-block;
+            letter-spacing: normal;
+            margin-right: 15px;
+
+            p{
+                width: 90px;
+                height: 90px;
+                background-size: 100% 100%;
+                background-repeat: none;
+                @include border-radius(50px);
+
+            }
+        }
+        .tel{
+            background: #6cd90b;
+            letter-spacing: normal;
+            color: #fff;
+            @include font-size(0.9);
+            padding: 10px;
+            position: absolute;
+            bottom: 20%;
+            right: 0;
+        }
+        ul{
+            vertical-align: top;
+            width: 65%;
+            display: inline-block;
+            letter-spacing: normal;
+            @include font-size(1.2);
+            vertical-align: top;
+            margin-top: 7px;
+            position: relative;
+
+            .shop_name{
+                color: #333;
+                @include font-size(1.8);
+                margin-bottom: 10px;
+            }
+            .shop_price{
+                color: #adadad;
+                margin-bottom: 10px;
+            }
+            .shop_rate{
+                color: $mainColor;
+                margin-bottom: 10px;
+                position: relative;
+            }
+        }
+    }
+}
+
+.detail_bg{
+    width: 100%;
+    height: 15%;
+    display: block;
+}
+.detail_voice{
+    position: relative;
+    background: #f3f3f3;
+    padding: 30px 0 42px 0;
+    margin-bottom: 44px;
+    h2{
+        @include font-size(1.8);
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    section{
+        a{
+            width: 20%;
+        }
+        .pro_list{
+            width: 100%;
+        }
+        .img_profile{
+            width: 52px;
+            height: 52px;
+            background-size: 100% 100%;
+            background-repeat: none;
+            @include border-radius(50px);
+        }
+
+    }
+    .pro_list{
+        section:not(:first-child){
+            display: none;
+
+        }
+    }
+
+    .linkMore{
+        position: absolute;
+        bottom: -8px;
+        text-align: center;
+        width: 100%;
+        a{
+            @include border-radius(30px);
+            border: 1px solid $mainColor;
+            background: #fff;
+            color: $mainColor;
+            padding: 10px 25px;
+        }
+    }
+
+}
