@@ -244,6 +244,96 @@ class CommonFunctions {
 
 
 	/**
+	 * CSVダウンロードメソッド
+	 * @param	arr			$file				ダウンロードするデータ
+	 * @param	string		$file_name			ファイル名
+	 * @return	void()							成功：ファイルダウンロード開始　失敗：何もしない
+	 */
+	function csvDownload($file, $file_name) {
+
+		try {
+
+			//CSV形式で情報をファイルに出力のための準備
+			$csvFileName = FILE_DIR . time() . rand() . '.csv';
+			$res = fopen($csvFileName, 'w');
+			if ($res === FALSE) {
+				throw new Exception('ファイルの書き込みに失敗しました。');
+			}
+
+			// ループしながら出力
+			foreach($file as $dataInfo) {
+
+				// 文字コード変換。エクセルで開けるようにする
+				mb_convert_variables('SJIS', 'UTF-8', $dataInfo);
+
+				// ファイルに書き出しをする
+				fputcsv($res, $dataInfo);
+			}
+
+			// ハンドル閉じる
+			fclose($res);
+
+			// ダウンロード開始
+			header('Content-Type: application/octet-stream');
+
+			// ここで渡されるファイルがダウンロード時のファイル名になる
+			header('Content-Disposition: attachment; filename=' . $file_name . '.csv'); 
+			header('Content-Transfer-Encoding: binary');
+			header('Content-Length: ' . filesize($csvFileName));
+			readfile($csvFileName);
+
+		} catch(Exception $e) {
+
+			// 例外処理をここに書きます
+			//echo $e->getMessage();
+
+		}
+	}
+
+
+	/**
+	 * CSV読み取りメソッド
+	 * @param	arr			$file				読み取るファイル
+	 * @param	string		$to_encoding			変換後エンコード(デフォルトUTF-8に変換)
+	 * @param	string		$from_encoding			変換前エンコード(デフォルトS-JISから読み取り)
+	 * @return	arr		 	$data						成功：CSVデータ配列　失敗：空配列
+	 */
+	function csvLoading($file, $to_encoding = 'utf-8', $from_encoding = 'sjis-win') {
+
+	  // CSV読み取り、配列変換
+	  setlocale(LC_ALL, 'ja_JP.UTF-8');
+	  $buf = mb_convert_encoding(file_get_contents($file), $to_encoding, $from_encoding);
+
+	  $CsvData = $buf;
+	  $CsvData = str_replace( "\r\n", "< br >", $CsvData );
+	  $CsvData = str_replace( "\n", "< br >", $CsvData );
+	  $CsvData = str_replace( "\r", "< br >", $CsvData );
+	  $lines = explode("< br >", $CsvData);
+	  
+	  // 先頭一行(タイトル)を削除
+	  array_shift($lines);
+
+	  $err_arr_all = array();
+
+	  $data = array();
+	  $cnt = 0;
+
+	  // 1行ごと読み取り
+	  foreach ($lines as $key => $value) {
+	    $v = explode(",", $value);
+
+	    foreach ($v as $key2 => $value2) {
+	    	$data[$cnt][$key2] = $value2;
+	    }
+	    $cnt++;
+	  }
+
+	  return $data;
+
+	}
+
+
+	/**
 	 * 住所から位置情報取得メソッド
 	 * @param	str		$address				住所
 	 * @return	arr		$address				失敗:空配列　成功:GPS配列（lat:緯度、lng:経度）
@@ -349,8 +439,11 @@ class CommonFunctions {
 							throw new RuntimeException('画像ファイルではありません。');
 						}
 
+						// MimeTypeを取得
+						$mime_check = mime_content_type($tmp_name);
+
 						// MimeTypeを調べる
-						switch ($info['mime']) {
+						switch ($mime_check) {
 							case 'image/gif':
 								$mime = $ext = 'gif';
 								break;
@@ -487,8 +580,11 @@ class CommonFunctions {
 						throw new RuntimeException('画像ファイルではありません。');
 					}
 
+					// MimeTypeを取得
+					$mime_check = mime_content_type($tmp_name);
+
 					// MimeTypeを調べる
-					switch ($info['mime']) {
+					switch ($mime_check) {
 						case 'image/gif':
 							$mime = $ext = 'gif';
 							break;
@@ -541,6 +637,164 @@ class CommonFunctions {
 			if (false == $through_flg) {
 				// ファイル未選択をスルーしない場合エラー
 				$data = array('ret' => false, 'err' => "ファイルが選択されていません。");
+			}
+		}
+		return $data;
+	}
+
+
+	/**
+	 * 画像アップロードメソッド
+	 * @param	arr			$file				アップロードファイル
+	 * @param	string		$key				ファイルのキー（<img>に設定しているname）
+	 * @param	bool		$through_flg		ファイル未選択を許すか（true:許す false:許さない）
+	 * @return	array()							成功：true（配列内にファイル名）　失敗：false（配列内にエラー文）
+	 */
+	function imageUploadExifRotate($file, $key, $through_flg = true) {
+
+		$data = array("ret" => $through_flg);
+
+		if ($file) {
+
+			// 初期値設定
+			$upload_key = $key;
+			$maxfileize = UPLOAD_MAX_IMAGE_SIZE;
+			$max_width = UPLOAD_MAX_IMAGE_WIDTH;
+			$max_height = UPLOAD_MAX_IMAGE_HEIGHT;
+
+			if ($file[$upload_key]['error'] == UPLOAD_ERR_NO_FILE) {
+				// ファイル未選択
+				if (false == $through_flg) {
+					// ファイル未選択をスルーしない場合エラー
+					$data = array('ret' => false, 'err' => "画像ファイルが選択されていません。");
+				} else {
+					$data = array('ret' => true, 'img_name' => NULL);
+				}
+			} else {
+				try {
+					$error = $file[$upload_key]['error'];
+
+					// 配列は除外
+					if (is_array($error)) {
+						throw new RuntimeException('複数ファイルの同時アップロードは許可されていません。');
+					}
+
+					// エラーチェック
+					switch ($error) {
+						case UPLOAD_ERR_INI_SIZE:
+							throw new RuntimeException('許可されている最大サイズを超過しました。');
+						case UPLOAD_ERR_FORM_SIZE:
+							throw new RuntimeException('フォームで許可されている最大サイズを超過しました。');
+						case UPLOAD_ERR_PARTIAL:
+							throw new RuntimeException('ファイルが壊れています。');
+						case UPLOAD_ERR_NO_TMP_DIR:
+							throw new RuntimeException('テンポラリディレクトリが見つかりません。');
+						case UPLOAD_ERR_CANT_WRITE:
+							throw new RuntimeException('テンポラリデータの生成に失敗しました。');
+						case UPLOAD_ERR_EXTENSION:
+							throw new RuntimeException('エクステンションでエラーが発生しました。');
+					}
+
+					// 一時ファイル名
+					$tmp_name = $file[$upload_key]['tmp_name'];
+
+					// ファイルサイズ
+					$size = $file[$upload_key]['size'];
+
+					// 不正なファイルでないかチェック
+					if (!is_uploaded_file($tmp_name)) {
+						throw new RuntimeException('不正なファイルです。');
+					}
+
+					// このスクリプトで定義されたサイズ上限のオーバーチェック
+					if ($size > $maxfileize) {
+						throw new RuntimeException("{$maxfileize}バイトを超過するファイルは受理できません。");
+					}
+
+					// 画像ファイル情報取得
+					$info = getimagesize($tmp_name);
+
+					// 取得に失敗したときは画像ファイルではない
+					if ($info === false) {
+						throw new RuntimeException('画像ファイルではありません。');
+					}
+
+					// MimeTypeを取得
+					$mime_check = mime_content_type($tmp_name);
+
+					// MimeTypeを調べる
+					switch ($mime_check) {
+						case 'image/gif':
+							$mime = $ext = 'gif';
+							break;
+						case 'image/png':
+							$mime = $ext = 'png';
+							break;
+						case 'image/jpeg':
+							$mime = 'jpeg';
+							$ext	= 'jpg';
+							break;
+						default:
+							throw new RuntimeException('この種類の画像形式は受理できません。');
+					}
+					
+					$ext_check = "";
+					$ext_arr = explode(".", $file[$upload_key]['name']);
+					$ext_arr = array_values($ext_arr);
+					switch (end($ext_arr)) {
+						case 'gif':
+						case 'png':
+						case 'jpeg':
+						case 'jpg':
+							$ext_check = end($ext_arr);
+							break;
+						default:
+							throw new RuntimeException('この種類の画像形式は受理できません。');
+					}
+
+					// MimeTypeと拡張子が違わないか
+					if ($mime != $ext_check) {
+							throw new RuntimeException('このファイルはアップロードできません。');
+					}
+
+					// もとの画像の幅と高さ
+					$width	= $info[0];
+					$height = $info[1];
+
+					// ユニークなファイル名を拡張子を含めて生成
+					$rand = sha1(mt_rand() . microtime());
+					$name = "{$rand}.{$ext}";
+
+					// 最大幅・高さを超過していないかチェック・縦横比を維持して新しいサイズを定義
+					$resize = false;
+					if ($width > $height && $width > $max_width) {
+						$resize = true;
+					} elseif ($height > $max_height) {
+						$resize = true;
+					}
+
+					// 取得に失敗したときは画像ファイルではない
+					if ($resize === true) {
+						throw new RuntimeException('サイズを超過しています。サイズは縦' . $max_height . 'px, 横' . $max_width . 'pxまでです（アップロードした画像ファイルのサイズ：縦' . $height . 'px, 横' . $width . 'px）。');
+					}
+
+					// エラーが無ければアップロード
+					if ($this->imageExifRotate($file[$upload_key]["tmp_name"], IMAGE_DIR . $name)) {
+						chmod(IMAGE_DIR . $name, 0644);
+						$data = array('ret' => true, 'img_name' => $name);
+					} else {
+						throw new RuntimeException('ファイルをアップロードできませんでした。サーバーダウンの可能性がありますので後ほど再送してください。');
+					}
+				} catch (Exception $e) {
+					// エラー
+					$data = array('ret' => false, 'err' => $e->getMessage());
+				}
+			}
+		} else {
+			// ファイルが選択されていないとき
+			if (false == $through_flg) {
+				// ファイル未選択をスルーしない場合エラー
+				$data = array('ret' => false, 'err' => "画像ファイルが選択されていません。");
 			}
 		}
 		return $data;
@@ -726,505 +980,6 @@ class CommonFunctions {
 
 
 	/**
-	 * PAY.JP決済チェックメソッド
-	 * @param	arr			$params			カード情報
-	 * @param	int			$price			価格
-	 * @return	array()						成功：true（配列内にファイル名）　失敗：false（配列内にエラー文）
-	 */
-	function paymentCheck($params, $price) {
-
-		$data = array();
-		
-		// 初期化
-		require_once(ROOT . 'extension/payjp/init.php');
-
-		try {
-			// 新しい課金の作成
-			\Payjp\Payjp::setApiKey(SECRET_KEY);
-			
-			// カードの認証と支払い額確保
-			$result = \Payjp\Charge::create(array(
-				"card" => $params,
-				"amount" => $price,
-				"currency" => CURRENCY,
-				"capture" => false
-			));
-
-			if (isset($result['error'])) {
-				// エラー発生
-				throw new Exception();
-			}
-
-			// 決済完了
-			$data = array('ret' => true, 'err_code' => 200);
-
-		} catch (Exception $e) {
-			// 例外の内容を返す
-			$data = array('ret' => false, 'err_code' => $e->getHttpStatus());
-		}
-
-		return $data;
-	}
-
-
-	/**
-	 * STRIPE決済前チェックメソッド
-	 * @param	arr			$params			カード情報
-	 * @param	int			$price			価格
-	 * @param	int			$customer_id			顧客ID
-	 * @param	int			$user_id			ユーザーID
-	 * @return	array()						成功：true（配列内にファイル名）　失敗：false（配列内にエラー文）
-	 */
-	function paymentPreCheckStripe($params, $price, $customer_id = "", $user_id) {
-
-		$data = array();
-		
-		// 初期化
-		require_once(ROOT . 'extension/stripe/vendor/autoload.php');
-
-		try {
-			\Stripe\Stripe::setApiKey(SECRET_KEY_STRIPE);
-
-			// 顧客登録されているか
-			if ("" != $customer_id) {
-				$param = array(
-					'customer' => $customer_id, 
-					'amount' => $price, 
-					'currency' => CURRENCY, 
-					'capture' => false
-				);
-			} else {
-				// トークンの作成
-				$token = \Stripe\Token::create($params);
-				$param = array(
-					'source' => $token->id, 
-					'amount' => $price, 
-					'currency' => CURRENCY, 
-					'capture' => false
-				);
-			}
-
-			// カードの認証と支払い額確保
-			$result = \Stripe\Charge::create($param);
-
-			if (isset($result['error'])) {
-				// エラー発生
-				throw new Exception();
-			}
-
-			// 決済できるかの事前確認なので一旦決済をキャンセル(確認画面で改めて決済を行う)
-			$ret = $this->paymentCancelStripe($result["id"], $user_id);
-
-			// 決済完了
-			$data = array('ret' => true, 'err_code' => 200, 'id' => $result["id"]);
-
-		} catch (Exception $e) {
-			// 例外の内容を返す
-			$data = array('ret' => false, 'err_code' => $e->getHttpStatus());
-		}
-
-
-		return $data;
-	}
-
-
-	/**
-	 * STRIPE決済チェックメソッド
-	 * @param	arr			$params			カード情報
-	 * @param	int			$price			価格
-	 * @param	int			$customer_id			顧客ID
-	 * @return	array()						成功：true（配列内にファイル名）　失敗：false（配列内にエラー文）
-	 */
-	function paymentCheckStripe($params, $price, $customer_id = "") {
-
-		$data = array();
-		
-		// 初期化
-		require_once(ROOT . 'extension/stripe/vendor/autoload.php');
-
-		try {
-			\Stripe\Stripe::setApiKey(SECRET_KEY_STRIPE);
-
-			// 顧客登録されているか
-			if ("" != $customer_id) {
-				$param = array(
-					'customer' => $customer_id, 
-					'amount' => $price, 
-					'currency' => CURRENCY, 
-					'capture' => false
-				);
-			} else {
-				// トークンの作成
-				$token = \Stripe\Token::create($params);
-				$param = array(
-					'source' => $token->id, 
-					'amount' => $price, 
-					'currency' => CURRENCY, 
-					'capture' => false
-				);
-			}
-
-			// カードの認証と支払い額確保
-			$result = \Stripe\Charge::create($param);
-
-			if (isset($result['error'])) {
-				// エラー発生
-				throw new Exception();
-			}
-
-			// 決済完了
-			$data = array('ret' => true, 'err_code' => 200, 'id' => $result["id"]);
-
-		} catch (Exception $e) {
-			// 例外の内容を返す
-			$data = array('ret' => false, 'err_code' => $e->getHttpStatus());
-		}
-
-		return $data;
-	}
-
-	/**
-	 * STRIPE顧客情報保存メソッド
-	 * @param	arr			$params			カード情報
-	 * @return	array()						成功：true（配列内にファイル名）　失敗：false（配列内にエラー文）
-	 */
-	function setCustomerStripe($params) {
-
-		$data = array();
-		
-		// 初期化
-		require_once(ROOT . 'extension/stripe/vendor/autoload.php');
-
-		try {
-			\Stripe\Stripe::setApiKey(SECRET_KEY_STRIPE);
-
-			// 顧客情報作成
-			$result = \Stripe\Customer::create($params);
-
-			if (isset($result['error'])) {
-				// エラー発生
-				throw new Exception();
-			}
-
-			// 決済完了
-			$data = array('ret' => true, 'err_code' => 200, 'id' => $result['id']);
-
-		} catch (Exception $e) {
-			// 例外の内容を返す
-			$data = array('ret' => false, 'err_code' => $e->getHttpStatus());
-			// 例外の内容をlogに記載
-			error_log("[" . date("Y-m-d h:i:s") . "]Stripe顧客登録失敗 カード番号=" . $params["card"]["number"] . " エラーコード=" . $e->getHttpStatus() . "\n", 3, PAY_ERR_LOG_PATH);
-		}
-
-		return $data;
-	}
-
-
-	/**
-	 * STRIPE顧客情報取得メソッド
-	 * @param	arr			$customer_id			顧客ID
-	 * @return	array()						成功：true（配列内にファイル名）　失敗：false（配列内にエラー文）
-	 */
-	function getCustomerStripe($customer_id) {
-
-		$data = array();
-		
-		// 初期化
-		require_once(ROOT . 'extension/stripe/vendor/autoload.php');
-
-		try {
-			\Stripe\Stripe::setApiKey(SECRET_KEY_STRIPE);
-
-			// 顧客情報取得
-			$result = \Stripe\Customer::retrieve($customer_id);
-
-			if (isset($result['error'])) {
-				// エラー発生
-				throw new Exception();
-			}
-
-			// 決済完了
-			$data = array('ret' => true, 'err_code' => 200, 'customer' => $result);
-
-		} catch (Exception $e) {
-			// 例外の内容を返す
-			$data = array('ret' => false, 'err_code' => $e);
-		}
-
-		return $data;
-	}
-
-
-	/**
-	 * PAY.JP決済メソッド
-	 * @param	arr			$params			カード情報
-	 * @param	int			$price			価格
-	 * @return	bool							成功：true　失敗：false
-	 */
-	function paymentProcessing($params, $price) {
-
-		$return_flg = false;
-		
-		// 初期化
-		require_once(ROOT . 'extension/payjp/init.php');
-
-		try {
-			\Payjp\Payjp::setApiKey(SECRET_KEY);
-			
-			// 決済
-			$result = \Payjp\Charge::create(array(
-				"card" => $params,
-				"amount" => $price,
-				"currency" => CURRENCY
-			));
-
-			if (isset($result['error'])) {
-				// エラー発生
-				throw new Exception();
-			}
-
-			// 決済完了
-			$return_flg = true;
-			error_log("[" . date("Y-m-d h:i:s") . "]決済完了 ユーザーID=" . $_SESSION["id"] . " カード番号下4桁:" . substr($params["number"], -4) . " 金額=" . $price . "\n", 3, PAY_LOG_PATH);
-
-		} catch (Exception $e) {
-			// 例外の内容をlogに記載
-			error_log("[" . date("Y-m-d h:i:s") . "]PAY.JP決済失敗 ユーザーID=" . $_SESSION["id"] . " 金額=" . $price . " カード番号=" . $params["number"] . " エラーメッセージ=：" . $e->getMessage() . "\n", 3, PAY_ERR_LOG_PATH);
-		}
-
-		return $return_flg;
-	}
-
-
-	/**
-	 * PayPal決済メソッド
-	 * @param	arr			$params			カード情報
-	 * @param	int			$price			価格
-	 * @return	bool							成功：true　失敗：false
-	 */
-	function paymentProcessingPaypal($params, $price) {
-
-		$return_flg = false;
-		
-
-		// ### CreditCard
-		// A resource representing a credit card that can be
-		// used to fund a payment.
-		$card = new CreditCard();
-		$card->setType($card_type_arr[$params["card_type"]])
-		    ->setNumber($params["number"])
-		    ->setExpireMonth($params["exp_month"])
-		    ->setExpireYear($params["exp_year"])
-		    ->setCvv2($params["cvc"])
-		    ->setFirstName($params["first_name"])
-		    ->setLastName($params["last_name"]);
-
-		// ### FundingInstrument
-		// A resource representing a Payer's funding instrument.
-		// For direct credit card payments, set the CreditCard
-		// field on this object.
-		$fi = new FundingInstrument();
-		$fi->setCreditCard($card);
-
-		// ### Payer
-		// A resource representing a Payer that funds a payment
-		// For direct credit card payments, set payment method
-		// to 'credit_card' and add an array of funding instruments.
-		$payer = new Payer();
-		$payer->setPaymentMethod("credit_card")
-		    ->setFundingInstruments(array($fi));
-
-		// ### Itemized information
-		// (Optional) Lets you specify item wise
-		// information
-		$item1 = new Item();
-		$item1->setName('massage')
-		    ->setDescription('pochimomi massage')
-		    ->setCurrency("JPY")
-		    ->setQuantity(1)
-		    ->setTax(8)
-		    ->setPrice($price);
-
-		$itemList = new ItemList();
-		$itemList->setItems(array($item1));
-
-		// ### Additional payment details
-		// Use this optional field to set additional
-		// payment information such as tax, shipping
-		// charges etc.
-		$details = new Details();
-		$details->setShipping(0)
-		    ->setTax($price * 0.08)
-		    ->setSubtotal($price);
-
-		// ### Amount
-		// Lets you specify a payment amount.
-		// You can also specify additional details
-		// such as shipping, tax.
-		$amount = new Amount();
-		$amount->setCurrency("JPY")
-		    ->setTotal($price)
-		    ->setDetails($details);
-
-		// ### Transaction
-		// A transaction defines the contract of a
-		// payment - what is the payment for and who
-		// is fulfilling it. 
-		$transaction = new Transaction();
-		$transaction->setAmount($amount)
-		    ->setItemList($itemList)
-		    ->setDescription("Payment description")
-		    ->setInvoiceNumber(uniqid());
-
-		// ### Payment
-		// A Payment Resource; create one using
-		// the above types and intent set to sale 'sale'
-		$payment = new Payment();
-		$payment->setIntent("sale")
-		    ->setPayer($payer)
-		    ->setTransactions(array($transaction));
-
-		// For Sample Purposes Only.
-		$request = clone $payment;
-
-		// ### Create Payment
-		// Create a payment by calling the payment->create() method
-		// with a valid ApiContext (See bootstrap.php for more on `ApiContext`)
-		// The return object contains the state.
-		try {
-		    $payment->create($apiContext);
-
-				// 決済完了
-				$return_flg = true;
-				error_log("[" . date("Y-m-d h:i:s") . "]PayPal決済完了 ユーザーID=" . $_SESSION["id"] . " カード番号下4桁:" . substr($params["number"], -4) . " 金額=" . $price . "\n", 3, PAY_LOG_PATH);
-
-		} catch (Exception $ex) {
-			// 例外の内容をlogに記載
-			error_log("[" . date("Y-m-d h:i:s") . "]PayPal決済失敗 ユーザーID=" . $_SESSION["id"] . " 金額=" . $price . " カード番号=" . $params["number"] . " エラーメッセージ=：" . $e->getMessage() . "\n", 3, PAY_ERR_LOG_PATH);
-		}
-
-		return $return_flg;
-	}
-
-
-	/**
-	 * Stripe決済メソッド
-	 * @param	str			$pay_id			支払いID
-	 * @param	int			$user_id		ユーザーID
-	 * @return	bool							成功：true　失敗：false
-	 */
-	function paymentProcessingStripe($pay_id, $user_id) {
-
-		$return_flg = false;
-		
-		// 初期化
-		require_once(ROOT . 'extension/stripe/vendor/autoload.php');
-
-		try {
-			\Stripe\Stripe::setApiKey(SECRET_KEY_STRIPE);
-
-			// 決済
-			$result = \Stripe\Charge::retrieve($pay_id);
-			$result->capture();
-
-			if (isset($result['error'])) {
-				// エラー発生
-				throw new Exception();
-			}
-
-			// 決済完了
-			$return_flg = true;
-			error_log("[" . date("Y-m-d h:i:s") . "]Stripe決済完了 ユーザーID=" . $user_id . " Stripe支払いID=" . $pay_id . "\n", 3, PAY_LOG_PATH);
-
-		} catch (Exception $e) {
-			// 例外の内容をlogに記載
-			error_log("[" . date("Y-m-d h:i:s") . "]Stripe決済失敗 ユーザーID=" . $user_id . " Stripe支払いID=" . $pay_id . " エラーメッセージ=：" . $e->getMessage() . "\n", 3, PAY_ERR_LOG_PATH);
-		}
-
-		return $return_flg;
-	}
-
-
-	/**
-	 * STRIPE決済キャンセルメソッド
-	 * @param	int			$pay_id			支払いID
-	 * @param	int			$user_id		ユーザーID
-	 * @return	array()						成功：true（配列内にファイル名）　失敗：false（配列内にエラー文）
-	 */
-	function paymentCancelStripe($pay_id, $user_id) {
-
-		$data = array();
-		
-		// 初期化
-		require_once(ROOT . 'extension/stripe/vendor/autoload.php');
-
-		try {
-			\Stripe\Stripe::setApiKey(SECRET_KEY_STRIPE);
-
-			// 決済キャンセル
-			$result = \Stripe\Refund::create(array(
-				"charge" => $pay_id
-			));
-
-			if (isset($result['error'])) {
-				// エラー発生
-				throw new Exception();
-			}
-
-			// 決済完了
-			$return_flg = true;
-			error_log("[" . date("Y-m-d h:i:s") . "]Stripe決済キャンセル完了 ユーザーID=" . $user_id . " Stripe支払いID=" . $pay_id . "\n", 3, PAY_LOG_PATH);
-
-		} catch (Exception $e) {
-			$return_flg = false;
-			// 例外の内容をlogに記載
-			error_log("[" . date("Y-m-d h:i:s") . "]Stripe決済決済失敗 ユーザーID=" . $user_id . " Stripe支払いID=" . $pay_id . " エラーメッセージ=：" . $e->getMessage() . "\n", 3, PAY_ERR_LOG_PATH);
-		}
-
-		return $return_flg;
-	}
-
-
-	/**
-	 * STRIPEオーソリ解放メソッド
-	 * @param	int			$pay_id			支払いID
-	 * @param	int			$user_id		ユーザーID
-	 * @return	array()						成功：true（配列内にファイル名）　失敗：false（配列内にエラー文）
-	 */
-	function authorizeCancelStripe($pay_id, $user_id) {
-
-		$data = array();
-		
-		// 初期化
-		require_once(ROOT . 'extension/stripe/vendor/autoload.php');
-
-		try {
-			\Stripe\Stripe::setApiKey(SECRET_KEY_STRIPE);
-
-			// 決済キャンセル
-			$result = \Stripe\Refund::create(array(
-				"charge" => $pay_id
-			));
-
-			if (isset($result['error'])) {
-				// エラー発生
-				throw new Exception();
-			}
-
-			// 決済完了
-			$return_flg = true;
-			error_log("[" . date("Y-m-d h:i:s") . "]Stripe決済キャンセル完了 ユーザーID=" . $user_id . " Stripe支払いID=" . $pay_id . "\n", 3, PAY_LOG_PATH);
-
-		} catch (Exception $e) {
-			// 例外の内容をlogに記載
-			error_log("[" . date("Y-m-d h:i:s") . "]Stripe決済決済失敗 ユーザーID=" . $user_id . " Stripe支払いID=" . $pay_id . " エラーメッセージ=：" . $e->getMessage() . "\n", 3, PAY_ERR_LOG_PATH);
-		}
-
-		return $return_flg;
-	}
-
-
-	/**
 	 * 時間を指定分ごとに変換するメソッド
 	 * @param	int			$punctuate	何分毎に変換するか
 	 * @param	arr			$mode				モード(デフォルト:切り上げ)
@@ -1265,6 +1020,23 @@ class CommonFunctions {
 		return $date_str;
 	}
 
+
+	/**
+	 * テキストの中のURLをリンクに変換するメソッド
+	 * @param	str		$text				テキスト
+	 * @return	arr		$link_with_text				リンク付きテキスト
+	 */
+	function urlToLink($text = ''){
+		
+		$link_with_text = "";
+
+		// テキスト内のURLを判別してリンクに変換する
+		$link_with_text = mb_ereg_replace('(https?://[-_.!~*\'()a-zA-Z0-9;/?:@&=+$,%#]+)', '<a href="\1" target="_blank">\1</a>', $text);
+
+		return $link_with_text;
+	}
+
+
 	/**
 	 * トークンをセッションにセットするメソッド
 	 */
@@ -1284,6 +1056,71 @@ class CommonFunctions {
 			error_log("[" . date("Y-m-d h:i:s") . "]不正なPOSTが行なわれました\n", 3, LOG_PATH);
 			$this->redirect(ROOT . "static/err.php");
 		}
+	}
+
+
+	/**
+	 * バイト数をフォーマットする
+	 * @param int $bytes
+	 * @param int $precision
+	 * @param array $units
+	 * @assert var_dump(formatBytes(1)); // 1 B
+	 * @assert var_dump(formatBytes(1024)); // 1 KB
+	 * @assert var_dump(formatBytes(1024, 2)); // 1.00 KB(少数を出す)
+	 * @assert ar_dump(formatBytes(1024, 2, array('バイト', 'キロバイト', 'メガバイト'))); // 1.00 キロバイト(単位の文言をカスタマイズ)
+	 */
+	function formatBytes($bytes, $precision = 2, array $units = null) {
+		if (abs($bytes) < 1024) {
+			$precision = 0;
+		}
+
+		if (is_array($units) === false) {
+			$units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+		}
+
+		if ($bytes < 0) {
+			$sign = '-';
+			$bytes = abs($bytes);
+		} else {
+			$sign = '';
+		}
+
+		$exp   = floor(log($bytes) / log(1024));
+		$unit  = $units[$exp];
+		$bytes = $bytes / pow(1024, floor($exp));
+		$bytes = sprintf('%.' . $precision . 'f', $bytes);
+		return $sign . $bytes . ' ' . $unit;
+	}
+	
+
+	/**
+	 * bitlyから短縮URLを取得するメソッド
+	 * @param	str			$url			短縮したいURL
+	 * @return	str							成功：短縮URL文字列　失敗：空文字
+	 */
+	function shorturl_make_bitly($url) {
+		$ret = "";
+		// URL(パラメータ)を設定
+		$url = "http://api.bit.ly/v3/shorten?"
+					. "login=" . BITLY_USERNAME
+					. "&apiKey=" . BITLY_APIKEY
+					. "&longUrl=" . urlencode($url)
+					. "&format=xml";
+		// bitlyでURLを短縮(cURL接続)
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		// データを読み取る
+		$data_obj = simplexml_load_string($data);
+		// 短縮に成功しているか
+		if ((int)$data_obj->status_code == 200) {
+			$ret = (string)$data_obj->data->url;
+		}
+		
+		return $ret;
+	
 	}
 
 }

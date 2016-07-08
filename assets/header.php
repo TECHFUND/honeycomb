@@ -27,10 +27,6 @@
 	<![endif]-->
 </head>
 <body>
-	<!-- notification -->
-	<p class="normal_notification"><?php echo($_POST["normal_notification_body"]); ?></p>
-	<p class="err_notification"><?php echo($_POST["err_notification_body"]); ?></p>
-	<!-- //notification -->
 
 	<!-- header -->
 	<header>

@@ -12,6 +12,29 @@
 <script type="text/javascript" src="/assets/js/slider/draggable-0.1.js"></script>
 <script type="text/javascript" src="/assets/js/slider/jquery.slider.js"></script>
 
+<!-- toast message -->
+<!-- 
+  /* sample */
+  $_SESSION["toast"][] = array("type" => "error", "message" => "ログインできませんでした。");
+  $_SESSION["toast"][] = array("type" => "notice", "message" => "イベント参加完了");
+-->
+<script type="text/javascript" src="/assets/js/toast.js"></script>
+<?php
+if (0 != count($_SESSION["toast"])) {
+  echo('<script>');
+  foreach ($_SESSION["toast"] as $key => $value) {
+    echo('
+      addToastMessage("' . $value["type"] . '", "' . $value["message"] . '", ' . $key . ');
+    ');
+  }
+  echo('
+  showToastMessage();
+</script>
+  ');
+  unset($_SESSION["toast"]);
+}
+?>
+
 <script>
 /**
  * ジオコーダの結果を取得したときに実行するコールバック関数。
@@ -44,6 +67,7 @@ function adjustMapSize() {
   //mapCanvas.css("height", ($(window).height() - mapCanvas.offset().top - marginBottom) + "px");
 }
 </script>
+
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
@@ -58,7 +82,6 @@ function adjustMapSize() {
 
  ga('create', 'UA-74329615-2', 'auto');
  ga('send', 'pageview');
-
 </script>
 
 <!-- end -->
